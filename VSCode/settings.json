@@ -1,0 +1,41 @@
+{
+    // General
+    "editor.minimap.enabled": false,
+    "workbench.iconTheme": "vscode-icons",
+    "files.insertFinalNewline": true,
+    "terminal.integrated.enableMultiLinePasteWarning": "auto",
+    "editor.fontFamily": "Consolas, 'Moralerspace Neon', monospace",
+
+    // Markdown
+    // 改行の設定: https://qiita.com/fuk101/items/0fea05c93e70195275c3
+    /// GitHubのプレビューと改行で揃わなくなるので注意
+    // "markdown.preview.breaks": true,
+    // その為、Markdownの保存時に自動で<br>を入れてくれるファイルを走らせる
+    // RunOnSave: https://github.com/pucelle/vscode-run-on-save
+    "runOnSave.commands": [
+        {
+            "globMatch": "**/*.md",
+            // ファイルを書き換えているのでcommandBeforeSavingにしてはいけない
+            "command": "python ~/linebreak.py -f ${file}",
+            "runIn": "backend",
+            "runningStatusMessage": "Start insert line-break symbols into ${fileBasename}.",
+            "finishStatusMessage": "Finished.",
+            "statusMessageTimeout": 1000,
+        }
+    ],
+
+
+    // Python
+    // terminal起動直後に仮想環境を開かないようにする
+    // ref: https://code.visualstudio.com/docs/python/environments
+    "python.terminal.activateEnvironment": false,
+    "remote.autoForwardPortsSource": "hybrid",
+
+    // VScodeを再起動しないとPylanceが新しいパッケージを認識しない
+    "python.analysis.extraPaths": [
+        "/home/neko/programming/python/大規模言語モデル入門/.venv/lib/site-packages",
+    ],
+    "files.exclude": {
+        "**/.git": false
+    }
+}
