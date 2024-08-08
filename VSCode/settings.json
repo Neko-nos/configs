@@ -31,10 +31,6 @@
     "python.terminal.activateEnvironment": false,
     "remote.autoForwardPortsSource": "hybrid",
 
-    // VScodeを再起動しないとPylanceが新しいパッケージを認識しない
-    "python.analysis.extraPaths": [
-        "/home/neko/programming/python/大規模言語モデル入門/.venv/lib/site-packages",
-    ],
     "files.exclude": {
         "**/.git": false
     }
