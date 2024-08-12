@@ -75,8 +75,8 @@ def main(filepath):
                 is_code = False
             continue
         elif is_alert:
-            current_result = re.match(list_quote_pattern, line) if is_list else re.match(quote_pattern, line)
-            next_result = re.match(list_quote_pattern, next_line) if is_list else re.match(quote_pattern, next_line)
+            current_result = list_quote_pattern.match(line) if is_list else quote_pattern.match(line)
+            next_result = list_quote_pattern.match(next_line) if is_list else quote_pattern.match(next_line)
             if current_result and next_result:
                 new_lines.append(line + "\n")
                 continue
@@ -88,8 +88,12 @@ def main(filepath):
                 continue
         elif is_table:
             # is_tableになって1回目(つまり2行目)のみtable_patternに該当する
-            current_result = (re.match(list_table_cell_pattern, line) or re.match(list_table_pattern, line)) if is_list else (re.match(table_cell_pattern, line) or re.match(table_pattern, line))
-            next_result = re.match(list_table_cell_pattern, next_line) if is_list else re.match(table_cell_pattern, next_line)
+            current_result = (
+                (list_table_cell_pattern.match(line) or list_table_pattern.match(line))
+                if is_list
+                else (table_cell_pattern.match(line) or table_pattern.match(line))
+            )
+            next_result = list_table_cell_pattern.match(next_line) if is_list else table_cell_pattern.match(next_line)
             if current_result and next_result:
                 new_lines.append(line + "\n")
                 continue
@@ -100,41 +104,38 @@ def main(filepath):
                 continue
         elif is_list:
             # indentが必要なだけで基本的な処理は後ろの処理とあまり変わらない
-            if re.match(list_comment_pattern, line) or re.match(list_comment_pattern, next_line):
+            if list_comment_pattern.match(line) or list_comment_pattern.match(next_line):
                 new_lines.append(line + "\n")
-            elif re.match(list_title_pattern, line) or re.match(list_title_pattern, next_line):
+            elif list_title_pattern.match(line) or list_title_pattern.match(next_line):
                 new_lines.append(line + "\n")
-            elif re.match(list_image_pattern, line) or re.match(list_image_pattern, next_line):
+            elif list_image_pattern.match(line) or list_image_pattern.match(next_line):
                 new_lines.append(line + "\n")
-            elif re.match(list_code_pattern, line):
+            elif list_code_pattern.match(line):
                 new_lines.append(line + "\n")
                 is_code = True
-            elif re.match(alert_pattern, line):
+            elif alert_pattern.match(line):
                 new_lines.append(line + "\n")
                 is_alert = True
-            elif re.match(list_table_cell_pattern, line) and re.match(list_table_pattern, next_line):
+            elif list_table_cell_pattern.match(line) and list_table_pattern.match(next_line):
                 new_lines.append(line + "\n")
                 is_table = True
-            elif re.match(list_quote_pattern, line) and re.match(list_quote_pattern, next_line):
+            elif list_quote_pattern.match(line) and list_quote_pattern.match(next_line):
                 new_lines.append(line + "\n")
-            elif re.match(list_quote_pattern, line):
+            elif list_quote_pattern.match(line):
                 new_lines.append(line + "\n")
                 new_lines.append("\n")
-            elif re.match(list_text_pattern, line) and re.match(list_text_pattern, next_line):
+            elif list_text_pattern.match(line) and list_text_pattern.match(next_line):
                 new_lines.append(line + "<br>" + "\n")
-            elif (
-                re.match(list_text_pattern, line)
-                and (
-                    re.match(list_pattern, next_line)
-                    or re.match(list_comment_pattern, next_line)
-                    or re.match(list_code_pattern, next_line)
-                    or re.match(list_title_pattern, next_line)
-                    or re.match(list_quote_pattern, next_line)
-                    or re.match(list_image_pattern, next_line)
-                )
+            elif list_text_pattern.match(line) and (
+                list_pattern.match(next_line)
+                or list_comment_pattern.match(next_line)
+                or list_code_pattern.match(next_line)
+                or list_title_pattern.match(next_line)
+                or list_quote_pattern.match(next_line)
+                or list_image_pattern.match(next_line)
             ):
                 new_lines.append(line + "\n")
-            elif not re.match(list_indent_pattern, next_line):
+            elif not list_indent_pattern.match(next_line):
                 new_lines.append(line + "\n")
                 is_list = False
             continue
@@ -142,66 +143,63 @@ def main(filepath):
         # 空行に関しては何もしない
         if not line or not next_line:
             new_lines.append(line + "\n")
-        elif re.match(comment_pattern, line) or re.match(comment_pattern, next_line):
+        elif comment_pattern.match(line) or comment_pattern.match(next_line):
             new_lines.append(line + "\n")
-        elif re.match(title_pattern, line) or re.match(title_pattern, next_line):
+        elif title_pattern.match(line) or title_pattern.match(next_line):
             new_lines.append(line + "\n")
-        elif re.match(image_pattern, line) or re.match(image_pattern, next_line):
+        elif image_pattern.match(line) or image_pattern.match(next_line):
             new_lines.append(line + "\n")
-        elif re.match(code_pattern, line):
+        elif code_pattern.match(line):
             new_lines.append(line + "\n")
             is_code = True
             is_alert = False
             is_table = False
             is_list = False
-        elif re.match(alert_pattern, line):
+        elif alert_pattern.match(line):
             new_lines.append(line + "\n")
             is_alert = True
             is_code = False
             is_table = False
             is_list = False
-        elif re.match(table_cell_pattern, line) and re.match(table_pattern, next_line):
+        elif table_cell_pattern.match(line) and table_pattern.match(next_line):
             new_lines.append(line + "\n")
             is_table = True
             is_code = False
             is_alert = False
             is_list = False
-        elif re.match(quote_pattern, line) and re.match(quote_pattern, next_line):
+        elif quote_pattern.match(line) and quote_pattern.match(next_line):
             new_lines.append(line + "\n")
-        elif re.match(quote_pattern, line):
+        elif quote_pattern.match(line):
             new_lines.append(line + "\n")
             new_lines.append("\n")
         # listsの処理
-        elif (
-            re.match(list_pattern, line)
-            and (
-                re.match(list_pattern, next_line)
-                or re.match(list_comment_pattern, next_line)
-                or re.match(list_code_pattern, next_line)
-                or re.match(list_title_pattern, next_line)
-                or re.match(list_quote_pattern, next_line)
-                or re.match(list_image_pattern, next_line)
-            )
+        elif list_pattern.match(line) and (
+            list_pattern.match(next_line)
+            or list_comment_pattern.match(next_line)
+            or list_code_pattern.match(next_line)
+            or list_title_pattern.match(next_line)
+            or list_quote_pattern.match(next_line)
+            or list_image_pattern.match(next_line)
         ):
             new_lines.append(line + "\n")
             is_list = True
-        elif re.match(list_pattern, line) and re.match(list_text_pattern, next_line):
+        elif list_pattern.match(line) and list_text_pattern.match(next_line):
             new_lines.append(line + "<br>" + "\n")
             is_list = True
         # indentがない場合に、基本的にlists一行で終わらせることはないので
         # その後もlistsのblockにあるとみなして考える
-        elif re.match(list_pattern, line):
+        elif list_pattern.match(line):
             new_lines.append(line + "<br>" + "\n")
-        elif re.match(list_pattern, next_line):
+        elif list_pattern.match(next_line):
             new_lines.append(line + "\n")
             new_lines.append("\n")
         elif (
-            re.match(code_pattern, next_line)
-            or re.match(title_pattern, next_line)
-            or re.match(alert_pattern, next_line)
-            or re.match(quote_pattern, next_line)
-            or re.match(image_pattern, next_line)
-            or re.match(table_cell_pattern, next_line)
+            code_pattern.match(next_line)
+            or title_pattern.match(next_line)
+            or alert_pattern.match(next_line)
+            or quote_pattern.match(next_line)
+            or image_pattern.match(next_line)
+            or table_cell_pattern.match(next_line)
         ):
             new_lines.append(line + "\n")
         else:
