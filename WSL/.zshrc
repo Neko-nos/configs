@@ -85,6 +85,28 @@ fi
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
+# alias設定
+## ls
+## ref: https://atmarkit.itmedia.co.jp/ait/articles/1606/28/news021.html
+alias ls='ls -AX --color=auto'
+## cd系
+alias ...='cd ../..'
+alias ....='cd ../../..'
+## tree系
+## ref: https://atmarkit.itmedia.co.jp/ait/articles/1802/01/news025.html
+alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__"'
+## 名前をtreeと被せると再帰関数になってしまう
+alias ctree='_custom_tree'
+# ref: https://qiita.com/osw_nuco/items/a5d7173c1e443030875f
+function _custom_tree() {
+    # ホームディレクトリでalias済みのtreeを打つと大量のファイルが表示されるので制限する
+    if [[ "$PWD" == "$HOME" ]]; then
+        tree -L 2 "$@"
+    else
+        tree "$@"
+    fi
+}
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
