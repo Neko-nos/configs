@@ -94,7 +94,15 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 ## tree系
 ## ref: https://atmarkit.itmedia.co.jp/ait/articles/1802/01/news025.html
-alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__"'
+if [[ -x $(which tree) ]]; then
+    alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__"'
+else
+    printf "Install tree? [y/N]: "
+    if read -q; then
+        echo; sudo apt install tree
+        alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__"'
+    fi
+fi
 ## 名前をtreeと被せると再帰関数になってしまう
 alias ctree='_custom_tree'
 # ref: https://qiita.com/osw_nuco/items/a5d7173c1e443030875f
@@ -106,6 +114,27 @@ function _custom_tree() {
         tree "$@"
     fi
 }
+## diff系
+## ref: https://qiita.com/bitnz/items/725350b614bafedc581a
+if [[ -x $(which colordiff) ]]; then
+    alias diff='colordiff -u'
+else
+    printf "Install colordiff? [y/N]: "
+    if read -q; then
+        echo; sudo apt install colordiff
+        alias diff='colordiff -u'
+    fi
+fi
+if [[ -x $(which icdiff) ]]; then
+    alias icdiff='icdiff -U 1 --line-numbers'
+else
+    printf "Install icdiff? [y/N]: "
+    if read -q; then
+        echo; sudo apt install icdiff
+        alias icdiff='icdiff -U 1 --line-numbers'
+    fi
+fi
+
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
