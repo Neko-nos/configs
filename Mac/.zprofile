@@ -12,7 +12,7 @@ export PATH="~/.local/bin:$PATH"
 export TF_CPP_MIN_LOG_LEVEL=1
 
 # ここからはMac専用
-# lsをLinuxを同じ形式にする
+# 一部コマンドをLinuxを同じ形式(GNU)にするためのcoreutilsのパスを通す
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 # brew
 eval "$(/opt/homebrew/bin/brew shellenv)"
