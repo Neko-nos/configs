@@ -1,0 +1,18 @@
+{
+    "description": "command-p -> ctrl-p",
+    "manipulators": [
+        {
+            "from": {
+                "key_code": "p",
+                "modifiers": { "mandatory": ["command"] }
+            },
+            "to": [
+                {
+                    "key_code": "p",
+                    "modifiers": ["control"]
+                }
+            ],
+            "type": "basic"
+        }
+    ]
+}

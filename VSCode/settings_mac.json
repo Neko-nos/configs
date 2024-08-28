@@ -1,0 +1,133 @@
+{
+    // ---------- Language ----------
+
+    "[tex]": {
+        // スニペット補完中にも補完を使えるようにする
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        // インデント幅を2にする
+        "editor.tabSize": 2
+    },
+
+    "[latex]": {
+        // スニペット補完中にも補完を使えるようにする
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        // インデント幅を2にする
+        "editor.tabSize": 2
+    },
+
+    "[bibtex]": {
+        // インデント幅を2にする
+        "editor.tabSize": 2
+    },
+
+
+    // ---------- LaTeX Workshop ----------
+
+    // 使用パッケージのコマンドや環境の補完を有効にする
+    "latex-workshop.intellisense.package.enabled": true,
+
+    // 生成ファイルを削除するときに対象とするファイル
+    // デフォルト値に "*.synctex.gz" を追加
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.snm",
+        "*.nav",
+        "*.dvi",
+        "*.synctex.gz"
+    ],
+
+    // 生成ファイルを "out" ディレクトリに吐き出す
+    "latex-workshop.latex.outDir": "out",
+
+    // ビルドのレシピ
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk",
+            "tools": [
+                "latexmk"
+            ]
+        },
+    ],
+
+    // ビルドのレシピに使われるパーツ
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-silent",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+        },
+    ],
+
+    // ---------- Markdown ----------
+    // 改行の設定: https://qiita.com/fuk101/items/0fea05c93e70195275c3
+    /// GitHubのプレビューと改行で揃わなくなるので注意
+    // "markdown.preview.breaks": true,
+    // その為、Markdownの保存時に自動で<br>を入れてくれるファイルを走らせる
+    // RunOnSave: https://github.com/pucelle/vscode-run-on-save
+    "runOnSave.commands": [
+        {
+            "globMatch": "**/*.md",
+            // ファイルを書き換えているのでcommandBeforeSavingにしてはいけない
+            "command": "python ~/linebreak.py -f ${file}",
+            "runIn": "backend",
+            "runningStatusMessage": "Start insert line-break symbols into ${fileBasename}.",
+            "finishStatusMessage": "Finished.",
+            "statusMessageTimeout": 1000,
+        }
+    ],
+    "markdown-pdf.displayHeaderFooter": false,
+
+    // ---------- Python ----------
+
+    // 仮想環境の設定
+    "python.venvFolders": [
+        ".venv",
+        "env",
+        "envs",
+        ".pyenv",
+        ".direnv"
+    ],
+
+    // terminal起動直後に仮想環境を開かないようにする
+    // ref: https://code.visualstudio.com/docs/python/environments
+    "python.terminal.activateEnvironment": false,
+    "remote.autoForwardPortsSource": "hybrid",
+
+    // ---------- General ----------
+    // 末尾に改行を挟む(https://qiita.com/hamamamama/items/11c17c7412a5aeb2ad74)
+    "files.insertFinalNewline": true,
+    "workbench.iconTheme": "vscode-icons",
+    "editor.minimap.enabled": false,
+    "terminal.integrated.enableMultiLinePasteWarning": "auto",
+    "remote.SSH.useExecServer": false,
+    "notebook.editorOptionsCustomizations": {
+        "editor.tabSize": 4,
+        "editor.indentSize": 4,
+        "editor.insertSpaces": true
+    },
+    "files.exclude": {
+        "**/.git": false
+    }
+}
