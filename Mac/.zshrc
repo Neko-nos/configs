@@ -65,7 +65,8 @@ zle -N peco-select-history
 bindkey '^r' peco-select-history
 ## cdr対応
 function peco-cdr () {
-    local selected_dir="$(cdr -l | sed 's/^[0-9]\+ \+//' | peco --prompt="cdr >" --query "$LBUFFER")"
+    # Macでは一部のコマンドがBSD系となっているためGNU系を使う必要がある
+    local selected_dir="$(cdr -l | gsed 's/^[0-9]\+ \+//' | peco --prompt="cdr >" --query "$LBUFFER")"
     if [ -n "$selected_dir" ]; then
         BUFFER="cd ${selected_dir}"
         zle accept-line
@@ -75,6 +76,7 @@ zle -N peco-cdr
 bindkey '^p' peco-cdr
 
 # lsや補完に色を付ける
+# lsと同様にcoreutilsからprefixとしてgが付いたコマンドがLinuxでのコマンドに対応
 eval $(gdircolors ~/dircolors-solarized/dircolors.ansi-light)
 if [ -n "$LS_COLORS" ]; then
     zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
@@ -83,19 +85,23 @@ fi
 # alias設定
 ## ls
 ## ref: https://atmarkit.itmedia.co.jp/ait/articles/1606/28/news021.html
+## Macでは標準のlsがLinuxと違うのでcoreutilsからglsを持ってくる
 alias ls='gls -AX --color=auto'
 ## cd系
 alias ...='cd ../..'
 alias ....='cd ../../..'
 ## tree系
 ## ref: https://atmarkit.itmedia.co.jp/ait/articles/1802/01/news025.html
+## aliasを貼っているとwhichはalias優先になる
+## ref: https://www.rasukarusan.com/entry/2020/02/17/024953
+## Macでは.DS_Storeファイルがある
 if [[ -x $(which -p tree) ]]; then
-    alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__"'
+    alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__|.DS_Store"'
 else
     printf "Install tree? [y/N]: "
     if read -q; then
         echo; brew install tree
-        alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__"'
+        alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__|.DS_Store"'
     fi
 fi
 ## 名前をtreeと被せると再帰関数になってしまう
@@ -129,7 +135,6 @@ else
         alias icdiff='icdiff -U 1 --line-numbers'
     fi
 fi
-
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
