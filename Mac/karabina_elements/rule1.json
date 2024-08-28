@@ -1,0 +1,18 @@
+{
+    "description": "command-r -> ctrl-r",
+    "manipulators": [
+        {
+            "from": {
+                "key_code": "r",
+                "modifiers": { "mandatory": ["command"] }
+            },
+            "to": [
+                {
+                    "key_code": "r",
+                    "modifiers": ["control"]
+                }
+            ],
+            "type": "basic"
+        }
+    ]
+}
