@@ -72,7 +72,7 @@ function peco-cdr () {
     fi
 }
 zle -N peco-cdr
-bindkey '^E' peco-cdr
+bindkey '^p' peco-cdr
 
 # lsや補完に色を付ける
 eval $(dircolors ~/.dircolors-solarized/dircolors.ansi-light)
@@ -94,7 +94,7 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 ## tree系
 ## ref: https://atmarkit.itmedia.co.jp/ait/articles/1802/01/news025.html
-if [[ -x $(which tree) ]]; then
+if [[ -x $(which -p tree) ]]; then
     alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__"'
 else
     printf "Install tree? [y/N]: "
@@ -116,7 +116,7 @@ function _custom_tree() {
 }
 ## diff系
 ## ref: https://qiita.com/bitnz/items/725350b614bafedc581a
-if [[ -x $(which colordiff) ]]; then
+if [[ -x $(which -p colordiff) ]]; then
     alias diff='colordiff -u'
 else
     printf "Install colordiff? [y/N]: "
@@ -125,7 +125,7 @@ else
         alias diff='colordiff -u'
     fi
 fi
-if [[ -x $(which icdiff) ]]; then
+if [[ -x $(which -p icdiff) ]]; then
     alias icdiff='icdiff -U 1 --line-numbers'
 else
     printf "Install icdiff? [y/N]: "
