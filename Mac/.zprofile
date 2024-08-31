@@ -16,3 +16,7 @@ export TF_CPP_MIN_LOG_LEVEL=1
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 # brew
 eval "$(/opt/homebrew/bin/brew shellenv)"
+# Homebrewで持ってきたllvmのパス
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
