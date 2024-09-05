@@ -62,3 +62,6 @@ if ! grep -q "$coreutils_path" ~/.zprofile; then
     echo  >> ~/.zprofile
     export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 fi
+
+echo 'Finished Homebrew configuration!'
+echo ''
