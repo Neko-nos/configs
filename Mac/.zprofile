@@ -5,7 +5,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 ## Poetry
-export PATH="~/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 ## TensorFlow
 ### デフォルトだとlogが全て出てくる
 ### ref: https://70vps.net/wsl-19.html
