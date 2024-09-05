@@ -18,10 +18,10 @@ if [[ -f ~/.zshrc ]]; then
         timestamp="$(date +%Y%m%d%H%M%S)"
         echo; mv .zshrc .zshrc_old_"$timestamp"
         echo "Renamed your .zshrc to .zshrc_old_$timestamp as a backup file."
-        # ${1} is the relatice path of the directory of thie script
+        # ${1} is the relatice path of the directory of this script
         cd ${1}
         cd ..
-        # An absolute path is prefered when creating a symbolic link
+        # An absolute path is preferred when creating a symbolic link
         ln -s "$(pwd)"/.zshrc ~/.zshrc
         source ~/.zshrc
     else
@@ -29,7 +29,8 @@ if [[ -f ~/.zshrc ]]; then
     fi
 else
     echo
-    # We changed the current direcotry in brew.sh
+    # ${1} is the relatice path of the directory of this script
+    cd ${1}
     cd ..
     ln -s "$(pwd)"/.zshrc ~/.zshrc
     source ~/.zshrc

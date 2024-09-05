@@ -49,7 +49,7 @@ function install_formula {
     echo
 }
 
-# Install the formulae required by .zshrc
+# Install the formulae required by brew_formulae.txt (default to the minimum formulae required to source our .zshrc)
 cd "$(dirname "$0")"
 while read line
 do

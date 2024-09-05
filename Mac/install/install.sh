@@ -13,7 +13,7 @@ chmod +x "$script_dir"/zsh.sh
 "$script_dir"/zsh.sh "$script_dir"
 
 # Python
-printf 'Do you also want to set up Python configurations? (we use pyenv + poetry.) [y/N]:'
+printf 'Do you also want to set up Python configurations? (We use pyenv + Poetry.) [y/N]:'
 if read -q; then
     echo
     source python.sh
@@ -21,5 +21,5 @@ else
     echo
 fi
 
-echo 'Finished running all install scripts.'
-echo 'Please refer to configs/README.md for further installation instructions.'
+echo 'All installation scripts have been executed successfully.'
+echo 'For additional installation instructions, please refer to the configs/README.md file.'
