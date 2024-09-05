@@ -1,6 +1,0 @@
-coreutils
-gsed
-peco
-tree
-colordiff
-icdiff
