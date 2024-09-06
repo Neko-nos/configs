@@ -58,7 +58,7 @@ def main(filepath):
         else:
             next_line = lines[idx + 1]
 
-        # 既に<br>等があると重なってしまうので削っておく
+        # 既に末尾に<br>等があると重なってしまうので削っておく
         # 2つ半角スペースがあるのはtrailling spaces拡張機能との相性が良くない
         line = re.sub(br_pattern, "", line)
         line = line.rstrip()
@@ -74,16 +74,20 @@ def main(filepath):
             if not end:
                 is_code = False
             continue
+        # alert blockは他の要素内に作ることができない(GitHub Markdown)
         elif is_alert:
-            current_result = list_quote_pattern.match(line) if is_list else quote_pattern.match(line)
-            next_result = list_quote_pattern.match(next_line) if is_list else quote_pattern.match(next_line)
-            if current_result and next_result:
-                new_lines.append(line + "\n")
+            # alertの目印となる部分はis_alertの判定に使っていて、この段階ではalert内の要素のみを扱うことになる
+            # その為、next_resultと違って、現在の行がquote_patternにmatchするかを判定する必要はない(確実にmatchする)
+            next_result = quote_pattern.match(next_line)
+            if next_result:
+                new_lines.append(line + "<br>" + "\n")
                 continue
-            elif current_result:
+            else:
                 new_lines.append(line + "\n")
-                # <br>では段落が分けられない
-                new_lines.append("\n")
+                # 既に後ろに空行が来ていたら追加しない
+                if next_line:
+                    # <br>ではblockが切り替わらない
+                    new_lines.append("\n")
                 is_alert = False
                 continue
         elif is_table:
@@ -141,7 +145,10 @@ def main(filepath):
             continue
 
         # 空行に関しては何もしない
-        if not line or not next_line:
+        # 複数の空行が連続していたら一つにする様にする
+        if not line and not next_line:
+            continue
+        elif not line or not next_line:
             new_lines.append(line + "\n")
         elif comment_pattern.match(line) or comment_pattern.match(next_line):
             new_lines.append(line + "\n")
