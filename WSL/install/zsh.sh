@@ -34,7 +34,7 @@ if [[ -f ~/.zshrc ]]; then
     printf 'Do you want to replace it with our .zshrc? [y/N]: '
     if read -q; then
         timestamp="$(date +%Y%m%d%H%M%S)"
-        echo; mv .zshrc .zshrc_old_"$timestamp"
+        echo; mv ~/.zshrc ~/.zshrc_old_"$timestamp"
         echo "Renamed your .zshrc to .zshrc_old_$timestamp as a backup file."
         # ${1} is the relatice path of the directory of this script
         cd ${1}
