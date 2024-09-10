@@ -59,7 +59,7 @@ done < "brew_formulae.txt"
 # PATH settings
 coreutils_path='export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"'
 if ! grep -q "$coreutils_path" ~/.zprofile; then
-    echo  >> ~/.zprofile
+    echo "$coreutils_path" >> ~/.zprofile
     export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 fi
 
