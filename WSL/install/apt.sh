@@ -29,7 +29,7 @@ function install_package {
     echo
 }
 
-# Install the packages listed in apt_packages.txt (default to the minimum required to source our .zshrc)
+# Install the packages listed in apt_packages.txt
 cd "${1}"
 while read line
 do
