@@ -37,8 +37,7 @@ https://github.com/microsoft/PowerToys/issues/3397#issuecomment-1211622583
 ### ChangeKey
 以下の記事を参考にバグを引き起こす仮想キーについてはChangeKey側で変更し、ショートカットはAutoHotkeyに任せることにした<br>
 https://qiita.com/kerupani129/items/d7894dbf789758f05e12#2-autohotkey<br>
-ちなみに、ChangeKeyはレジストリ側を変更しているので上記のWindows側のバグも乗り越えられるが、Power toys側では何故かバグが残ってしまった<br>
-(おそらくWindows側で残り続けるバグをPower toys側でどうすることもできないという単純なことだと思われる)
+ちなみに、ChangeKeyはレジストリ側を変更しているので上記のWindows側のバグも乗り越えられるが、Power toys側では何故かバグが残ってしまった
 
 ### AutoHotkey
 以下の記事を参照してinstallした<br>
@@ -67,7 +66,7 @@ https://qiita.com/yukihiro-toda/items/03b44dd2c24d888cd2b7
 基本的な設定はMacの方と同じようにUsers側のsettings.jsonを編集した
 
 ## フォント
-まず、Macぐらい綺麗なフォントをWindowsで見せるのは難しい(フォントではなくシステムに問題がある)<br>
-そうはいってもデフォルトの日本語表示が絶望的なので、Moralerspace Neonを使うことにし、settings.jsonのfontFamilyを編集した<br>
+まず、Macぐらい綺麗なフォントをWindowsで見せるのは難しい<br>
+そうはいってもデフォルトの日本語表示が個人的に見辛いので、Moralerspace Neonを使うことにし、settings.jsonのfontFamilyを編集した<br>
 (Windowsでフォントをinstallする際には何故か設定のほうからはできなかったので、フォントビュワーからinstallした)<br>
 https://github.com/yuru7/moralerspace
