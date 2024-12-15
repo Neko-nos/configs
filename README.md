@@ -2,7 +2,7 @@
 
 These are my settings for a keyboard and fonts in Windows and tools used in programming (VSCode, Git, etc.) across two operating systems: Mac, and Ubuntu (WSL).
 
-<img src="images/main.png">
+<img src="images/prompts.png">
 
 ## Contents
 ### Windows
@@ -137,6 +137,12 @@ If you want to run a particular script, instead of sourcing `install.sh`, simply
 
 Git configuration files are also provided (they are located in the WSL directory).
 
+#### GUI settings
+Since `.zshrc` doesn't support command key configuration, I use [Karabina-elements](https://karabiner-elements.pqrs.org/), an OS-level key configuration tool.<br>
+After installing it, open its settings and add the two JSON files (`rule1.json` & `rule2.json`).
+
+<img width="750" src="images/karabina_elements.png">
+
 ### Zsh prompt
 #### Prompt with Icons
 1. Font Settings<br>
@@ -149,9 +155,3 @@ Git configuration files are also provided (they are located in the WSL directory
 #### Instant Prompt
 Powerlevel10k offers an [instant prompt](https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt), allowing you to type commands while plugins are still loading.<br>
 The instructions in `p10k configure` recommend setting `POWERLEVEL9K_INSTANT_PROMPT` to `verbose`, but if you encounter warnings about the instant prompt, set it to `quiet`.
-
-#### GUI settings
-Since `.zshrc` doesn't support command key configuration, I use [Karabina-elements](https://karabiner-elements.pqrs.org/), an OS-level key configuration tool.<br>
-After installing it, open its settings and add the two JSON files (`rule1.json` & `rule2.json`).
-
-<img width="750" src="images/karabina_elements.png">
