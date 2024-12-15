@@ -2,7 +2,7 @@
 
 These are my settings for a keyboard and fonts in Windows and tools used in programming (VSCode, Git, etc.) across two operating systems: Mac, and Ubuntu (WSL).
 
-<img src="images/prompts.png">
+<img src="images/main.png">
 
 ## Contents
 ### Windows
