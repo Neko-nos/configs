@@ -2,7 +2,7 @@
 
 These are my settings for a keyboard and fonts in Windows and tools used in programming (VSCode, Git, etc.) across two operating systems: Mac, and Ubuntu (WSL).
 
-<img width="750" src="images/main.png">
+<img src="images/main.png">
 
 ## Contents
 ### Windows
@@ -23,7 +23,7 @@ I personally prefer [Moralerspace](https://github.com/yuru7/moralerspace), so I 
    zplug allows you to install useful plugins for zsh.As coded in `.zshrc`, I used plugins for completion, syntax checking, and prompt customization.<br>
    (You can see my prompt in the above image.)
 
-2. peco<br>
+2. [peco](https://github.com/peco/peco)<br>
    There are two functions: `peco-select-history` and `peco-cdr`.<br>
    (The original code is here: https://qiita.com/reireias/items/fd96d67ccf1fdffb24ed)<br>
    As you can see the images in the linked article,<br>
@@ -136,6 +136,19 @@ If you want to run a particular script, instead of sourcing `install.sh`, simply
    ```
 
 Git configuration files are also provided (they are located in the WSL directory).
+
+### Zsh prompt
+#### Prompt with Icons
+1. Font Settings<br>
+   To display icons using Powerlevel10k, download the `MesloLGS NF` font files from [here](https://github.com/romkatv/powerlevel10k/blob/master/font.md).<br>
+   After downloading, set the font in both your terminal and IDE.
+
+2. Configure Powerlevel10k<br>
+   Once the font is set, run `p10k configure` to generate a new configuration file.
+
+#### Instant Prompt
+Powerlevel10k offers an [instant prompt](https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt), allowing you to type commands while plugins are still loading.<br>
+The instructions in `p10k configure` recommend setting `POWERLEVEL9K_INSTANT_PROMPT` to `verbose`, but if you encounter warnings about the instant prompt, set it to `quiet`.
 
 #### GUI settings
 Since `.zshrc` doesn't support command key configuration, I use [Karabina-elements](https://karabiner-elements.pqrs.org/), an OS-level key configuration tool.<br>
