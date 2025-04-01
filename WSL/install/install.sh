@@ -24,9 +24,10 @@ else
 fi
 
 # Python
-printf 'Do you also want to set up Python configurations? (We use pyenv + Poetry.) [y/N]:'
+printf 'Do you also want to set up Python configurations? [y/N]:'
 if read -q; then
     echo
+    chmod +x "$script_dir"/python.sh
     source "$script_dir"/python.sh
 else
     echo

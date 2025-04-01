@@ -20,7 +20,7 @@ I personally prefer [Moralerspace](https://github.com/yuru7/moralerspace), so I 
 ### Mac & Ubuntu
 #### zsh
 1. [zplug](https://github.com/zplug/zplug/tree/master)<br>
-   zplug allows you to install useful plugins for zsh.As coded in `.zshrc`, I used plugins for completion, syntax checking, and prompt customization.<br>
+   zplug allows you to install useful plugins for zsh. As coded in `.zshrc`, I used plugins for completion, syntax checking, and prompt customization.<br>
    (You can see my prompt in the above image.)
 
 2. [peco](https://github.com/peco/peco)<br>
@@ -43,7 +43,7 @@ For more details, please refer to the `.zshrc` file.
    It includes directories and files such as `.venv` and `__pycache__`.
 
 #### Python
-I use [pyenv](https://github.com/pyenv/pyenv) + [Poetry](https://github.com/python-poetry/poetry).
+You can choose between [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) + [Poetry](https://github.com/python-poetry/poetry).
 
 ### VScode
 1. `linebreak.py`<br>
@@ -101,7 +101,7 @@ If you want to run a particular script, instead of sourcing `install.sh`, simply
    ```
 
 4. python.sh<br>
-   Install and set up [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)<br>
+   Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)<br>
    ```console
    source python.sh
    ```
@@ -129,8 +129,15 @@ If you want to run a particular script, instead of sourcing `install.sh`, simply
    ./zsh.sh
    ```
 
-3. python.sh<br>
-   Install and set up [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)<br>
+3. git.sh<br>
+   Set up `.gitconfig`.<br>
+   ```console
+   chmod +x git.sh
+   ./git.sh .
+   ```
+
+4. python.sh<br>
+   Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)<br>
    ```console
    source python.sh
    ```
