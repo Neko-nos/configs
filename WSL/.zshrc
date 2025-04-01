@@ -23,6 +23,7 @@ fi
 zplug load --verbose
 
 # 補完
+autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # 補完で小文字でも大文字にマッチさせる
 zstyle ':completion:*:default' menu select=1
 setopt autoremoveslash # ディレクトリの補完時に最後に/を残さない
@@ -94,6 +95,8 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 ## tree系
 ## ref: https://atmarkit.itmedia.co.jp/ait/articles/1802/01/news025.html
+## aliasを貼っているとwhichはalias優先になる
+## ref: https://www.rasukarusan.com/entry/2020/02/17/024953
 if [[ -x $(which -p tree) ]]; then
     alias tree='tree -aCq -I ".git|.ruff_cache|.venv|env|venv|__pycache__"'
 else
@@ -138,3 +141,9 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# 他のツール独自の補完設定
+## uv
+## ref: https://docs.astral.sh/uv/getting-started/installation/
+eval "$(uv generate-shell-completion zsh)"
+eval "$(uvx --generate-shell-completion zsh)"
