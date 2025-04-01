@@ -13,7 +13,7 @@ chmod +x "$script_dir"/zsh.sh
 "$script_dir"/zsh.sh "$script_dir"
 
 # Python
-printf 'Do you also want to set up Python configurations? (We use pyenv + Poetry.) [y/N]:'
+printf 'Do you also want to set up Python configurations? [y/N]:'
 if read -q; then
     echo
     source python.sh
