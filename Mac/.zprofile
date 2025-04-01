@@ -23,3 +23,5 @@ export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 # Homebrewで持ってきたjavaのパス
 export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"
 export CPPFLAGS="-I/opt/homebrew/opt/openjdk@21/include"
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/yoshihiratakahide/.lmstudio/bin"
