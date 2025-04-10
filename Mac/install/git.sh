@@ -4,9 +4,6 @@
 set -e
 
 function _set_up_gitconfig {
-    # ${1} is the relatice path of the directory of this script
-    cd ${1}
-    cd ..
     touch ~/.gitconfig
     printf 'What is your email used for GitHub? : '
     read email
@@ -16,7 +13,8 @@ function _set_up_gitconfig {
     echo "    email = $email" >> ~/.gitconfig
     echo "    name = $name" >> ~/.gitconfig
     echo '[include]' >> ~/.gitconfig
-    echo "    path = $(pwd)/.gitconfig" >> ~/.gitconfig
+    # ref: https://tomoyamkung.hatenadiary.org/entry/20090107/1231345630
+    echo "    path = $(pwd | xargs dirname)/.gitconfig" >> ~/.gitconfig
 }
 
 if [[ -f ~/.gitconfig ]]; then
@@ -26,12 +24,12 @@ if [[ -f ~/.gitconfig ]]; then
         timestamp="$(date +%Y%m%d%H%M%S)"
         echo; mv ~/.gitconfig ~/.gitconfig_old_"$timestamp"
         echo "Renamed your .gitconfig to .gitconfig_old_$timestamp as a backup file."
-        _set_up_gitconfig ${1}
+        _set_up_gitconfig
     else
         echo
     fi
 else
-    echo; _set_up_gitconfig ${1}
+    echo; _set_up_gitconfig
 fi
 
 echo 'Finished git configuration!'

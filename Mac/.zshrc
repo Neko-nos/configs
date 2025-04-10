@@ -78,7 +78,7 @@ bindkey '^p' peco-cdr
 
 # lsや補完に色を付ける
 # lsと同様にcoreutilsからprefixとしてgが付いたコマンドがLinuxでのコマンドに対応
-eval $(gdircolors ~/dircolors-solarized/dircolors.ansi-light)
+eval $(gdircolors ~/.dircolors-solarized/dircolors.ansi-light)
 if [ -n "$LS_COLORS" ]; then
     zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
@@ -143,5 +143,7 @@ fi
 # 他のツール独自の補完設定
 ## uv
 ## ref: https://docs.astral.sh/uv/getting-started/installation/
-eval "$(uv generate-shell-completion zsh)"
-eval "$(uvx --generate-shell-completion zsh)"
+if [[ -x $(which -p uv) ]]; then
+    eval "$(uv generate-shell-completion zsh)"
+    eval "$(uvx --generate-shell-completion zsh)"
+fi
