@@ -145,5 +145,7 @@ fi
 # 他のツール独自の補完設定
 ## uv
 ## ref: https://docs.astral.sh/uv/getting-started/installation/
-eval "$(uv generate-shell-completion zsh)"
-eval "$(uvx --generate-shell-completion zsh)"
+if [[ -x $(which -p uv) ]]; then
+    eval "$(uv generate-shell-completion zsh)"
+    eval "$(uvx --generate-shell-completion zsh)"
+fi

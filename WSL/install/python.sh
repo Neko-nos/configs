@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/zsh
 
 # Stop running this script if any error occurs
 set -e
@@ -16,8 +16,10 @@ if [[ "${choice}" == 'uv' ]]; then
             # ref: https://docs.astral.sh/uv/getting-started/installation/
             curl -LsSf https://astral.sh/uv/install.sh | sh
             echo '# ref: https://docs.astral.sh/uv/getting-started/installation/' >> ~/.zshrc
-            echo 'eval "$(uv generate-shell-completion zsh)"' >> ~/.zshrc
-            echo 'eval "$(uvx --generate-shell-completion zsh)"' >> ~/.zshrc
+            echo 'if [[ -x $(which -p uv) ]]; then' >> ~/.zshrc
+            echo '    eval "$(uv generate-shell-completion zsh)"' >> ~/.zshrc
+            echo '    eval "$(uvx --generate-shell-completion zsh)"' >> ~/.zshrc
+            echo 'fi' >> ~/.zshrc
         else
             echo
         fi
