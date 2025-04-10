@@ -29,7 +29,7 @@ else
 fi
 
 # dircolors
-if [[ -f ~/dircolors-solarized/dircolors.ansi-light ]]; then
+if [[ -f ~/.dircolors-solarized/dircolors.ansi-light ]]; then
     echo 'You have already cloned dircolors-solarized.'
 else
     git clone https://github.com/seebi/dircolors-solarized.git ~/.dircolors-solarized
