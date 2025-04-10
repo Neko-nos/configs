@@ -10,7 +10,16 @@ else
     # ref: https://github.com/zplug/zplug?tab=readme-ov-file#the-best-way
     curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 fi
-# We create the minimum symbolic link to source our zshrc
+
+# dircolors
+if [[ -f ~/.dircolors-solarized/dircolors.ansi-light ]]; then
+    echo 'You have already cloned dircolors-solarized.'
+else
+    git clone https://github.com/seebi/dircolors-solarized.git ~/.dircolors-solarized
+fi
+echo
+
+# Create a symbolic link for .zshrc
 if [[ -f ~/.zshrc ]]; then
     echo 'You have already created .zshrc'
     printf 'Do you want to replace it with our .zshrc? [y/N]: '
@@ -18,21 +27,15 @@ if [[ -f ~/.zshrc ]]; then
         timestamp="$(date +%Y%m%d%H%M%S)"
         echo; mv ~/.zshrc ~/.zshrc_old_"$timestamp"
         echo "Renamed your .zshrc to .zshrc_old_$timestamp as a backup file."
-        # ${1} is the relatice path of the directory of this script
-        cd ${1}
-        cd ..
         # An absolute path is preferred when creating a symbolic link
-        ln -s "$(pwd)"/.zshrc ~/.zshrc
+        ln -s "$(pwd | xargs dirname)"/.zshrc ~/.zshrc
         source ~/.zshrc
     else
         echo
     fi
 else
     echo
-    # ${1} is the relatice path of the directory of this script
-    cd ${1}
-    cd ..
-    ln -s "$(pwd)"/.zshrc ~/.zshrc
+    ln -s "$(pwd | xargs dirname)"/.zshrc ~/.zshrc
     source ~/.zshrc
 fi
 
