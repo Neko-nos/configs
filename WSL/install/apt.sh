@@ -9,21 +9,26 @@ set -e
 # WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 # ref: https://manpages.ubuntu.com/manpages/noble/man8/apt.8.html
 sudo apt-get update
-sudo apt-get upgrade -y
-
-echo ''
+printf "Upgrade all packages? [y/N]: "
+if read -q; then
+    echo
+    sudo apt-get upgrade -y
+else
+    echo "Skipping package upgrade."
+fi
+echo
 
 # Now, install the tools that can be installed via apt
 # define a common function to install a package
 function install_package {
     if [[ "$(dpkg -L "${1}")" ]]; then
-        # `sudo apt-get upgrade -y` have already updated all of the installed packages
-        # Therefore, there's no need to update packages individually
         echo "You have already installed ${1}."
     else
         printf "Install ${1}? [y/N]: "
         if read -q; then
-            echo; sudo apt-get install ${1}
+            echo
+            sudo apt-get update
+            sudo apt-get install ${1} -y
         fi
     fi
     echo
