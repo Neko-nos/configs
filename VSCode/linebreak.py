@@ -22,8 +22,8 @@ class Patterns:
     table: re.Pattern = re.compile(r"((\|:-+:\|)+)|((\|:-+\|-+:\|)+\|:-+:\|)")
     table_cell = re.compile(r"\| .* \|")
     list_item: re.Pattern = re.compile(r"\s*(\*|\+|-|(\d+\.)) ")
-    # ネストに必要なindentでのwhitespaceの最小値は3
-    list_indent_prefix: re.Pattern = re.compile(r"^( {3,})")
+    # ネストに必要なindentでのwhitespaceの最小値は2(- で2文字)
+    list_indent_prefix: re.Pattern = re.compile(r"^( {2,})")
 
 
 @dataclass
@@ -77,6 +77,12 @@ def get_newline_suffix(
     unset_list: bool,
     is_next_line_list: bool = False,
 ) -> Literal["", "\n", "\n\n", "<br>\n"]:
+    # 後で変更をするので、status.is_listの状態を保存しておく
+    prev_status_list = status.is_list
+    # listが終了しているのに他の条件分岐に引っかかって変更できないことがあるのでここで設定しておく
+    # 他のブロックは優先的に処理されるのでここで考える必要はない
+    if not is_next_line_list:
+        status.is_list = False
     # 複数の空行が連続している時、<br>と\n\nによる改行が重複するので\n\nの方を無くす
     if not line and not next_line:
         return ""
@@ -119,7 +125,7 @@ def get_newline_suffix(
         status.update("list", unset_list=False)
         return "<br>" + "\n"
     # 一番外側のlistが終了している
-    elif status.is_list and not is_next_line_list:
+    elif prev_status_list and not is_next_line_list:
         # 全てFalseにする
         status.update("list", unset_list=True)
         return "\n"
@@ -209,12 +215,12 @@ def process_markdown(lines: list[str]) -> list[str]:
         else:
             line_no_indent = patterns.list_indent_prefix.sub("", line)
             next_line_no_indent = patterns.list_indent_prefix.sub("", next_line)
-            is_next_line_list = (len(next_line) - len(next_line_no_indent)) >= 3
+            is_next_line_list = next_line != next_line_no_indent
             new_line = line + get_newline_suffix(
                 status,
                 patterns,
-                line,
-                next_line,
+                line_no_indent,
+                next_line_no_indent,
                 unset_list=not status.is_list,
                 is_next_line_list=is_next_line_list,
             )
@@ -255,5 +261,5 @@ if __name__ == "__main__":
     parser.add_argument(
         "-f", "--file", required=True, type=str, help="The path of the markdown file."
     )
-    #args = parser.parse_args()
-    main("/Users/yoshihiratakahide/configs/VSCode/debug.md")
+    args = parser.parse_args()
+    main(args.file)

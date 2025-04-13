@@ -1,154 +1,126 @@
 # Neko-nos's dotfiles & configs
-
-These are my settings for a keyboard and fonts in Windows and tools used in programming (VSCode, Git, etc.) across two operating systems: Mac, and Ubuntu (WSL).
-
 <img src="images/main.png">
 
-## Contents
-### Windows
-#### Key Configuration
+Personal configuration files for a consistent development experience across **MacOS** and **Ubuntu (including WSL)**. Includes settings for keyboard layouts (JIS), fonts, command-line tools (Zsh, Git, Python), and VSCode.
+
+## Core Philosophy
+
+The main goal is to replicate a Mac-like keyboard experience on Windows and Ubuntu (specifically for JIS layout) and establish a comfortable and efficient command-line and coding environment using preferred tools and fonts.
+
+## Feature Highlights
+### 1. Mac-like Key Configurations for Windows and Ubuntu
 > [!NOTE]
-> My configuration is only for JIS layout, a keyboard layout for Japanese. Other layouts are not tested.
+> My configuration is tested only for JIS layout, a keyboard layout for Japanese. It may not work as expected on other layouts.
 
-There are differences in a key configuration between Mac and Windows, which may confuse you if you use both of them with a default key configuration.<br>
-By using my configuration, you can reproduce the Mac key configuration on a Windows computer.
+There are differences in a key configuration between Mac and Windows/Ubuntu, which may confuse you when switching between systems with a default key configuration.<br>
+By using my configuration, you can make keyboard shortcuts and behaviors on Windows and Ubuntu feel more like MacOS.
 
-#### Fonts
-The default fonts of Windows are, in my humble opinion, not as good as those of Mac, especially for Japanese.<br>
-I personally prefer [Moralerspace](https://github.com/yuru7/moralerspace), so I use it in Windows.
+### 2. Preferred Fonts
+Replaces default system fonts, particularly on Windows, with [Moralerspace](https://github.com/yuru7/moralerspace), a visually appealing font, especially for Japanese characters. Also includes setup for [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md) for a terminal/IDE.
 
-### Mac & Ubuntu
-#### zsh
-1. [zplug](https://github.com/zplug/zplug/tree/master)<br>
-   zplug allows you to install useful plugins for zsh. As coded in `.zshrc`, I used plugins for completion, syntax checking, and prompt customization.<br>
-   (You can see my prompt in the above image.)
+### 3. Command-Line Environment & Tools
+#### Enhanced Command-Line Environment (Zsh)
+- **Plugin Management with [zplug](https://github.com/zplug/zplug/tree/master)**<br>
+  zplug allows you to install useful plugins for zsh. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.<br>
+  (You can see the prompt in the above image.)
 
-2. [peco](https://github.com/peco/peco)<br>
-   There are two functions: `peco-select-history` and `peco-cdr`.<br>
-   (The original code is here: https://qiita.com/reireias/items/fd96d67ccf1fdffb24ed)<br>
-   As you can see the images in the linked article,<br>
-   - `peco-select-history` allows you to view multiple histories and select whay you want.<br>
-   - `peco-cdr` allows you to select the directory that you want to move into by using a relative-path, instead of an absolute-path like `peco-select-history`.
+- **Efficient Navigation with [peco](https://github.com/peco/peco)**<br>
+  There are two functions using `peco`: `peco-select-history` and `peco-cdr`.<br>
+  (The original code is here: https://qiita.com/reireias/items/fd96d67ccf1fdffb24ed)<br>
+  As you can see in the images in the linked article,<br>
+  - `peco-select-history` allows you to search and select commands from multiple histories interactively.
+  - `peco-cdr` allows you to select the directory that you want to move into by using a relative-path, instead of an absolute-path like `peco-select-history`.
 
-3. Useful aliases<br>
-   You can see what they do in the `.zshrc` file.
+- **Useful settings, aliases and functions**<br>
+  You can see what they do in the `.zshrc` file.
 
 For more details, please refer to the `.zshrc` file.
 
 #### Git
-1. Useful settings in `.gitconfig`.<br>
-   You can see what they do in the `.gitconfig` file.
+- **Useful settings in `.gitconfig`**<br>
+  You can see what they do in the `.gitconfig` file.
 
-2. A template for `.gitignore` (for Python users)<br>
-   It includes directories and files such as `.venv` and `__pycache__`.
+- **A template for `.gitignore` (for Python users)**<br>
+  A `.gitignore` tailored for Python projects, ignoring common files/directories like `.venv`, `__pycache__`, etc.
 
-#### Python
-You can choose between [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) + [Poetry](https://github.com/python-poetry/poetry).
+#### Python Environment Management
+Provides setup scripts for your choice of modern Python environment tools:<br>
+- **[uv](https://github.com/astral-sh/uv):** An extremely fast Python package and project manager.
+- **[pyenv](https://github.com/pyenv/pyenv) + [Poetry](https://github.com/python-poetry/poetry):** Classic combination for managing Python versions (pyenv) and project dependencies/packaging (Poetry).
 
-### VScode
-1. `linebreak.py`<br>
-   If you set the value of `markdown.preview.break` to `true` in `settings.json`, your preview will correcly display line breaks. However, other environments (GitHub, etc) do not automatically generate line breaks.<br>
-   It takes time and effort to manually insert line break tags (i.e., `<br>`, two whitespaces and an extra `\n`) every time you write Markdown, especially in Japanese.<br>
-   Therefore, I combine [Run on save](https://marketplace.visualstudio.com/items?itemName=pucelle.run-on-save) with `linebreak.py`, that automatically inserts line break tags into your Markdown file.
+### VSCode Settings & Customizations
+- **Automatic Line Breaks for Markdown with `linebreak.py`**<br>
+  Addresses the common issue where Markdown previews (`markdown.preview.break: true`) show line breaks correctly in VSCode, but standard Markdown renderers (like GitHub) require explicit breaks (`<br>` or two spaces).<br>
+  It takes time and effort to manually insert line break tags (i.e., `<br>`, two whitespaces and an extra `\n`) every time you write Markdown, especially in Japanese.<br>
+  This script, used with [Run on save](https://marketplace.visualstudio.com/items?itemName=pucelle.run-on-save) extension, automatically inserts line break tags into your Markdown file.
 
-2. Useful settings for `settings.json`<br>
-   It includes not only the settings for VSCode and Python. In `settings_mac.json`, there are also the settings for Markdown and LaTeX.
+- **Curated `settings.json`**<br>
+  Includes not only useful settings for general VSCode usage, Python development, but also specific settings for Markdown and LaTeX (in `settings_mac.json`).
 
 ## Installation
 
 > [!IMPORTANT]
 > If you want to use these dotfiles, review and customize the code. **Do not blindly use my settings unless you understand what they do.**<br>
-> In fact, some settings are OS-level (e.g., key configurations).
+> In fact, some settings are system-level (e.g., key configurations).
 
 First, clone this repository from GitHub:
 ```console
-git clone https://github.com/zplug/zplug.git $PATH_TO_CONFIGS
+git clone https://github.com/Neko-nos/configs.git
 ```
 
-### Windows
+### Key Configurations
+#### Windows
 Most of the settings have to be configured via GUI, so there are no install scripts.<br>
-Please refer to the `README.md` file in the Windows directory for the installation instruction.<br>
+Please refer to the `README.md` file in the Windows directory for the installation instructions.<br>
 (Since my configuration is for JIS layout (a keyboard layout for Japanese), the `README.md` file is written in Japanese).
 
-### WSL
-`WSL/install/install.sh` runs all the install scripts in the `install` directory.
+#### Ubuntu
+Some settings require GUI, so there are no install scripts.<br>
+Please refer to the `README.md` file in the Ubuntu directory for the installation instructions and what the scripts in `Ubuntu/keyboard` do.
+
+#### Mac
+Since `.zshrc` doesn't support command key configuration, I use [Karabiner-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.<br>
+After installing it, open its settings and add the two JSON files (`rule1.json` & `rule2.json`).
+
+<img width="750" src="images/karabiner_elements.png">
+
+### Command-Line Environment & Tools
+There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.<br>
+`install/install.sh` runs all the install scripts in the `install` directory.
 ```console
-cd $PATH_TO_CONFIGS
-cd WSL/install
-source install.sh
+cd install
+chmod +x install.sh
+./install.sh
 ```
-If you want to run a particular script, instead of sourcing `install.sh`, simply execute the desired script.
+If you want to run a particular script, instead of executing `install.sh`, simply execute the desired script.
 
 1. apt.sh<br>
-   Update apt and the packages specified in `apt_packages.txt`.<br>
+   Update apt and the packages specified in `apt_packages.txt`.
    ```console
    chmod +x apt.sh
    ./apt.sh .
    ```
 
 2. zsh.sh<br>
-   Insall [peco](https://github.com/peco/peco), [zplug](https://github.com/zplug/zplug/tree/master) and set up `.zshrc`.<br>
-   ```console
-   chmod +x zsh.sh
-   ./zsh.sh .
-   ```
-
-3. git.sh<br>
-   Set up `.gitconfig`.<br>
-   ```console
-   chmod +x git.sh
-   ./git.sh .
-   ```
-
-4. python.sh<br>
-   Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)<br>
-   ```console
-   source python.sh
-   ```
-
-### Mac
-#### CUI settings
-`Mac/install/install.sh` runs all the install scripts in the `install` direcory.
-```console
-cd $PATH_TO_CONFIGS
-cd Mac/install
-source install.sh
-```
-If you want to run a particular script, instead of sourcing `install.sh`, simply execute the desired script.
-
-1. brew.sh<br>
-   Install or Update [Homebrew](https://brew.sh/) and the formulae specified in `brew_formulae.txt`<br>
-   ```console
-   source brew.sh
-   ```
-
-2. zsh.sh<br>
-   Install [zplug](https://github.com/zplug/zplug/tree/master) and set up `.zshrc`<br>
+   Install [peco](https://github.com/peco/peco), [zplug](https://github.com/zplug/zplug/tree/master) and set up `.zshrc`.
    ```console
    chmod +x zsh.sh
    ./zsh.sh
    ```
 
 3. git.sh<br>
-   Set up `.gitconfig`.<br>
+   Set up `.gitconfig`.
    ```console
    chmod +x git.sh
-   ./git.sh .
+   ./git.sh
    ```
 
 4. python.sh<br>
-   Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)<br>
+   Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
    ```console
-   source python.sh
+   chmod +x python.sh
+   ./python.sh
    ```
-
-Git configuration files are also provided (they are located in the WSL directory).
-
-#### GUI settings
-Since `.zshrc` doesn't support command key configuration, I use [Karabina-elements](https://karabiner-elements.pqrs.org/), an OS-level key configuration tool.<br>
-After installing it, open its settings and add the two JSON files (`rule1.json` & `rule2.json`).
-
-<img width="750" src="images/karabina_elements.png">
 
 ### Zsh prompt
 #### Prompt with Icons
