@@ -55,7 +55,7 @@ Provides setup scripts for your choice of modern Python environment tools:<br>
   This script, used with [Run on save](https://marketplace.visualstudio.com/items?itemName=pucelle.run-on-save) extention, automatically inserts line break tags into your Markdown file.
 
 - **Curated `settings.json`**<br>
-  Includes not only useful settings for general VSCode usage, Python development, but aslo specific settings for Markdown and LaTeX (in `settings_mac.json`).
+  Includes not only useful settings for general VSCode usage, Python development, but also specific settings for Markdown and LaTeX (in `settings_mac.json`).
 
 ## Installation
 
@@ -76,7 +76,7 @@ Please refer to the `README.md` file in the Windows directory for the installati
 
 #### Ubuntu
 Some settings requires GUI, so there are no install scripts.<br>
-Please refer to the `README.md` file in the Ubuntu directory for the installtion instructions and what the scripts in `Ubuntu/keyboard` do.
+Please refer to the `README.md` file in the Ubuntu directory for the installation instructions and what the scripts in `Ubuntu/keyboard` do.
 
 #### Mac
 Since `.zshrc` doesn't support command key configuration, I use [Karabina-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.<br>
@@ -102,7 +102,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 2. zsh.sh<br>
-   Insall [peco](https://github.com/peco/peco), [zplug](https://github.com/zplug/zplug/tree/master) and set up `.zshrc`.
+   Install [peco](https://github.com/peco/peco), [zplug](https://github.com/zplug/zplug/tree/master) and set up `.zshrc`.
    ```console
    chmod +x zsh.sh
    ./zsh.sh
