@@ -10,10 +10,10 @@ The main goal is to replicate a Mac-like keyboard experience on Windows and Ubun
 ## Feature Highlights
 ### 1. Mac-like Key Configurations for Windows and Ubuntu
 > [!NOTE]
-> My configuration is tested only for JIS layout, a keyboard layout for Japanese. They may not work as expected on other layouts.
+> My configuration is tested only for JIS layout, a keyboard layout for Japanese. It may not work as expected on other layouts.
 
 There are differences in a key configuration between Mac and Windows/Ubuntu, which may confuse you when switching between systems with a default key configuration.<br>
-By using my configuration, you can make keyboard shortcuts and behavirors on Windows and Ubuntu feel more like MacOS.
+By using my configuration, you can make keyboard shortcuts and behaviors on Windows and Ubuntu feel more like MacOS.
 
 ### 2. Preferred Fonts
 Replaces default system fonts, particularly on Windows, with [Moralerspace](https://github.com/yuru7/moralerspace), a visually appealing font, especially for Japanese characters. Also includes setup for [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md) for a terminal/IDE.
@@ -27,7 +27,7 @@ Replaces default system fonts, particularly on Windows, with [Moralerspace](http
 - **Efficient Navigation with [peco](https://github.com/peco/peco)**<br>
   There are two functions using `peco`: `peco-select-history` and `peco-cdr`.<br>
   (The original code is here: https://qiita.com/reireias/items/fd96d67ccf1fdffb24ed)<br>
-  As you can see the images in the linked article,<br>
+  As you can see in the images in the linked article,<br>
   - `peco-select-history` allows you to search and select commands from multiple histories interactively.
   - `peco-cdr` allows you to select the directory that you want to move into by using a relative-path, instead of an absolute-path like `peco-select-history`.
 
@@ -52,7 +52,7 @@ Provides setup scripts for your choice of modern Python environment tools:<br>
 - **Automatic Line Breaks for Markdown with `linebreak.py`**<br>
   Addresses the common issue where Markdown previews (`markdown.preview.break: true`) show line breaks correctly in VSCode, but standard Markdown renderers (like GitHub) require explicit breaks (`<br>` or two spaces).<br>
   It takes time and effort to manually insert line break tags (i.e., `<br>`, two whitespaces and an extra `\n`) every time you write Markdown, especially in Japanese.<br>
-  This script, used with [Run on save](https://marketplace.visualstudio.com/items?itemName=pucelle.run-on-save) extention, automatically inserts line break tags into your Markdown file.
+  This script, used with [Run on save](https://marketplace.visualstudio.com/items?itemName=pucelle.run-on-save) extension, automatically inserts line break tags into your Markdown file.
 
 - **Curated `settings.json`**<br>
   Includes not only useful settings for general VSCode usage, Python development, but also specific settings for Markdown and LaTeX (in `settings_mac.json`).
@@ -71,21 +71,21 @@ git clone https://github.com/Neko-nos/configs.git
 ### Key Configurations
 #### Windows
 Most of the settings have to be configured via GUI, so there are no install scripts.<br>
-Please refer to the `README.md` file in the Windows directory for the installation instruction.<br>
+Please refer to the `README.md` file in the Windows directory for the installation instructions.<br>
 (Since my configuration is for JIS layout (a keyboard layout for Japanese), the `README.md` file is written in Japanese).
 
 #### Ubuntu
-Some settings requires GUI, so there are no install scripts.<br>
+Some settings require GUI, so there are no install scripts.<br>
 Please refer to the `README.md` file in the Ubuntu directory for the installation instructions and what the scripts in `Ubuntu/keyboard` do.
 
 #### Mac
-Since `.zshrc` doesn't support command key configuration, I use [Karabina-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.<br>
+Since `.zshrc` doesn't support command key configuration, I use [Karabiner-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.<br>
 After installing it, open its settings and add the two JSON files (`rule1.json` & `rule2.json`).
 
-<img width="750" src="images/karabina_elements.png">
+<img width="750" src="images/karabiner_elements.png">
 
 ### Command-Line Environment & Tools
-There are install scripts for Mac, Ubuntu and WSL in the `install` directorly of each system.<br>
+There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.<br>
 `install/install.sh` runs all the install scripts in the `install` directory.
 ```console
 cd install
