@@ -160,3 +160,7 @@ function _change_brightness () {
     sudo sh -c "echo $1 > /sys/class/backlight/intel_backlight/brightness"
 }
 alias cbr='_change_brightness'
+
+# ROSの設定
+if [[ -d /opt/ros/noetic ]]; then
+    source /opt/ros/noetic/setup.zsh
