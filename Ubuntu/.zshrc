@@ -152,6 +152,19 @@ if [[ -x $(which -p uv) ]]; then
     eval "$(uv generate-shell-completion zsh)"
     eval "$(uvx --generate-shell-completion zsh)"
 fi
+### zshにおいてさらに設定が必要
+### ref: https://github.com/astral-sh/uv/issues/8432#issuecomment-2965692994
+_uv_run_mod() {
+    # オプションも弾いておく
+    if [[ "$words[2]" == "run" && "$words[CURRENT]" != -* ]]; then
+        # pyファイルに限定
+        _arguments '*:filename:_files -g "*.py"'
+    else
+        _uv "$@"
+    fi
+}
+compdef _uv_run_mod uv
+
 
 # Extra Functions
 # Ubuntuで明るさを自由に調整できる関数
