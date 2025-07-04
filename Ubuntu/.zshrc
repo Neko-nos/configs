@@ -168,3 +168,4 @@ alias lbr='_look_brightness'
 # ROSの設定
 if [[ -d /opt/ros/noetic ]]; then
     source /opt/ros/noetic/setup.zsh
+fi
