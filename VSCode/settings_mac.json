@@ -90,7 +90,10 @@
         {
             "globMatch": "**/*.md",
             // ファイルを書き換えているのでcommandBeforeSavingにしてはいけない
-            "command": "python ~/linebreak.py -f ${file}",
+            // VScode側の変更で通常のpythonコマンドではcommond not foundになる場合があるので直接指定する
+            "command": "~/.local/bin/python ~/linebreak.py -f ${file}",
+            // どうしてもcommand not foundになる場合にはterminalにする
+            // ref: https://github.com/pucelle/vscode-run-on-save/issues/37
             "runIn": "backend",
             "runningStatusMessage": "Start insert line-break symbols into ${fileBasename}.",
             "finishStatusMessage": "Finished.",
@@ -114,6 +117,20 @@
     // ref: https://code.visualstudio.com/docs/python/environments
     "python.terminal.activateEnvironment": false,
     "remote.autoForwardPortsSource": "hybrid",
+
+    // Jupyter Notebook
+    "notebook.lineNumbers": "on",
+
+    // ---------- C/C++ ----------
+    // C/C++のインデントをスペース2にする
+    "[cpp]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
+    "[c]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
 
     // ---------- General ----------
     // 末尾に改行を挟む(https://qiita.com/hamamamama/items/11c17c7412a5aeb2ad74)
