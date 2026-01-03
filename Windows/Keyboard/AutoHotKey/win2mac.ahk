@@ -40,9 +40,24 @@ F13 & H::Send "{Blind}{Backspace}"
 ;カーソルの移動(上下左右)
 F13 & F::Send "{Blind}{Right}"
 F13 & B::Send "{Blind}{Left}"
-F13 & P::Send "{Blind}{Up}"
+; + Pについてはpeco cdrのキーと衝突するため使用しないことにする
+; F13 & P::Send "{Blind}{Up}"
 F13 & N::Send "{Blind}{Down}"
 
 ;カーソルの移動(行頭・行末)
 F13 & A::Send "{Blind}{Home}"
 F13 & E::Send "{Blind}{End}"
+
+; Ctrl系の基本shortcuts
+F13 & C::Send "^c"
+F13 & V::Send "^v"
+F13 & X::Send "^x"
+F13 & Z::Send "^z"
+F13 & S::Send "^s"
+F13 & R::Send "^r"
+F13 & P::Send "^p"
+
+; Emacs風のshortcuts
+F13 & W::Send "^w"
+F13 & K::Send "^k"
+F13 & U::Send "^u"
