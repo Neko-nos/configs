@@ -41,12 +41,19 @@ There are the scripts for my keyboard configuration in the `keyboard` folder, bu
 [Keyboard Layout Customization in Ubuntu: Solving the xmodmap problem with xkb - Qiita](https://qiita.com/jabberwocky0139/items/40b28406daa6769a9c4d)
 
 ### input-remapper
-[Input Remapper Usage](https://github.com/sezanzeb/input-remapper/blob/1.5.1/readme/usage.md)<br>
-Installation (1.5.1 is the latest version for Ubuntu 20.04)
+[Input Remapper Usage](https://github.com/sezanzeb/input-remapper/blob/2.2.0/readme/usage.md)
+
+#### Installation
 ```console
-wget https://github.com/sezanzeb/input-remapper/releases/download/1.5.1/input-remapper-1.5.1.deb
-sudo apt install -f ./input-remapper-1.5.1.deb
+wget https://github.com/sezanzeb/input-remapper/releases/download/<version>/input-remapper-<version>.deb
+sudo apt install -f ./input-remapper-<version>.deb
 ```
+- Also, when changing the input remapper via `sudo apt install -f ...`, you might need `sudo apt --fix-broken install`. Otherwise, the app will be crashed.
+- You can run the mapping at starup by turning on `Autoload`.
+
+#### About `new preset.json`
+The middle part of the numeric key represents the key code. You can refer to the values in `xmodmap.json`<br>
+If you are unsure of which key it is, such as `XF86Wakeup`, you can use `xev` to find out.
 
 ### AutoKey
 [AutoKey GitHub](https://github.com/autokey/autokey?tab=readme-ov-file)
