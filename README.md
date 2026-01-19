@@ -24,12 +24,10 @@ Replaces default system fonts, particularly on Windows, with [Moralerspace](http
   zplug allows you to install useful plugins for zsh. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.<br>
   (You can see the prompt in the above image.)
 
-- **Efficient Navigation with [peco](https://github.com/peco/peco)**<br>
-  There are two functions using `peco`: `peco-select-history` and `peco-cdr`.<br>
-  (The original code is here: https://qiita.com/reireias/items/fd96d67ccf1fdffb24ed)<br>
-  As you can see in the images in the linked article,<br>
-  - `peco-select-history` allows you to search and select commands from multiple histories interactively.
-  - `peco-cdr` allows you to select the directory that you want to move into by using a relative-path, instead of an absolute-path like `peco-select-history`.
+- **Efficient Navigation with filter tools (e.g., [fzf](https://github.com/junegunn/fzf) or [peco](https://github.com/peco/peco))**<br>
+  There are useful functions using filter tools such as `search-history` and `search-cdr`.<br>
+  - `search-history` allows you to search and select commands from multiple histories interactively.
+  - `search-cdr` allows you to select the directory that you want to move into by using a relative-path, instead of an absolute-path like `search-history`.
 
 - **Useful settings, aliases and functions**<br>
   You can see what they do in the `.zshrc` file.
@@ -88,21 +86,20 @@ After installing it, open its settings and add the two JSON files (`rule1.json` 
 There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.<br>
 `install/install.sh` runs all the install scripts in the `install` directory.
 ```console
-cd install
 chmod +x install.sh
 ./install.sh
 ```
 If you want to run a particular script, instead of executing `install.sh`, simply execute the desired script.
 
-1. apt.sh<br>
-   Update apt and the packages specified in `apt_packages.txt`.
+1. apt/brew.sh<br>
+   Update apt/brew and the packages specified in `apt_packages.txt` or `brew_formulae.txt`.
    ```console
-   chmod +x apt.sh
-   ./apt.sh .
+   chmod +x apt.sh(brew.sh)
+   ./apt.sh(brew.sh) .
    ```
 
 2. zsh.sh<br>
-   Install [peco](https://github.com/peco/peco), [zplug](https://github.com/zplug/zplug/tree/master) and set up `.zshrc`.
+   Install [zplug](https://github.com/zplug/zplug/tree/master) and set up `.zshrc`.
    ```console
    chmod +x zsh.sh
    ./zsh.sh

@@ -1,6 +1,8 @@
 coreutils
-gsed
+grep
+gnu-sed
 peco
+fzf
 tree
 colordiff
 icdiff

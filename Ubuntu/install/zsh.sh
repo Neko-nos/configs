@@ -3,23 +3,6 @@
 # Stop running this script if any error occurs
 set -e
 
-# Peco
-# Installing peco via apt on Ubuntu 24.04 LTS can result in garbled output
-# ref: https://zenn.dev/mato/scraps/2b0c423ad9da2c
-if [[ -x "$(where peco)" ]]; then
-    echo 'You have already installed peco'
-else
-    ubuntu_version="$(lsb_release -a | grep Release | sed 's/Release:\s\+//g')"
-    if [[ "$ubuntu_version" -eq 24.04 ]]; then
-        wget https://github.com/peco/peco/releases/download/v0.5.11/peco_linux_amd64.tar.gz
-        tar -xzf peco_linux_amd64.tar.gz
-        sudo mv peco_linux_amd64/peco /usr/local/bin/
-    else
-        sudo apt-get update
-        sudo apt-get install peco
-    fi
-fi
-
 # zplug
 if [[ -d ~/.zplug ]]; then
     echo 'You have already installed zplug.'
@@ -45,14 +28,14 @@ if [[ -f ~/.zshrc ]]; then
         echo; mv ~/.zshrc ~/.zshrc_old_"$timestamp"
         echo "Renamed your .zshrc to .zshrc_old_$timestamp as a backup file."
         # An absolute path is preferred when creating a symbolic link
-        ln -s "$(pwd | xargs dirname)"/.zshrc ~/.zshrc
+        ln -s "$(pwd)"/common/zsh/.zshrc ~/.zshrc
         source ~/.zshrc
     else
         echo
     fi
 else
     echo
-    ln -s "$(pwd | xargs dirname)"/.zshrc ~/.zshrc
+    ln -s "$(pwd)"/common/zsh/.zshrc ~/.zshrc
     source ~/.zshrc
 fi
 

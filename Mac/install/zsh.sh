@@ -28,14 +28,14 @@ if [[ -f ~/.zshrc ]]; then
         echo; mv ~/.zshrc ~/.zshrc_old_"$timestamp"
         echo "Renamed your .zshrc to .zshrc_old_$timestamp as a backup file."
         # An absolute path is preferred when creating a symbolic link
-        ln -s "$(pwd | xargs dirname)"/.zshrc ~/.zshrc
+        ln -s "$(pwd)"/common/zsh/.zshrc ~/.zshrc
         source ~/.zshrc
     else
         echo
     fi
 else
     echo
-    ln -s "$(pwd | xargs dirname)"/.zshrc ~/.zshrc
+    ln -s "$(pwd)"/common/zsh/.zshrc ~/.zshrc
     source ~/.zshrc
 fi
 
