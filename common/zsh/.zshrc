@@ -58,13 +58,19 @@ compdef _uv_run_mod uv
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-setopt hist_ignore_all_dups # Remove older duplicates
-setopt hist_ignore_dups     # Do not add if same as previous command
-setopt share_history        # Share command history data
-setopt append_history       # Append to .zsh_history, don't overwrite it
-setopt inc_append_history   # Add new history lines incrementally
-setopt hist_no_store        # Do not store history command in history
-setopt hist_reduce_blanks   # Remove extra blanks in history
+HISTORY_IGNORE="(cd|mkdir|pwd|exit|clear|...|....|man|history)(| *)"
+# Avoid duplicate entries in history
+setopt hist_ignore_all_dups
+setopt hist_ignore_dups
+setopt hist_save_no_dups
+setopt hist_no_store
+# Remove extra blanks in history entries
+setopt hist_reduce_blanks
+# Share history between all sessions
+setopt share_history
+setopt append_history
+# Write to the history file immediately, not when the shell exits
+setopt inc_append_history
 
 # Helper functions
 function info () {
