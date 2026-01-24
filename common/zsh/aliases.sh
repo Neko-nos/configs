@@ -27,9 +27,6 @@ if [[ -n "$LS_COLORS" ]]; then
     zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
 
-alias ...='cd ../..'
-alias ....='cd ../../..'
-
 # ref: https://atmarkit.itmedia.co.jp/ait/articles/1802/01/news025.html
 __safe_alias tree 'tree -acq -I ".git|.ruff_cache|.venv|env|venv|__pycache__|.DS_Store"'
 

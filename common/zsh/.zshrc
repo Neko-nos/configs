@@ -61,7 +61,7 @@ compdef _uv_run_mod uv
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-HISTORY_IGNORE="(cd|mkdir|pwd|exit|clear|...|....|man|history)(| *)"
+HISTORY_IGNORE="(cd|mkdir|pwd|exit|clear|man|history)(| *)"
 # Avoid duplicate entries in history
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
