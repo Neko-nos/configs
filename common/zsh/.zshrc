@@ -24,6 +24,9 @@ zplug load --verbose
 # ref: https://github.com/shunk031/dotfiles/blob/master/home/dot_zshrc#L6
 typeset -gU path fpath
 
+# General settings
+setopt extended_glob
+
 # Completion
 autoload -Uz compinit && compinit
 # Match both lowercase and uppercase letters during completion
@@ -71,6 +74,8 @@ setopt share_history
 setopt append_history
 # Write to the history file immediately, not when the shell exits
 setopt inc_append_history
+setopt extended_history
+setopt hist_fcntl_lock
 
 # Helper functions
 function info () {
@@ -90,11 +95,12 @@ function __load_zsh_files () {
     if [[ -z ${os_specific_zsh_var} ]]; then
         info "No OS-specific zsh config files to load. If you have OS-specific zsh config files, please set the variable ${os_specific_zsh_var} in .zprofile."
     fi
-    # Load aliases first to use them in functions if needed (e.g., GNU commands for MacOS)
+    # Load aliases first to use them in other files if needed (e.g., GNU commands for MacOS)
     [[ -f "${CONFIGS_COMMON_ZSH}/aliases.sh" ]] && source "${CONFIGS_COMMON_ZSH}/aliases.sh"
     [[ -f "${(P)os_specific_zsh_var}/extra_aliases.sh" ]] && source "${(P)os_specific_zsh_var}/extra_aliases.sh"
     [[ -f "${CONFIGS_COMMON_ZSH}/functions.sh" ]] && source "${CONFIGS_COMMON_ZSH}/functions.sh"
     [[ -f "${(P)os_specific_zsh_var}/extra_functions.sh" ]] && source "${(P)os_specific_zsh_var}/extra_functions.sh"
+    [[ -f "${CONFIGS_COMMON_ZSH}/history.sh" ]] && source "${CONFIGS_COMMON_ZSH}/history.sh"
 }
 __load_zsh_files
 
