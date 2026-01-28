@@ -1,7 +1,6 @@
 coreutils
 grep
 gnu-sed
-peco
 fzf
 tree
 colordiff
