@@ -1,8 +1,0 @@
-[push]
-	default = current
-[init]
-	defaultBranch = main
-[diff]
-	tool = icdiff
-[difftool]
-	prompt = false
