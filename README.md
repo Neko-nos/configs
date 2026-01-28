@@ -24,15 +24,19 @@ Replaces default system fonts, particularly on Windows, with [Moralerspace](http
   zplug allows you to install useful plugins for zsh. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.<br>
   (You can see the prompt in the above image.)
 
-- **Efficient Navigation with filter tools (e.g., [fzf](https://github.com/junegunn/fzf) or [peco](https://github.com/peco/peco))**<br>
+- **Efficient Navigation with filter tools (e.g., [fzf](https://github.com/junegunn/fzf))**<br>
   There are useful functions using filter tools such as `search-history` and `search-cdr`.<br>
   - `search-history` allows you to search and select commands from multiple histories interactively.
   - `search-cdr` allows you to select the directory that you want to move into by using a relative-path, instead of an absolute-path like `search-history`.
 
+- **Smart History Management**<br>
+  Prevents failed commands from saved to .zsh_history while enabling `inc_append_history` and `extended_history`. Failed commands remain in memory, so you can still recall and reuse(fix) them via arrow keys in the session.<br>
+  Also, the implementation uses only the Python standard libraries, so it works with the system Python without its environment setup.
+
 - **Useful settings, aliases and functions**<br>
   You can see what they do in the `.zshrc` file.
 
-For more details, please refer to the `.zshrc` file.
+For more details, please refer to the files in `common/zsh`.
 
 #### Git
 - **Useful settings in `.gitconfig`**<br>
@@ -78,7 +82,7 @@ Please refer to the `README.md` file in the Ubuntu directory for the installatio
 
 #### Mac
 Since `.zshrc` doesn't support command key configuration, I use [Karabiner-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.<br>
-After installing it, open its settings and add the two JSON files (`rule1.json` & `rule2.json`).
+After installing it, open its settings and add the JSON files in `karabina_elements`.
 
 <img width="750" src="images/karabiner_elements.png">
 
