@@ -3,22 +3,22 @@
 # Stop running this script if any error occurs
 set -e
 
-script_dir="$(dirname "$0")"
+script_dir="${${(%):-%N}:A:h}"
+common_install_dir="${script_dir}/../../common/install"
+common_install_dir="${common_install_dir:A}"
 
 # apt
-chmod +x "$script_dir"/apt.sh
-"$script_dir"/apt.sh "$script_dir"
+source "${script_dir}/apt.sh"
 
 # Zsh
-chmod +x "$script_dir"/zsh.sh
-"$script_dir"/zsh.sh "$script_dir"
+source "${common_install_dir}/zsh.sh" Ubuntu
 
 # Git
 printf 'Do you also want to set up git configurations? [y/N]:'
 if read -q; then
+    # Print a newline using echo because read -q doesn't.
     echo
-    chmod +x "$script_dir"/git.sh
-    "$script_dir"/git.sh "$script_dir"
+    source "${common_install_dir}/git.sh"
 else
     echo
 fi
@@ -26,9 +26,9 @@ fi
 # Python
 printf 'Do you also want to set up Python configurations? [y/N]:'
 if read -q; then
+    # Print a newline using echo because read -q doesn't.
     echo
-    chmod +x "$script_dir"/python.sh
-    source "$script_dir"/python.sh
+    source "${common_install_dir}/python.sh"
 else
     echo
 fi
