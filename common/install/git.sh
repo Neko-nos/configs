@@ -22,7 +22,7 @@ function __set_up_gitconfig {
     echo "    email = ${email}" >> ~/.gitconfig
     echo "    name = ${name}" >> ~/.gitconfig
     echo '[include]' >> ~/.gitconfig
-    local script_dir="${0:A:h}"
+    local script_dir="${${(%):-%N}:A:h}"
     local common_gitconfig="${script_dir}/../git/.gitconfig"
     echo "    path = ${common_gitconfig:A}" >> ~/.gitconfig
 }

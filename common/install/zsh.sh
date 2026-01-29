@@ -34,7 +34,7 @@ fi
 echo
 
 # Create a symbolic link for .zshrc
-script_dir="${0:A:h}"
+script_dir="${${(%):-%N}:A:h}"
 common_zshrc="${script_dir}/../zsh/.zshrc"
 if [[ -f ~/.zshrc ]]; then
     echo 'You have already created .zshrc'
