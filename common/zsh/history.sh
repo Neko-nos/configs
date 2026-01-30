@@ -19,7 +19,7 @@ typeset -g _history_warned_no_py=0
 #   0 always
 #######################################
 function __warn () {
-    echo "\033[33mWarning:\033[m" "$*"
+    echo "\033[33mWarning:\033[m" "$*" >&2
 }
 
 #######################################
@@ -35,15 +35,15 @@ function __warn () {
 #######################################
 function _history_warn_once() {
     emulate -L zsh
-    local message="$1"
+    local message="${1}"
     if (( _history_warned_no_py != 0 )); then
         return 0
     fi
     _history_warned_no_py=1
     if typeset -f __warn >/dev/null 2>&1; then
-        __warn "$message"
+        __warn "${message}"
     else
-        echo "Warning: $message" >&2
+        echo "Warning: ${message}" >&2
     fi
 }
 

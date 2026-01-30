@@ -55,6 +55,8 @@ fi
 # Our .zshrc requires some env variables to be set in advance
 printf 'Did you already set FILTER_CMD in .zprofile? [y/N]: '
 if ! read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
     echo '# Envs used for .zshrc' >> ~/.zprofile
     echo 'export FILTER_CMD="fzf"' >> ~/.zprofile
 fi

@@ -32,7 +32,7 @@ echo
 #   Exit status of the last apt-get/read command run.
 #######################################
 function __install_package {
-    if [[ "$(dpkg -L "${1}")" ]]; then
+    if dpkg -L "${1}" >/dev/null 2>&1; then
         echo "You have already installed ${1}."
     else
         printf "Install ${1}? [y/N]: "
@@ -40,7 +40,7 @@ function __install_package {
             # Print a newline using echo because read -q doesn't.
             echo
             sudo apt-get update
-            sudo apt-get install ${1} -y
+            sudo apt-get install "${1}" -y
         fi
     fi
     echo
