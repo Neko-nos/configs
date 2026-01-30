@@ -1,18 +1,19 @@
 # VScode
 
 ## launch.json
-こちらは各ワークスペースに置くもので、現在はPythonのdebug用の記述のみ。
+This is designed to be placed in each workspace and currently contains only Python debugging configurations.
 
 ## linebreak.py
-VSCodeでの`settings.json`の中には`"markdown.preview.breaks": true,`という設定ができるが、これをした場合、プレビューでは問題なく改行されるがGitHubにそのまま載せるとコード側には変更がされないので改行できなくなる<br>
-しかし、毎回`<br>`等を打つのは面倒なので、保存の度に自動で`<br>`等を入れて適切に改行してくれるコードを作った。<br>
-(但し、HTMLを使っているMarkdownは対象外)<br>
-なお、標準ライブラリのみで動く様にしている。
+In VSCode's `settings.json`, you can set `"markdown.preview.breaks": true`. While this allows line breaks to display correctly in the preview, they are not reflected in the code itself.<br>
+Since typing `<br>` manually every time is tedious, I created a script that automatically inserts `<br>` to handle line breaks appropriately upon saving.<br>
+It is implemented using only the Python standard library, so it works on the system Python.
+
+> [!NOTE]
+> Currently, Markdown files relying heavily on HTML are not supported.
 
 ## settings.json
-WSL(Ubuntu)側のsettings.json<br>
-フォントとして指定しているのはMoralerspace Neon
+The `settings.json` for Ubuntu(and WSL).
 
 ## settings_mac.json
-Mac側のsettings.json<br>
-MacはLaTeXといった他の言語を書く際にも用いているのでWSL側のsettings.jsonよりも設定項目が多い
+The `settings.json` for Mac.<br>
+My main personal machine is a Mac and I also use it for writing other languages, so it includes more settings than the `settings.json` for Ubuntu/WSL.

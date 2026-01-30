@@ -1,0 +1,14 @@
+#######################################
+# Emit an info message.
+# Globals:
+#   None
+# Arguments:
+#   1: Info message
+# Outputs:
+#   Writes info to stdout
+# Returns:
+#   0 always
+#######################################
+function __info() {
+    echo "Info:" "$*"
+}

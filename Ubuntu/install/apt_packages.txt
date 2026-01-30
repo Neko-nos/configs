@@ -1,4 +1,5 @@
 git
+fzf
 tree
 colordiff
 icdiff

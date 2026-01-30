@@ -1,7 +1,0 @@
-# Python
-.ruff_cache
-env/
-.venv/
-venv/
-__pycache__/
-**/*.pyc

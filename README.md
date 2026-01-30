@@ -1,5 +1,4 @@
 # Neko-nos's dotfiles & configs
-<img src="images/main.png">
 
 Personal configuration files for a consistent development experience across **MacOS** and **Ubuntu (including WSL)**. Includes settings for keyboard layouts (JIS), fonts, command-line tools (Zsh, Git, Python), and VSCode.
 
@@ -8,37 +7,39 @@ Personal configuration files for a consistent development experience across **Ma
 The main goal is to replicate a Mac-like keyboard experience on Windows and Ubuntu (specifically for JIS layout) and establish a comfortable and efficient command-line and coding environment using preferred tools and fonts.
 
 ## Feature Highlights
-### 1. Mac-like Key Configurations for Windows and Ubuntu
+### 1. Mac-like Keyboard Configurations for Windows and Ubuntu
 > [!NOTE]
 > My configuration is tested only for JIS layout, a keyboard layout for Japanese. It may not work as expected on other layouts.
 
-There are differences in a key configuration between Mac and Windows/Ubuntu, which may confuse you when switching between systems with a default key configuration.<br>
+There are differences in keyboard configuration between Mac and Windows/Ubuntu, which may confuse you when switching between systems with a default key configuration.<br>
 By using my configuration, you can make keyboard shortcuts and behaviors on Windows and Ubuntu feel more like MacOS.
 
 ### 2. Preferred Fonts
-Replaces default system fonts, particularly on Windows, with [Moralerspace](https://github.com/yuru7/moralerspace), a visually appealing font, especially for Japanese characters. Also includes setup for [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md) for a terminal/IDE.
+Replaces default system fonts, particularly on Windows, with [Moralerspace](https://github.com/yuru7/moralerspace), a visually appealing font, especially for Japanese characters. Also includes setup for [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md) for terminal/IDEs.
 
 ### 3. Command-Line Environment & Tools
 #### Enhanced Command-Line Environment (Zsh)
-- **Plugin Management with [zplug](https://github.com/zplug/zplug/tree/master)**<br>
-  zplug allows you to install useful plugins for zsh. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.<br>
+- **Plugin Management with [sheldon](https://github.com/rossmacarthur/sheldon)**<br>
+  Sheldon allows you to install useful plugins for zsh and it is fast. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.<br>
   (You can see the prompt in the above image.)
 
-- **Efficient Navigation with [peco](https://github.com/peco/peco)**<br>
-  There are two functions using `peco`: `peco-select-history` and `peco-cdr`.<br>
-  (The original code is here: https://qiita.com/reireias/items/fd96d67ccf1fdffb24ed)<br>
-  As you can see in the images in the linked article,<br>
-  - `peco-select-history` allows you to search and select commands from multiple histories interactively.
-  - `peco-cdr` allows you to select the directory that you want to move into by using a relative-path, instead of an absolute-path like `peco-select-history`.
+- **Efficient Navigation with filter tools (e.g., [fzf](https://github.com/junegunn/fzf))**<br>
+  There are useful functions using filter tools such as `search-history` and `search-cdr`.<br>
+  - `search-history` allows you to search and select commands from multiple histories interactively.
+  - `search-cdr` allows you to select the directory that you want to move into by using a relative path, instead of an absolute-path like `search-history`.
+
+- **Smart History Management**<br>
+  Prevents failed commands from being saved to `.zsh_history` while enabling `inc_append_history` and `extended_history`. Failed commands remain in memory, so you can still recall and correct them via arrow keys in the session.<br>
+  Furthermore, the implementation uses only the Python standard libraries, so it works with the system Python without requiring additional environment setup.
 
 - **Useful settings, aliases and functions**<br>
-  You can see what they do in the `.zshrc` file.
+  Please refer to `.zshrc` file for details.
 
-For more details, please refer to the `.zshrc` file.
+For more details, please refer to the files in `common/zsh`.
 
 #### Git
 - **Useful settings in `.gitconfig`**<br>
-  You can see what they do in the `.gitconfig` file.
+  Please refer to `.gitconfig` file for details.
 
 - **A template for `.gitignore` (for Python users)**<br>
   A `.gitignore` tailored for Python projects, ignoring common files/directories like `.venv`, `__pycache__`, etc.
@@ -51,7 +52,7 @@ Provides setup scripts for your choice of modern Python environment tools:<br>
 ### VSCode Settings & Customizations
 - **Automatic Line Breaks for Markdown with `linebreak.py`**<br>
   Addresses the common issue where Markdown previews (`markdown.preview.break: true`) show line breaks correctly in VSCode, but standard Markdown renderers (like GitHub) require explicit breaks (`<br>` or two spaces).<br>
-  It takes time and effort to manually insert line break tags (i.e., `<br>`, two whitespaces and an extra `\n`) every time you write Markdown, especially in Japanese.<br>
+  It is tedious to manually insert line break tags (i.e., `<br>`, two whitespaces and an extra `\n`) every time you write Markdown, especially in Japanese.<br>
   This script, used with [Run on save](https://marketplace.visualstudio.com/items?itemName=pucelle.run-on-save) extension, automatically inserts line break tags into your Markdown file.
 
 - **Curated `settings.json`**<br>
@@ -68,7 +69,7 @@ First, clone this repository from GitHub:
 git clone https://github.com/Neko-nos/configs.git
 ```
 
-### Key Configurations
+### Configurations for Keyboard
 #### Windows
 Most of the settings have to be configured via GUI, so there are no install scripts.<br>
 Please refer to the `README.md` file in the Windows directory for the installation instructions.<br>
@@ -80,46 +81,45 @@ Please refer to the `README.md` file in the Ubuntu directory for the installatio
 
 #### Mac
 Since `.zshrc` doesn't support command key configuration, I use [Karabiner-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.<br>
-After installing it, open its settings and add the two JSON files (`rule1.json` & `rule2.json`).
+After installing it, open its settings and add the JSON files in `karabiner_elements`.
 
 <img width="750" src="images/karabiner_elements.png">
 
 ### Command-Line Environment & Tools
 There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.<br>
-`install/install.sh` runs all the install scripts in the `install` directory.
+`install/install.sh` runs all the install scripts including those in the `common/install` directory.
 ```console
-cd install
 chmod +x install.sh
 ./install.sh
 ```
 If you want to run a particular script, instead of executing `install.sh`, simply execute the desired script.
 
-1. apt.sh<br>
-   Update apt and the packages specified in `apt_packages.txt`.
+1. apt/brew.sh<br>
+   Update apt/brew and the packages specified in `apt_packages.txt` or `brew_formulae.txt`.
    ```console
-   chmod +x apt.sh
-   ./apt.sh .
+   cd <Mac/Ubuntu/WSL>/install
+   source apt/brew.sh
    ```
 
 2. zsh.sh<br>
-   Install [peco](https://github.com/peco/peco), [zplug](https://github.com/zplug/zplug/tree/master) and set up `.zshrc`.
+   Install [sheldon](https://github.com/rossmacarthur/sheldon) and set up `.zshrc`.
    ```console
-   chmod +x zsh.sh
-   ./zsh.sh
+   cd common/install
+   source zsh.sh <Mac/Ubuntu/WSL>
    ```
 
 3. git.sh<br>
    Set up `.gitconfig`.
    ```console
-   chmod +x git.sh
-   ./git.sh
+   cd common/install
+   source git.sh
    ```
 
 4. python.sh<br>
    Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
    ```console
-   chmod +x python.sh
-   ./python.sh
+   cd common/install
+   source python.sh
    ```
 
 ### Zsh prompt

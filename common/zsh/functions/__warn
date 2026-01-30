@@ -1,0 +1,14 @@
+#######################################
+# Emit a warning message.
+# Globals:
+#   None
+# Arguments:
+#   1: Warning message
+# Outputs:
+#   Writes warning to stderr
+# Returns:
+#   0 always
+#######################################
+function __warn() {
+    echo "\033[33mWarning:\033[m" "$*" >&2
+}
