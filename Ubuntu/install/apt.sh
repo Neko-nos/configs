@@ -11,6 +11,7 @@ set -e
 sudo apt-get update
 printf "Upgrade all packages? [y/N]: "
 if read -q; then
+    # Print a newline using echo because read -q doesn't.
     echo
     sudo apt-get upgrade -y
 else
@@ -19,13 +20,24 @@ fi
 echo
 
 # Now, install the tools that can be installed via apt
-# define a common function to install a package
-function install_package {
+#######################################
+# Install a package via apt-get if it is not already installed.
+# Globals:
+#   None
+# Arguments:
+#   Package name to check and install.
+# Outputs:
+#   Writes status messages and prompts to stdout.
+# Returns:
+#   Exit status of the last apt-get/read command run.
+#######################################
+function __install_package {
     if [[ "$(dpkg -L "${1}")" ]]; then
         echo "You have already installed ${1}."
     else
         printf "Install ${1}? [y/N]: "
         if read -q; then
+            # Print a newline using echo because read -q doesn't.
             echo
             sudo apt-get update
             sudo apt-get install ${1} -y
@@ -35,11 +47,10 @@ function install_package {
 }
 
 # Install the packages listed in apt_packages.txt
-cd "${1}"
-while read line
+while read -r line
 do
-    install_package "${line}"
-done < 'apt_packages.txt'
+    __install_package "${line}"
+done < "${${(%):-%N}:A:h}/apt_packages.txt"
 
 echo 'Apt configuration complete!'
 echo ''
