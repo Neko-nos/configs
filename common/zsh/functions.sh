@@ -20,7 +20,35 @@ fi
 #   0 always
 #######################################
 function __warn () {
-    echo "\033[33mWarning:\033[m" "$*"
+    echo "\033[33mWarning:\033[m" "$*" >&2
+}
+
+# Handle with environment variables so that it can be switched during shell session
+typeset -g _cdr_search_warned_unsupported=0
+
+#######################################
+# Emit a warning once per session for cdr search.
+# Globals:
+#   _cdr_search_warned_unsupported
+# Arguments:
+#   1: Warning message
+# Outputs:
+#   Writes warning to stderr
+# Returns:
+#   0 always
+#######################################
+function _search_cdr_warn_once() {
+    emulate -L zsh
+    local message="${1}"
+    if (( _cdr_search_warned_unsupported != 0 )); then
+        return 0
+    fi
+    _cdr_search_warned_unsupported=1
+    if typeset -f __warn >/dev/null 2>&1; then
+        __warn "${message}"
+    else
+        echo "Warning: ${message}" >&2
+    fi
 }
 
 #######################################
@@ -35,7 +63,16 @@ function __warn () {
 #   0 on success, non-zero on failure.
 #######################################
 function search-cdr () {
-    local selected_dir="$(cdr -l | sed 's/^[0-9]\+ \+//' | awk '!a[$0]++' | $FILTER_CMD --prompt="cdr >" --query "$LBUFFER")"
+    local -a filter_cmd
+    if [[ -n "${FILTER_CMD:-}" ]]; then
+        filter_cmd=(${(z)FILTER_CMD})
+    elif command -v fzf >/dev/null 2>&1; then
+        filter_cmd=(fzf)
+    else
+        _search_cdr_warn_once "FILTER_CMD is not set and fzf is unavailable."
+        return 0
+    fi
+    local selected_dir="$(cdr -l | sed 's/^[0-9]\+ \+//' | awk '!a[$0]++' | "${filter_cmd[@]}" --prompt="cdr >" --query "$LBUFFER")"
     if [[ -n "${selected_dir}" ]]; then
         BUFFER="cd ${selected_dir}"
         zle accept-line
@@ -60,7 +97,7 @@ typeset -g _history_search_warned_unsupported=0
 #######################################
 function _history_search_warn_once() {
     emulate -L zsh
-    local message="$1"
+    local message="${1}"
     if (( _history_search_warned_unsupported != 0 )); then
         return 0
     fi
