@@ -1,5 +1,4 @@
 # Neko-nos's dotfiles & configs
-<img src="images/main.png">
 
 Personal configuration files for a consistent development experience across **MacOS** and **Ubuntu (including WSL)**. Includes settings for keyboard layouts (JIS), fonts, command-line tools (Zsh, Git, Python), and VSCode.
 
@@ -20,8 +19,8 @@ Replaces default system fonts, particularly on Windows, with [Moralerspace](http
 
 ### 3. Command-Line Environment & Tools
 #### Enhanced Command-Line Environment (Zsh)
-- **Plugin Management with [zplug](https://github.com/zplug/zplug/tree/master)**<br>
-  zplug allows you to install useful plugins for zsh. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.<br>
+- **Plugin Management with [sheldon](https://github.com/rossmacarthur/sheldon)**<br>
+  Sheldon allows you to install useful plugins for zsh and it is fast. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.<br>
   (You can see the prompt in the above image.)
 
 - **Efficient Navigation with filter tools (e.g., [fzf](https://github.com/junegunn/fzf))**<br>
@@ -103,7 +102,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 2. zsh.sh<br>
-   Install [zplug](https://github.com/zplug/zplug/tree/master) and set up `.zshrc`.
+   Install [sheldon](https://github.com/rossmacarthur/sheldon) and set up `.zshrc`.
    ```console
    cd common/install
    source zsh.sh <Mac/Ubuntu/WSL>

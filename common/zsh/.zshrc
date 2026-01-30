@@ -5,21 +5,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# zplug
-source ~/.zplug/init.zsh
-zplug "zsh-users/zsh-syntax-highlighting"
-zplug romkatv/powerlevel10k, as:theme, depth:1
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-completions"
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
-# Then, source plugins and add commands to $PATH
-zplug load --verbose
+# Sheldon
+eval "$(sheldon source)"
 
 # Shared function autoload path
 typeset -g _common_functions_dir="${${(%):-%N}:A:h}/functions"

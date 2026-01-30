@@ -17,12 +17,13 @@ fi
 
 __os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
 
-# zplug
-if command -v zplug >/dev/null 2>&1; then
-    echo 'You have already installed zplug.'
+# sheldon
+if command -v sheldon >/dev/null 2>&1; then
+    echo 'You have already installed sheldon.'
 else
-    # ref: https://github.com/zplug/zplug?tab=readme-ov-file#the-best-way
-    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+    # ref: https://github.com/rossmacarthur/sheldon?tab=readme-ov-file#pre-built-binaries
+    curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
+    | bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
 fi
 
 # dircolors
