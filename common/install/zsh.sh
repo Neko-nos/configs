@@ -25,6 +25,15 @@ else
     curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
     | bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
 fi
+if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml" ]]; then
+    echo 'You have already created sheldon config file.'
+else
+    # Use a symlink instead of a direct path because XDG_CONFIG_HOME is shared by tools like git.
+    mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/sheldon"
+    script_dir="${${(%):-%N}:A:h}"
+    common_sheldon_plugins="${script_dir}/../zsh/sheldon/plugins.toml"
+    ln -s "${common_sheldon_plugins:A}" "${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml"
+fi
 
 # dircolors
 if [[ -f ~/.dircolors-solarized/dircolors.ansi-light ]]; then
@@ -45,12 +54,12 @@ if [[ -f ~/.zshrc ]]; then
         # Print a newline using echo because read -q doesn't.
         echo; mv ~/.zshrc ~/.zshrc_old_"${timestamp}"
         echo "Renamed your .zshrc to .zshrc_old_${timestamp} as a backup file."
-        ln -s "${common_zshrc}" ~/.zshrc
+        ln -s "${common_zshrc:A}" ~/.zshrc
     else
         echo
     fi
 else
-    ln -s "${common_zshrc}" ~/.zshrc
+    ln -s "${common_zshrc:A}" ~/.zshrc
 fi
 
 # Our .zshrc requires some env variables to be set in advance
