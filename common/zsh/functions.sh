@@ -44,7 +44,7 @@ function search-cdr () {
 zle -N search-cdr
 bindkey '^p' search-cdr
 
-# Handle with environment variables so that it can be switched durinig shell session
+# Handle with environment variables so that it can be switched during shell session
 typeset -g _history_search_warned_unsupported=0
 
 #######################################
