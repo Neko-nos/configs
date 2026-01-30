@@ -47,6 +47,6 @@ function __safe_alias() {
             "${SAFE_ALIAS_UPDATE_CMD[@]}" || return 0
         fi
         "${manager_cmd[@]}" install "${target_package}"
-        alias "${alias_name}=${alias_cmd}"
+        alias "${alias_name}"="${alias_cmd}"
     fi
 }
