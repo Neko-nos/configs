@@ -21,6 +21,13 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
 
+# Shared function autoload path
+typeset -g _common_functions_dir="${${(%):-%N}:A:h}/functions"
+if [[ -d "${_common_functions_dir}" ]]; then
+    fpath=("${_common_functions_dir}" "${fpath[@]}")
+fi
+unset -v _common_functions_dir
+
 # ref: https://github.com/shunk031/dotfiles/blob/master/home/dot_zshrc#L6
 typeset -gU path fpath
 
@@ -78,35 +85,38 @@ setopt extended_history
 setopt hist_fcntl_lock
 
 # Helper functions
-function info () {
-    echo "Info:" "$*"
-}
-
-function warn () {
-    echo "\033[33mWarning:\033[m" "$*"
-}
+autoload -Uz __warn __info
 
 function __load_zsh_files () {
+    emulate -L zsh
     # Use indirect parameter expansion to avoid bad substitution error
     local os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
     if [[ -z "${CONFIGS_COMMON_ZSH}" ]]; then
-        warn "CONFIGS_COMMON_ZSH should be set in .zprofile. Since it is not set, skipping loading zsh configuration files."
+        __warn "CONFIGS_COMMON_ZSH should be set in .zprofile. Since it is not set, skipping loading zsh configuration files."
+        return 0
     fi
     if [[ -z ${os_specific_zsh_var} ]]; then
-        info "No OS-specific zsh config files to load. If you have OS-specific zsh config files, please set the variable ${os_specific_zsh_var} in .zprofile."
+        __info "No OS-specific zsh config files to load. If you have OS-specific zsh config files, please set the variable ${os_specific_zsh_var} in .zprofile."
+        local use_os_specific_zsh_var=false
+    else
+        local use_os_specific_zsh_var=true
     fi
     # Load aliases first to use them in other files if needed (e.g., GNU commands for MacOS)
     [[ -f "${CONFIGS_COMMON_ZSH}/aliases.sh" ]] && source "${CONFIGS_COMMON_ZSH}/aliases.sh"
-    [[ -f "${(P)os_specific_zsh_var}/extra_aliases.sh" ]] && source "${(P)os_specific_zsh_var}/extra_aliases.sh"
+    if $use_os_specific_zsh_var; then
+        [[ -f "${(P)os_specific_zsh_var}/extra_aliases.sh" ]] && source "${(P)os_specific_zsh_var}/extra_aliases.sh"
+    fi
     [[ -f "${CONFIGS_COMMON_ZSH}/functions.sh" ]] && source "${CONFIGS_COMMON_ZSH}/functions.sh"
-    [[ -f "${(P)os_specific_zsh_var}/extra_functions.sh" ]] && source "${(P)os_specific_zsh_var}/extra_functions.sh"
+    if $use_os_specific_zsh_var; then
+        [[ -f "${(P)os_specific_zsh_var}/extra_functions.sh" ]] && source "${(P)os_specific_zsh_var}/extra_functions.sh"
+    fi
     [[ -f "${CONFIGS_COMMON_ZSH}/history.sh" ]] && source "${CONFIGS_COMMON_ZSH}/history.sh"
 }
 __load_zsh_files
 
 # cleanup helper variables and functions
-unset -f info
-unset -f warn
+unset -f __warn
+unset -f __info
 unset -f __load_zsh_files
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.

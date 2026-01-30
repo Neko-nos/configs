@@ -1,4 +1,4 @@
-autoload -Uz add-zsh-hook
+autoload -Uz add-zsh-hook __warn
 
 typeset -g _history_last_command=""
 # Zsh-native expansion is used over $(realpath $(dirname $0)) for better performance.
@@ -6,21 +6,6 @@ typeset -g _history_last_command=""
 typeset -g _history_script_dir="${${(%):-%N}:A:h}"
 typeset -g _history_warned_no_py=0
 
-
-#######################################
-# Emit a warning message.
-# Globals:
-#   None
-# Arguments:
-#   1: Warning message
-# Outputs:
-#   Writes warning to stderr
-# Returns:
-#   0 always
-#######################################
-function __warn () {
-    echo "\033[33mWarning:\033[m" "$*" >&2
-}
 
 #######################################
 # Emit a warning once per session.

@@ -1,3 +1,5 @@
+autoload -Uz __warn
+
 # cdr customization
 if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(N)) && -n $(echo ${^fpath}/cdr(N)) ]]; then
     autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
@@ -7,21 +9,6 @@ if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(N)) && -n $(echo ${^fpath}/cdr(N)) ]
     zstyle ':chpwd:*' recent-dirs-max 1000
     zstyle ':chpwd:*' recent-dirs-file "$HOME/.cache/chpwd-recent-dirs"
 fi
-
-#######################################
-# Emit a warning message.
-# Globals:
-#   None
-# Arguments:
-#   1: Warning message
-# Outputs:
-#   Writes warning to stderr
-# Returns:
-#   0 always
-#######################################
-function __warn () {
-    echo "\033[33mWarning:\033[m" "$*" >&2
-}
 
 # Handle with environment variables so that it can be switched during shell session
 typeset -g _cdr_search_warned_unsupported=0
