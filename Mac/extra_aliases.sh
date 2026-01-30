@@ -1,15 +1,13 @@
-function __safe_alias() {
-    if command -v "$2" >/dev/null 2>&1; then
-        alias "$1"="$2"
-    else
-        local target_package=${3:-$2}
-        printf "Install $target_package? [y/N]: "
-        if read -q; then
-            echo; brew install "$target_package"
-            alias "$1"="$2"
-        fi
-    fi
-}
+autoload -Uz __safe_alias
+
+typeset -ga SAFE_ALIAS_MANAGER_CMD SAFE_ALIAS_UPDATE_CMD
+# Use arrays for commands to avoid word-splitting and quoting pitfalls.
+SAFE_ALIAS_MANAGER_CMD=(brew)
+SAFE_ALIAS_UPDATE_CMD=()
 
 __safe_alias grep 'ggrep' 'grep'
 __safe_alias sed 'gsed' 'gnu-sed'
+
+# Clean up helper functions and variables
+unset -f __safe_alias
+unset -v SAFE_ALIAS_MANAGER_CMD SAFE_ALIAS_UPDATE_CMD

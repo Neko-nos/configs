@@ -1,22 +1,14 @@
-if [[ "${OSTYPE}" == "darwin"* ]]; then
-    manager='brew'
-else
-    manager='sudo apt-get update && sudo apt-get'
-fi
+autoload -Uz __safe_alias
 
-function __safe_alias() {
-    local cmd_name=${2%% *}
-    if command -v "${cmd_name}" >/dev/null 2>&1; then
-        alias "$1"="$2"
-    else
-        local target_package=${3:-$cmd_name}
-        printf "Install $target_package? [y/N]: "
-        if read -q; then
-            echo; ${manager} install "$target_package"
-            alias "$1"="$2"
-        fi
-    fi
-}
+typeset -ga SAFE_ALIAS_MANAGER_CMD SAFE_ALIAS_UPDATE_CMD
+# Use arrays for commands to avoid word-splitting and quoting pitfalls.
+if [[ "${OSTYPE}" == "darwin"* ]]; then
+    SAFE_ALIAS_MANAGER_CMD=(brew)
+    SAFE_ALIAS_UPDATE_CMD=()
+else
+    SAFE_ALIAS_MANAGER_CMD=(sudo apt-get)
+    SAFE_ALIAS_UPDATE_CMD=(sudo apt-get update)
+fi
 
 # ref: https://atmarkit.itmedia.co.jp/ait/articles/1606/28/news021.html
 __safe_alias ls 'ls -AX --color=auto'
@@ -35,7 +27,7 @@ alias ctree='_custom_tree'
 # ref: https://qiita.com/osw_nuco/items/a5d7173c1e443030875f
 function _custom_tree() {
     # Limit output when running tree alias in home directory to avoid excessive files
-    if [[ "$PWD" == "$HOME" ]]; then
+    if [[ "${PWD}" == "${HOME}" ]]; then
         tree -L 2 "$@"
     else
         tree "$@"
@@ -47,4 +39,4 @@ __safe_alias icdiff 'icdiff -U 1 --line-numbers'
 
 # Clean up helper functions and variables
 unset -f __safe_alias
-unset -v manager
+unset -v SAFE_ALIAS_MANAGER_CMD SAFE_ALIAS_UPDATE_CMD
