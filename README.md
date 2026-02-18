@@ -1,6 +1,6 @@
 # Neko-nos's dotfiles & configs
 
-Personal configuration files for a consistent development experience across **MacOS** and **Ubuntu (including WSL)**. Includes settings for keyboard layouts (JIS), fonts, command-line tools (Zsh, Git, Python), and VSCode.
+Personal configuration files for a consistent development experience across **MacOS** and **Ubuntu (including WSL)**. Includes settings for keyboard layouts (JIS), fonts, command-line tools (Zsh, Git, Codex, Python), and VSCode.
 
 ## Core Philosophy
 
@@ -26,7 +26,7 @@ Replaces default system fonts, particularly on Windows, with [Moralerspace](http
 - **Efficient Navigation with filter tools (e.g., [fzf](https://github.com/junegunn/fzf))**<br>
   There are useful functions using filter tools such as `search-history` and `search-cdr`.<br>
   - `search-history` allows you to search and select commands from multiple histories interactively.
-  - `search-cdr` allows you to select the directory that you want to move into by using a relative path, instead of an absolute-path like `search-history`.
+  - `search-cdr` allows you to select the directory that you want to move into by using a relative path, instead of an absolute path like `search-history`.
 
 - **Smart History Management**<br>
   Prevents failed commands from being saved to `.zsh_history` while enabling `inc_append_history` and `extended_history`. Failed commands remain in memory, so you can still recall and correct them via arrow keys in the session.<br>
@@ -43,6 +43,10 @@ For more details, please refer to the files in `common/zsh`.
 
 - **A template for `.gitignore` (for Python users)**<br>
   A `.gitignore` tailored for Python projects, ignoring common files/directories like `.venv`, `__pycache__`, etc.
+
+#### Codex
+- **Shared Codex settings via symlinks**<br>
+  `common/install/codex.sh` creates symbolic links for `common/codex/agents.md` and `common/codex/config.toml` in `$CODEX_HOME` (default: `~/.codex`) when those files do not already exist.
 
 #### Python Environment Management
 Provides setup scripts for your choice of modern Python environment tools:<br>
@@ -87,7 +91,7 @@ After installing it, open its settings and add the JSON files in `karabiner_elem
 
 ### Command-Line Environment & Tools
 There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.<br>
-`install/install.sh` runs all the install scripts including those in the `common/install` directory.
+`install/install.sh` runs all the install scripts including those in the `common/install` directory. Git, Codex, and Python setups are optional and prompted interactively.
 ```console
 chmod +x install.sh
 ./install.sh
@@ -115,7 +119,14 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source git.sh
    ```
 
-4. python.sh<br>
+4. codex.sh<br>
+   Set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
+   ```console
+   cd common/install
+   source codex.sh
+   ```
+
+5. python.sh<br>
    Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
    ```console
    cd common/install
