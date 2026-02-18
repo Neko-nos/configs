@@ -1,0 +1,10 @@
+# ref: https://github.com/openai/codex/blob/main/docs/config.md#model_providers
+
+model = "gpt-5.3-codex"
+model_reasoning_effort = "high"
+
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+personality = "pragmatic"
+[sandbox_workspace_write]
+network_access = true
