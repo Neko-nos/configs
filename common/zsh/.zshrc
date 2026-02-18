@@ -32,6 +32,11 @@ setopt no_beep
 setopt correct
 setopt correct_all
 
+# Fix Ctrl+Left/Right not working in some terminals
+# 参考: https://unix.stackexchange.com/questions/58870/ctrl-left-right-arrow-keys-issue
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 # uv
 # ref: https://docs.astral.sh/uv/getting-started/installation/
 if command -v uv >/dev/null 2>&1; then
