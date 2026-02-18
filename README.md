@@ -26,7 +26,7 @@ Replaces default system fonts, particularly on Windows, with [Moralerspace](http
 - **Efficient Navigation with filter tools (e.g., [fzf](https://github.com/junegunn/fzf))**<br>
   There are useful functions using filter tools such as `search-history` and `search-cdr`.<br>
   - `search-history` allows you to search and select commands from multiple histories interactively.
-  - `search-cdr` allows you to select the directory that you want to move into by using a relative path, instead of an absolute-path like `search-history`.
+  - `search-cdr` allows you to select the directory that you want to move into by using a relative path, instead of an absolute path like `search-history`.
 
 - **Smart History Management**<br>
   Prevents failed commands from being saved to `.zsh_history` while enabling `inc_append_history` and `extended_history`. Failed commands remain in memory, so you can still recall and correct them via arrow keys in the session.<br>

@@ -6,7 +6,7 @@
 
 ## Coding
 - Write docstrings, comments and documents in English
-- Use modern syntax and librarires.
+- Use modern syntax and libraries.
 - Avoid excessive comments; focus on explaining "why", not "what".
 - Write and run test codes to check your codes before finishing the conversation turn.
 
@@ -26,7 +26,7 @@
 - Use `uv run <hoge.py>` instead of `python <hoge.py>`
 
 ## Coding style
-- The script must not start with a shebang unless explicitly requrested by me.
+- The script must not start with a shebang unless explicitly requested by me.
 - Keep `try`/`except` blocks to the minimum necessary
   - Do not use blind except or try to hide them with `noqa: BLE001`; Always specify errors. If you can't, you usually are going to add unnecessary `try`/`except` blocks.
 - Do not add excessive logging or print statements.
@@ -40,7 +40,7 @@
       param (type): explanation
       ...
   Returns:
-      retrun value (type): explanation
+      return value (type): explanation
       ...
   ... (`Example` etc.)
   """
@@ -48,7 +48,7 @@
 - Use `jaxtyping` for array/tensor annotations (See details for https://docs.kidger.site/jaxtyping/api/array/)
 
 ## Coding Rule
-- After writing codes, always use `Ruff` as both linter and formatter
+- After writing code, always use `Ruff` as both linter and formatter
   - run `ruff check <hoge.py> --fix && ruff check <hoge.py> --fix --select I && ruff format <hoge.py>`
   - If the environment does not have `pyproject.toml`, use `uvx ruff` instead of `ruff`. Do not install `ruff` using `uv add`.
 
@@ -64,7 +64,7 @@
 - Use `set` with useful options (e.g., `set -euo pipefail`) at the beginning of a script
 - Indent: 4 space, no tabs
 - Declare function-specific variables with `local`
-- Write a function comments (similar to Python docstrings) with the following style (Google Style)
+- Write function comments (similar to Python docstrings) with the following style (Google Style)
   - The comment should describe the intended behaviour using:
     - Description of the function
     - Globals: List of global variables used and modified
