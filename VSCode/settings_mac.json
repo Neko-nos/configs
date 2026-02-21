@@ -133,10 +133,18 @@
     },
 
     // ---------- General ----------
-    // 末尾に改行を挟む(https://qiita.com/hamamamama/items/11c17c7412a5aeb2ad74)
+    // 末尾に改行を挟む (ref: https://qiita.com/hamamamama/items/11c17c7412a5aeb2ad74)
     "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
     "workbench.iconTheme": "vscode-icons",
     "editor.minimap.enabled": false,
+    // ref: https://zenn.dev/yutotnh/articles/1577b6dc5ab7d9
+    "editor.dragAndDrop": false,
+    "editor.wrappingIndent": "indent",
+    "explorer.compactFolders": false,
+    "scm.compactFolders": false,
+    "scm.defaultViewMode": "tree",
+
     "terminal.integrated.enableMultiLinePasteWarning": "auto",
     "remote.SSH.useExecServer": false,
     "notebook.editorOptionsCustomizations": {
@@ -146,5 +154,9 @@
     },
     "files.exclude": {
         "**/.git": false
-    }
+    },
+
+    // ref: https://tech.sompo.io/entry/2023/04/06/161035
+    "window.nativeTabs": true,
+    "window.titleBarStyle": "native",
 }
