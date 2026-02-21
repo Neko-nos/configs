@@ -1,12 +1,20 @@
 {
     // General
-    "editor.minimap.enabled": false,
     "workbench.iconTheme": "vscode-icons",
     "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
     "terminal.integrated.enableMultiLinePasteWarning": "auto",
+    "editor.minimap.enabled": false,
     "editor.fontFamily": "Consolas, 'Moralerspace Neon', monospace",
+    // ref: https://zenn.dev/yutotnh/articles/1577b6dc5ab7d9
+    "editor.dragAndDrop": false,
+    "editor.wrappingIndent": "indent",
+    "explorer.compactFolders": false,
+    "scm.compactFolders": false,
+    "scm.defaultViewMode": "tree",
+
     // Windows
-    // ctrl + pはpeco-cdr用に使いたい
+    // ctrl + pはsearch-cdr用に使いたい
     "terminal.integrated.commandsToSkipShell": [
         "-workbench.action.quickOpen",
     ],
