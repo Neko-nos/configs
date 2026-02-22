@@ -13,11 +13,11 @@ class Patterns:
     # 先頭のtab以外はインデント処理に関係ないので無視する
     tab: re.Pattern = re.compile(r"^\t")
     br_tag: re.Pattern = re.compile(r"<br>$")
-    comment: re.Pattern = re.compile(r"<!-- .* -->")
+    comment: re.Pattern = re.compile(r"<!--.*-->")
     code: re.Pattern = re.compile(r"```")
     title: re.Pattern = re.compile(r"#+ ")
     alert: re.Pattern = re.compile(r"> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]")
-    quote: re.Pattern = re.compile(r"(> )+")
+    quote: re.Pattern = re.compile(r"(>\s?)+")
     image: re.Pattern = re.compile(r"(!\[.*\]\(.+\))|(<img .* src=.+>)")
     table: re.Pattern = re.compile(r"^\|?(?:\s*:?-{3,}:?\s*\|)+\s*$")
     table_cell: re.Pattern = re.compile(r"^\|.*\|$")
@@ -88,14 +88,16 @@ def get_newline_suffix(
         return ""
     elif not line or not next_line:
         return "\n"
+    # Detect fenced code before heading/comment checks; otherwise a code fence
+    # followed by "#" can be misclassified as a heading transition.
+    elif patterns.code.match(line):
+        status.update("code", unset_list=unset_list)
+        return "\n"
     elif patterns.comment.match(line) or patterns.comment.match(next_line):
         return "\n"
     elif patterns.title.match(line) or patterns.title.match(next_line):
         return "\n"
     elif patterns.image.match(line) or patterns.image.match(next_line):
-        return "\n"
-    elif patterns.code.match(line):
-        status.update("code", unset_list=unset_list)
         return "\n"
     elif patterns.alert.match(line):
         status.update("alert", unset_list=unset_list)
@@ -103,8 +105,9 @@ def get_newline_suffix(
     elif patterns.table_cell.match(line) and patterns.table.match(next_line):
         status.update("table", unset_list=unset_list)
         return "\n"
+    # Treat quote bodies like normal wrapped text and force explicit line breaks.
     elif patterns.quote.match(line) and patterns.quote.match(next_line):
-        return "\n"
+        return "<br>" + "\n"
     elif patterns.quote.match(line):
         return "\n\n"
     # alert blockは他の要素内に作ることができないのでここでは考慮しなくて良い (GitHub Markdown)
@@ -160,8 +163,13 @@ def process_markdown(lines: list[str]) -> list[str]:
             next_line = lines[idx + 1]
 
         # 最初の改行に使われる記号等を削除する
-        line = patterns.br_tag.sub("", line).rstrip()
-        next_line = patterns.br_tag.sub("", next_line).rstrip()
+        # Keep literal "<br>" in code fences because it may be code text, not Markdown.
+        if status.is_code:
+            line = line.rstrip()
+            next_line = next_line.rstrip()
+        else:
+            line = patterns.br_tag.sub("", line).rstrip()
+            next_line = patterns.br_tag.sub("", next_line).rstrip()
         # indentはwhitespaceで数えているのでtabも変換しておく
         line = patterns.tab.sub(" " * 4, line)
         next_line = patterns.tab.sub(" " * 4, next_line)
