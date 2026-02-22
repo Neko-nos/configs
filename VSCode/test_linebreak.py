@@ -56,9 +56,30 @@ class ProcessMarkdownTests(unittest.TestCase):
         self.assertEqual(self.convert(content), content)
 
     def test_quote_block_keeps_newlines_and_breaks_after_block(self):
-        """It preserves quote lines and inserts a blank line after the quote block."""
+        """It inserts <br> inside quote blocks and a blank line after the block."""
         content = "> q1\n> q2\nafter quote\n"
-        expected = "> q1\n> q2\n\nafter quote\n"
+        expected = "> q1<br>\n> q2\n\nafter quote\n"
+
+        self.assertEqual(self.convert(content), expected)
+
+    def test_quote_block_without_space_marker_works(self):
+        """It treats '>' without a following space as quote markers."""
+        content = ">q1\n>q2\nafter quote\n"
+        expected = ">q1<br>\n>q2\n\nafter quote\n"
+
+        self.assertEqual(self.convert(content), expected)
+
+    def test_quote_block_three_lines_adds_br_between_each_pair(self):
+        """It adds <br> between each adjacent quote line."""
+        content = "> a\n> b\n> c\n"
+        expected = "> a<br>\n> b<br>\n> c\n"
+
+        self.assertEqual(self.convert(content), expected)
+
+    def test_quote_marker_only_line_is_supported(self):
+        """It handles lines that are only a quote marker."""
+        content = ">\n> next\nafter\n"
+        expected = "><br>\n> next\n\nafter\n"
 
         self.assertEqual(self.convert(content), expected)
 
@@ -75,6 +96,35 @@ class ProcessMarkdownTests(unittest.TestCase):
         expected = "```\nprint('x')\n```\nafter code\n"
 
         self.assertEqual(self.convert(content), expected)
+
+    def test_fenced_code_block_with_heading_like_lines_is_preserved(self):
+        """It preserves fenced code even if inner lines look like Markdown headings."""
+        content = (
+            "```bash\n"
+            "# setup section\n"
+            'APP_NAME="demo"\n'
+            'if [ -n "$APP_NAME" ]; then\n'
+            '  echo "- not a markdown list"\n'
+            "fi\n"
+            "```\n"
+        )
+
+        output = self.convert(content)
+
+        self.assertEqual(output, content)
+        self.assertNotIn("<br>", output)
+
+    def test_fenced_code_block_keeps_literal_br_text(self):
+        """It keeps a literal '<br>' text at line end inside fenced code."""
+        content = "```\nvalue=<br>\n```\n"
+
+        self.assertEqual(self.convert(content), content)
+
+    def test_html_comment_without_spaces_is_treated_as_comment(self):
+        """It detects comments even when there are no spaces around content."""
+        content = "before\n<!--comment-->\nafter\n"
+
+        self.assertEqual(self.convert(content), content)
 
     def test_list_continuation_uses_br_for_item_line(self):
         """It keeps list continuation behavior for wrapped list items."""
