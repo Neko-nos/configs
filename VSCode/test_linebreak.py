@@ -4,9 +4,7 @@ import sys
 import unittest
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-from linebreak import process_markdown
+from VSCode.linebreak import process_markdown
 
 
 class ProcessMarkdownTests(unittest.TestCase):
