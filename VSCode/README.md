@@ -11,6 +11,13 @@ It is implemented using only the Python standard library, so it works on the sys
 > [!NOTE]
 > Currently, Markdown files relying heavily on HTML are not supported.
 
+### Run tests
+From the repository root:
+
+```console
+uv run python -m unittest VSCode/test_linebreak.py
+```
+
 ## settings.json
 The `settings.json` for Ubuntu(and WSL).
 
