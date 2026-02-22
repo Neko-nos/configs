@@ -1,8 +1,6 @@
 """Regression tests for linebreak.py."""
 
-import sys
 import unittest
-from pathlib import Path
 
 from VSCode.linebreak import process_markdown
 
