@@ -1,7 +1,7 @@
 import argparse
+import re
 from dataclasses import dataclass
 from pathlib import Path
-import re
 from typing import Literal
 
 
@@ -19,8 +19,8 @@ class Patterns:
     alert: re.Pattern = re.compile(r"> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]")
     quote: re.Pattern = re.compile(r"(> )+")
     image: re.Pattern = re.compile(r"(!\[.*\]\(.+\))|(<img .* src=.+>)")
-    table: re.Pattern = re.compile(r"((\|:-+:\|)+)|((\|:-+\|-+:\|)+\|:-+:\|)")
-    table_cell = re.compile(r"\| .* \|")
+    table: re.Pattern = re.compile(r"^\|?(?:\s*:?-{3,}:?\s*\|)+\s*$")
+    table_cell: re.Pattern = re.compile(r"^\|.*\|$")
     list_item: re.Pattern = re.compile(r"\s*(\*|\+|-|(\d+\.)) ")
     # ネストに必要なindentでのwhitespaceの最小値は2(- で2文字)
     list_indent_prefix: re.Pattern = re.compile(r"^( {2,})")
@@ -100,7 +100,7 @@ def get_newline_suffix(
     elif patterns.alert.match(line):
         status.update("alert", unset_list=unset_list)
         return "\n"
-    elif patterns.table_cell.match(line) and patterns.table_cell.match(next_line):
+    elif patterns.table_cell.match(line) and patterns.table.match(next_line):
         status.update("table", unset_list=unset_list)
         return "\n"
     elif patterns.quote.match(line) and patterns.quote.match(next_line):
@@ -199,19 +199,39 @@ def process_markdown(lines: list[str]) -> list[str]:
                 is_table_current = patterns.table.match(
                     line_no_indent
                 ) or patterns.table_cell.match(line_no_indent)
-                is_table_next = patterns.table_cell.match(next_line_no_indent)
+                is_table_next = patterns.table.match(
+                    next_line_no_indent
+                ) or patterns.table_cell.match(next_line_no_indent)
             else:
                 is_table_current = patterns.table.match(
                     line
                 ) or patterns.table_cell.match(line)
-                is_table_next = patterns.table_cell.match(next_line)
+                is_table_next = patterns.table.match(
+                    next_line
+                ) or patterns.table_cell.match(next_line)
 
             if is_table_current and is_table_next:
                 new_lines.append(line + "\n")
             elif is_table_current:
                 new_lines.append(line + "\n")
                 # <br>では段落が分けられない
-                new_lines.append("\n")
+                if next_line:
+                    new_lines.append("\n")
+                status.is_table = False
+            else:
+                status.is_table = False
+                line_no_indent = patterns.list_indent_prefix.sub("", line)
+                next_line_no_indent = patterns.list_indent_prefix.sub("", next_line)
+                is_next_line_list = next_line != next_line_no_indent
+                new_line = line + get_newline_suffix(
+                    status,
+                    patterns,
+                    line_no_indent,
+                    next_line_no_indent,
+                    unset_list=not status.is_list,
+                    is_next_line_list=is_next_line_list,
+                )
+                new_lines.append(new_line)
         else:
             line_no_indent = patterns.list_indent_prefix.sub("", line)
             next_line_no_indent = patterns.list_indent_prefix.sub("", next_line)
