@@ -17,7 +17,7 @@ class Patterns:
     code: re.Pattern = re.compile(r"```")
     title: re.Pattern = re.compile(r"#+ ")
     alert: re.Pattern = re.compile(r"> \[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]")
-    quote: re.Pattern = re.compile(r"(>\s?)+")
+    quote: re.Pattern = re.compile(r"^(>\s?)+")
     image: re.Pattern = re.compile(r"(!\[.*\]\(.+\))|(<img .* src=.+>)")
     table: re.Pattern = re.compile(r"^\|?(?:\s*:?-{3,}:?\s*\|)+\s*$")
     table_cell: re.Pattern = re.compile(r"^\|.*\|$")
@@ -29,7 +29,9 @@ class Patterns:
 @dataclass
 class Status:
     is_code: bool = False
+    is_quote_code: bool = False
     is_alert: bool = False
+    is_alert_code: bool = False
     is_table: bool = False
     is_list: bool = False
 
@@ -55,7 +57,9 @@ class Status:
     def reset_block(self):
         # listだけは他のブロックと共存できるのでFalseにしない
         self.is_code = False
+        self.is_quote_code = False
         self.is_alert = False
+        self.is_alert_code = False
         self.is_table = False
 
     def update(
@@ -69,6 +73,18 @@ class Status:
             self.is_list = False
 
 
+def strip_quote_prefix(patterns: Patterns, line: str) -> str:
+    """Remove the leading quote marker(s) from a line."""
+    return patterns.quote.sub("", line, count=1)
+
+
+def is_quote_code_fence_line(patterns: Patterns, line: str) -> bool:
+    """Return True when a quote line starts or ends a fenced code block."""
+    if patterns.quote.match(line) is None:
+        return False
+    return patterns.code.match(strip_quote_prefix(patterns, line)) is not None
+
+
 def get_newline_suffix(
     status: Status,
     patterns: Patterns,
@@ -77,6 +93,9 @@ def get_newline_suffix(
     unset_list: bool,
     is_next_line_list: bool = False,
 ) -> Literal["", "\n", "\n\n", "<br>\n"]:
+    is_quote_code_line = is_quote_code_fence_line(patterns, line)
+    is_next_quote_code_line = is_quote_code_fence_line(patterns, next_line)
+
     # 後で変更をするので、status.is_listの状態を保存しておく
     prev_status_list = status.is_list
     # listが終了しているのに他の条件分岐に引っかかって変更できないことがあるのでここで設定しておく
@@ -92,6 +111,11 @@ def get_newline_suffix(
     # followed by "#" can be misclassified as a heading transition.
     elif patterns.code.match(line):
         status.update("code", unset_list=unset_list)
+        status.is_quote_code = False
+        return "\n"
+    elif is_quote_code_line:
+        status.update("code", unset_list=unset_list)
+        status.is_quote_code = True
         return "\n"
     elif patterns.comment.match(line) or patterns.comment.match(next_line):
         return "\n"
@@ -104,6 +128,8 @@ def get_newline_suffix(
         return "\n"
     elif patterns.table_cell.match(line) and patterns.table.match(next_line):
         status.update("table", unset_list=unset_list)
+        return "\n"
+    elif patterns.quote.match(line) and is_next_quote_code_line:
         return "\n"
     # Treat quote bodies like normal wrapped text and force explicit line breaks.
     elif patterns.quote.match(line) and patterns.quote.match(next_line):
@@ -179,24 +205,55 @@ def process_markdown(lines: list[str]) -> list[str]:
             new_lines.append(line + "\n")
             if status.is_list:
                 # indentの部分を取り除いて考えれば通常の場合の正規表現を使い回せる
-                line_no_indent = patterns.list_indent_prefix.sub("", line)
-                is_code_end = patterns.code.match(line_no_indent) is not None
+                line_for_code_end = patterns.list_indent_prefix.sub("", line)
             else:
-                is_code_end = patterns.code.match(line) is not None
+                line_for_code_end = line
+
+            if status.is_quote_code:
+                line_for_code_end = strip_quote_prefix(patterns, line_for_code_end)
+
+            is_code_end = patterns.code.match(line_for_code_end) is not None
             if is_code_end:
+                was_quote_code = status.is_quote_code
                 status.is_code = False
+                status.is_quote_code = False
+                # A quoted code fence is still inside a quote block; insert a blank
+                # line before plain text to keep block separation consistent.
+                if (
+                    was_quote_code
+                    and next_line
+                    and patterns.quote.match(next_line) is None
+                ):
+                    new_lines.append("\n")
         # alert blockは他の要素内に作ることができない (GitHub Markdown)
         elif status.is_alert:
             # alertの目印となる部分はis_alertの判定に使っていて、この段階ではalert内の要素のみを扱うことになる
             # その為、is_alert_endと違って、現在の行がquote_patternにmatchするかを判定する必要はない(確実にmatchする)
             is_alert_end = patterns.quote.match(next_line) is None
-            if is_alert_end:
+
+            if status.is_alert_code:
+                new_lines.append(line + "\n")
+                if is_quote_code_fence_line(patterns, line):
+                    status.is_alert_code = False
+                    if is_alert_end:
+                        # Alert blocks require an empty line to terminate before
+                        # following plain text; "<br>" cannot switch block context.
+                        if next_line:
+                            new_lines.append("\n")
+                        status.is_alert = False
+            elif is_quote_code_fence_line(patterns, line):
+                new_lines.append(line + "\n")
+                status.is_alert_code = True
+            elif is_quote_code_fence_line(patterns, next_line):
+                new_lines.append(line + "\n")
+            elif is_alert_end:
                 new_lines.append(line + "\n")
                 # 既に後ろに空行が来ていたら追加の\nを追加しなくても切り替わる
                 if next_line:
                     # <br>ではblockが切り替わらない
                     new_lines.append("\n")
                 status.is_alert = False
+                status.is_alert_code = False
             else:
                 new_lines.append(line + "<br>" + "\n")
         elif status.is_table:

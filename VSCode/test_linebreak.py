@@ -76,6 +76,28 @@ class ProcessMarkdownTests(unittest.TestCase):
 
         self.assertEqual(self.convert(content), expected)
 
+    def test_quote_with_fenced_code_block_is_preserved(self):
+        """It keeps quoted fenced code blocks free from injected <br> tags."""
+        content = (
+            "> before\n"
+            "> ```shell\n"
+            "> echo one\n"
+            "> echo two\n"
+            "> ```\n"
+            "> after\n"
+            "\n"
+            "next line\n"
+        )
+
+        self.assertEqual(self.convert(content), content)
+
+    def test_quote_fenced_code_block_adds_blank_line_before_plain_text(self):
+        """It inserts a blank line when a quoted fenced code block is followed by plain text."""
+        content = "> ```\n> echo one\n> ```\nafter\n"
+        expected = "> ```\n> echo one\n> ```\n\nafter\n"
+
+        self.assertEqual(self.convert(content), expected)
+
     def test_quote_marker_only_line_is_supported(self):
         """It handles lines that are only a quote marker."""
         content = ">\n> next\nafter\n"
@@ -87,6 +109,29 @@ class ProcessMarkdownTests(unittest.TestCase):
         """It inserts <br> between alert lines and separates the following paragraph."""
         content = "> [!NOTE]\n> alert line 1\n> alert line 2\nafter alert\n"
         expected = "> [!NOTE]\n> alert line 1<br>\n> alert line 2\n\nafter alert\n"
+
+        self.assertEqual(self.convert(content), expected)
+
+    def test_alert_with_fenced_code_block_is_preserved(self):
+        """It keeps alert fenced code blocks free from injected <br> tags."""
+        content = (
+            "> [!CAUTION]\n"
+            "> before\n"
+            "> ```shell\n"
+            "> echo one\n"
+            "> echo two\n"
+            "> ```\n"
+            "> after\n"
+            "\n"
+            "next line\n"
+        )
+
+        self.assertEqual(self.convert(content), content)
+
+    def test_alert_fenced_code_block_adds_blank_line_before_plain_text(self):
+        """It inserts a blank line after alert fenced code before plain text."""
+        content = "> [!NOTE]\n> ```\n> echo one\n> ```\nafter\n"
+        expected = "> [!NOTE]\n> ```\n> echo one\n> ```\n\nafter\n"
 
         self.assertEqual(self.convert(content), expected)
 
