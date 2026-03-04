@@ -57,7 +57,6 @@
 ## Environment
 - You can use `~/.zprofile` and `common/zsh/.zshrc` for a test environment, but do not modify them.
   - If you encounter issues with plugins, you are allowed to simply replicate environment variables, functions and aliases.
-- If the script is not specific to `zsh`, you should make it as portable as possible.
 
 ## Coding style
 - Executables (excluding dotfiles) must start with a shebang (`#!/bin/bash` or `#!/usr/bin/env zsh`)
@@ -109,3 +108,7 @@
         rm "$1"
     }
     ```
+
+## Coding Rule
+- If the script is not specific to `zsh`, you should make it as portable as possible. Also, use `shellcheck` as a linter.
+  - `shellcheck` does not support `zsh`, so do not use `shellcheck` for `zsh` scripts.

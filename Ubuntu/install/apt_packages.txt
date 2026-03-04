@@ -4,3 +4,4 @@ tree
 colordiff
 icdiff
 screen
+shellcheck
