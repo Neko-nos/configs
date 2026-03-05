@@ -6,3 +6,4 @@ tree
 colordiff
 icdiff
 codex
+shellcheck
