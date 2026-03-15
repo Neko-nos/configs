@@ -3,6 +3,7 @@
 ## Conversation
 - Respond to me in Japanese
 - After writing code, tell me the reasons behind your implementation/design (not as comments in the code)
+- Answer my questions in thd chat space, not in documents of code comments. Please distinguish between requests and questions.
 
 ## Coding
 - Write docstrings, comments and documents in English
