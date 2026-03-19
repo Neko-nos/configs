@@ -17,6 +17,7 @@ repos:
       name: Benchmark zsh startup with hyperfine
       entry: scripts/pre-push-zsh-benchmark.sh
       language: unsupported_script
+      verbose: true
       pass_filenames: false
       always_run: true
       stages: [pre-push]

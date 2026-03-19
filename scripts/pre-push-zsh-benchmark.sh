@@ -156,12 +156,12 @@ function record_startup_time() {
 EOF
 }
 
-benchmark_runs=20
+benchmark_runs=10
 
 while (($# > 0)); do
     case "${1}" in
         --runs)
-            benchmark_runs="${2:-20}"
+            benchmark_runs="${2:-10}"
             if (($# > 1)); then
                 shift 2
             else
