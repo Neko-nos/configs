@@ -73,6 +73,19 @@ First, clone this repository from GitHub:
 git clone https://github.com/Neko-nos/configs.git
 ```
 
+## Development Setup
+
+If you are going to modify this repository, install the development dependencies before you start working:
+
+```console
+uv sync
+uv run prek install
+```
+
+`uv sync` installs the tools declared in `pyproject.toml`, including `ruff` and `prek`.<br>
+`uv run prek install` installs the Git hook used by this repository.<br>
+Without these steps, the pre-commit hook may not run at commit time, or it may fail because `prek` is not available.
+
 ### Configurations for Keyboard
 #### Windows
 Most of the settings have to be configured via GUI, so there are no install scripts.<br>
