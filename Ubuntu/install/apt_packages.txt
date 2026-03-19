@@ -5,3 +5,4 @@ colordiff
 icdiff
 screen
 shellcheck
+hyperfine
