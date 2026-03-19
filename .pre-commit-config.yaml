@@ -8,3 +8,13 @@ repos:
       exclude: ^Ubuntu/keyboard/autokey/data/
     - id: ruff-format
       exclude: ^Ubuntu/keyboard/autokey/data/
+
+- repo: local
+  hooks:
+    - id: zsh-startup-benchmark
+      name: Benchmark zsh startup with hyperfine
+      entry: scripts/pre-push-zsh-benchmark.sh
+      language: unsupported_script
+      pass_filenames: false
+      always_run: true
+      stages: [pre-push]
