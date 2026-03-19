@@ -158,4 +158,4 @@ uv run prek install
 `uv sync` installs the tools declared in `pyproject.toml`, including `ruff` and `prek`.<br>
 `uv run prek install` installs the Git hooks used by this repository.<br>
 Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.<br>
-The `pre-push` hook benchmarks Zsh startup time with `hyperfine` and asks for confirmation before pushing.
+The `pre-push` hook benchmarks Zsh startup time with `hyperfine` before pushing.
