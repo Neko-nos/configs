@@ -39,19 +39,25 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes zsh hyperfine fzf
           mkdir -p "$HOME/.local/bin"
+          git clone --depth 1 https://github.com/seebi/dircolors-solarized.git "$HOME/.dircolors-solarized"
           curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
+      # Our .zshrc initializes completion via compinit/compdef, so benchmark
+      # commands should run under a pseudo-TTY to match interactive usage.
       - name: Prepare zsh benchmark environment
         run: |
           mkdir -p "$HOME/.config/sheldon"
           mkdir -p benchmark-cache
+          touch "$HOME/.zsh_history"
           [[ -e "$HOME/.config/sheldon/plugins.toml" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
           [[ -e "$HOME/.zshrc" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/.zshrc" "$HOME/.zshrc"
           {
             echo 'FILTER_CMD=fzf'
             echo "CONFIGS_COMMON_ZSH=$GITHUB_WORKSPACE/common/zsh"
             echo "CONFIGS_LINUX_GNU_ZSH=$GITHUB_WORKSPACE/Ubuntu"
+            echo "HISTFILE=$HOME/.zsh_history"
+            echo "ZSH_STARTUP_BENCHMARK_COMMAND=script -qec 'zsh -i -c exit' /dev/null"
           } >> "$GITHUB_ENV"
           "$HOME/.local/bin/sheldon" lock --update >/dev/null
 
@@ -67,7 +73,7 @@ jobs:
       - name: Benchmark base revision
         run: |
           git checkout --force "$BENCHMARK_BASE_SHA"
-          zsh -i -c exit >/dev/null
+          script -qec 'zsh -i -c exit' /dev/null >/dev/null
           "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > base-benchmark.json
 
       - name: Seed benchmark baseline
@@ -84,7 +90,7 @@ jobs:
       - name: Benchmark head revision
         run: |
           git checkout --force "$BENCHMARK_HEAD_SHA"
-          zsh -i -c exit >/dev/null
+          script -qec 'zsh -i -c exit' /dev/null >/dev/null
           "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > head-benchmark.json
 
       - name: Compare benchmark results
@@ -126,18 +132,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes zsh hyperfine fzf
           mkdir -p "$HOME/.local/bin"
+          git clone --depth 1 https://github.com/seebi/dircolors-solarized.git "$HOME/.dircolors-solarized"
           curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
+      # Our .zshrc initializes completion via compinit/compdef, so benchmark
+      # commands should run under a pseudo-TTY to match interactive usage.
       - name: Prepare zsh benchmark environment
         run: |
           mkdir -p "$HOME/.config/sheldon"
+          touch "$HOME/.zsh_history"
           [[ -e "$HOME/.config/sheldon/plugins.toml" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
           [[ -e "$HOME/.zshrc" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/.zshrc" "$HOME/.zshrc"
           {
             echo 'FILTER_CMD=fzf'
             echo "CONFIGS_COMMON_ZSH=$GITHUB_WORKSPACE/common/zsh"
             echo "CONFIGS_LINUX_GNU_ZSH=$GITHUB_WORKSPACE/Ubuntu"
+            echo "HISTFILE=$HOME/.zsh_history"
+            echo "ZSH_STARTUP_BENCHMARK_COMMAND=script -qec 'zsh -i -c exit' /dev/null"
           } >> "$GITHUB_ENV"
           "$HOME/.local/bin/sheldon" lock --update >/dev/null
 
