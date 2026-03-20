@@ -20,8 +20,21 @@ runs:
         fpath=("$GITHUB_WORKSPACE/common/zsh/functions" "${fpath[@]}")
 
         typeset -U fpath
+        autoload -Uz compaudit
+
+        typeset -a insecure_dirs
+        insecure_dirs=(${(f)"$(compaudit 2>/dev/null || true)"})
+
+        if (( ${#insecure_dirs[@]} == 0 )); then
+          echo "No insecure directories reported by compaudit."
+          exit 0
+        fi
+
+        typeset -U insecure_dirs
         typeset dir
-        for dir in "${fpath[@]}"; do
-          [[ -d "${dir}" ]] || continue
+        echo "Fixing insecure directories reported by compaudit:"
+        for dir in "${insecure_dirs[@]}"; do
+          [[ -e "${dir}" ]] || continue
+          echo " ${dir}"
           sudo chmod 755 -- "${dir}"
         done
