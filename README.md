@@ -165,3 +165,9 @@ GitHub Actions also benchmarks Zsh startup time on pull requests by comparing th
 
 the published benchmark history is available here:<br>
 [Zsh startup benchmark history](https://neko-nos.github.io/configs/dev/bench/zsh-startup/)
+
+> [!NOTE]
+> The published benchmark history and benchmark results shown on pull requests are measured on GitHub Actions runners, so they are slower than the results on my local machine.<br>
+> As a local reference, on a Mac with Apple M2 and 16 GB memory, `zsh -i -c exit` takes about 237.7 ms in this repository.
+
+![Local benchmark result on Apple M2 with 16 GB memory](images/benchmark_local.png)
