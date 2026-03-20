@@ -155,7 +155,13 @@ uv sync
 uv run prek install
 ```
 
-`uv sync` installs the tools declared in `pyproject.toml`, including `ruff` and `prek`.<br>
+`uv sync` installs the tools declared in `pyproject.toml`, including [Ruff](https://github.com/astral-sh/ruff) and [prek](https://github.com/j178/prek).<br>
 `uv run prek install` installs the Git hooks used by this repository.<br>
 Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.<br>
-The `pre-push` hook benchmarks Zsh startup time with `hyperfine` before pushing.
+The `pre-push` hook benchmarks Zsh startup time with [hyperfine](https://github.com/sharkdp/hyperfine) before pushing.<br>
+GitHub Actions also benchmarks Zsh startup time on pull requests by comparing the base and head revisions on the same runner, and it publishes benchmark history for pushes to `main`.
+
+## Benchmark Results
+
+the published benchmark history is available here:<br>
+[Zsh startup benchmark history](https://neko-nos.github.io/configs/dev/bench/zsh-startup/)
