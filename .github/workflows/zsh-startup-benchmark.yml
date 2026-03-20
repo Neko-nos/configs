@@ -37,7 +37,9 @@ jobs:
       - name: Install benchmark dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install --yes zsh hyperfine fzf
+          sudo apt-get install -y zsh
+          # Keep benchmark dependencies aligned with the Ubuntu install script.
+          sudo xargs -a "$GITHUB_WORKSPACE/Ubuntu/install/apt_packages.txt" apt-get install -y
           mkdir -p "$HOME/.local/bin"
           git clone --depth 1 https://github.com/seebi/dircolors-solarized.git "$HOME/.dircolors-solarized"
           curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
@@ -52,6 +54,7 @@ jobs:
           touch "$HOME/.zsh_history"
           [[ -e "$HOME/.config/sheldon/plugins.toml" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
           [[ -e "$HOME/.zshrc" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/.zshrc" "$HOME/.zshrc"
+          [[ -e "$HOME/.p10k.zsh" || -L "$HOME/.p10k.zsh" ]] || ln -s "$GITHUB_WORKSPACE/Ubuntu/.p10k.zsh" "$HOME/.p10k.zsh"
           {
             echo 'FILTER_CMD=fzf'
             echo "CONFIGS_COMMON_ZSH=$GITHUB_WORKSPACE/common/zsh"
@@ -130,7 +133,9 @@ jobs:
       - name: Install benchmark dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install --yes zsh hyperfine fzf
+          sudo apt-get install -y zsh
+          # Keep benchmark dependencies aligned with the Ubuntu install script.
+          sudo xargs -a "$GITHUB_WORKSPACE/Ubuntu/install/apt_packages.txt" apt-get install -y
           mkdir -p "$HOME/.local/bin"
           git clone --depth 1 https://github.com/seebi/dircolors-solarized.git "$HOME/.dircolors-solarized"
           curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
@@ -144,6 +149,7 @@ jobs:
           touch "$HOME/.zsh_history"
           [[ -e "$HOME/.config/sheldon/plugins.toml" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
           [[ -e "$HOME/.zshrc" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/.zshrc" "$HOME/.zshrc"
+          [[ -e "$HOME/.p10k.zsh" || -L "$HOME/.p10k.zsh" ]] || ln -s "$GITHUB_WORKSPACE/Ubuntu/.p10k.zsh" "$HOME/.p10k.zsh"
           {
             echo 'FILTER_CMD=fzf'
             echo "CONFIGS_COMMON_ZSH=$GITHUB_WORKSPACE/common/zsh"
