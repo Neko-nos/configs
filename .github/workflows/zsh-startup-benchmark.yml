@@ -25,19 +25,19 @@ jobs:
       BENCHMARK_BASE_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7.6.0
         # Our .zshrc enables uv shell completion when uv exists, so install uv
         # to keep the benchmarked shell startup path close to normal usage.
 
       - name: Install benchmark dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install --yes hyperfine fzf
+          sudo apt-get install --yes zsh hyperfine fzf
           mkdir -p "$HOME/.local/bin"
           curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
@@ -67,7 +67,7 @@ jobs:
           "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > base-benchmark.json
 
       - name: Seed benchmark baseline
-        uses: benchmark-action/github-action-benchmark@v1
+        uses: benchmark-action/github-action-benchmark@v1.21.0
         with:
           name: zsh startup benchmark
           tool: customSmallerIsBetter
@@ -80,7 +80,7 @@ jobs:
           "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > head-benchmark.json
 
       - name: Compare benchmark results
-        uses: benchmark-action/github-action-benchmark@v1
+        uses: benchmark-action/github-action-benchmark@v1.21.0
         with:
           name: zsh startup benchmark
           tool: customSmallerIsBetter
@@ -104,19 +104,19 @@ jobs:
       BENCHMARK_ALERT_THRESHOLD: 180%
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v6
+        uses: astral-sh/setup-uv@v7.6.0
         # Our .zshrc enables uv shell completion when uv exists, so install uv
         # to keep the benchmarked shell startup path close to normal usage.
 
       - name: Install benchmark dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install --yes hyperfine fzf
+          sudo apt-get install --yes zsh hyperfine fzf
           mkdir -p "$HOME/.local/bin"
           curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
@@ -137,7 +137,7 @@ jobs:
         run: scripts/github-action-zsh-benchmark.sh > benchmark.json
 
       - name: Store benchmark result
-        uses: benchmark-action/github-action-benchmark@v1
+        uses: benchmark-action/github-action-benchmark@v1.21.0
         with:
           name: zsh startup benchmark
           tool: customSmallerIsBetter
