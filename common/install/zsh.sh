@@ -3,6 +3,54 @@
 # Stop running this script if any error occurs
 set -e
 
+#######################################
+# Link a home dotfile to a repository-managed file with an optional prompt.
+# Arguments:
+#   1: Source file path in the repository
+#   2: Destination path in the home directory
+#   3: Human-readable label for prompts and status messages
+# Outputs:
+#   Writes status messages and prompts to stdout
+# Returns:
+#   0 on success, non-zero on failure
+#######################################
+function link_repo_dotfile() {
+    local source_file="${1}"
+    local destination_file="${2}"
+    local display_name="${3}"
+    local timestamp
+    local backup_file
+
+    if [[ ! -f "${source_file}" ]]; then
+        echo "No repository-managed ${display_name} found at ${source_file}. Skipping."
+        return 0
+    fi
+
+    if [[ -L "${destination_file}" && "${destination_file:A}" == "${source_file:A}" ]]; then
+        echo "You have already linked ${display_name} to the repository copy."
+        return 0
+    fi
+
+    if [[ -e "${destination_file}" || -L "${destination_file}" ]]; then
+        echo "You have already created ${display_name}"
+        printf "Do you want to replace it with our ${display_name}? [y/N]: "
+        if read -q; then
+            timestamp="$(date +%Y%m%d%H%M%S)"
+            backup_file="${destination_file}_old_${timestamp}"
+            # Print a newline using echo because read -q doesn't.
+            echo
+            mv "${destination_file}" "${backup_file}"
+            echo "Renamed your ${display_name} to ${backup_file} as a backup file."
+            ln -s "${source_file:A}" "${destination_file}"
+        else
+            echo
+        fi
+        return 0
+    fi
+
+    ln -s "${source_file:A}" "${destination_file}"
+}
+
 OSNAME="${1}"
 if [[ "${(L)OSNAME}" == 'mac' ]]; then
     OSNAME='Mac'
@@ -43,24 +91,11 @@ else
 fi
 echo
 
-# Create a symbolic link for .zshrc
 script_dir="${${(%):-%N}:A:h}"
 common_zshrc="${script_dir}/../zsh/.zshrc"
-if [[ -f ~/.zshrc ]]; then
-    echo 'You have already created .zshrc'
-    printf 'Do you want to replace it with our .zshrc? [y/N]: '
-    if read -q; then
-        timestamp="$(date +%Y%m%d%H%M%S)"
-        # Print a newline using echo because read -q doesn't.
-        echo; mv ~/.zshrc ~/.zshrc_old_"${timestamp}"
-        echo "Renamed your .zshrc to .zshrc_old_${timestamp} as a backup file."
-        ln -s "${common_zshrc:A}" ~/.zshrc
-    else
-        echo
-    fi
-else
-    ln -s "${common_zshrc:A}" ~/.zshrc
-fi
+os_specific_p10k="${script_dir}/../../${OSNAME}/.p10k.zsh"
+link_repo_dotfile "${common_zshrc}" ~/.zshrc '.zshrc'
+link_repo_dotfile "${os_specific_p10k}" ~/.p10k.zsh '.p10k.zsh'
 
 # Our .zshrc requires some env variables to be set in advance
 printf 'Did you already set FILTER_CMD in .zprofile? [y/N]: '
@@ -86,7 +121,9 @@ source ~/.zshrc
 # Cleaning up
 unset -v script_dir
 unset -v common_zshrc
+unset -v os_specific_p10k
 unset -v OSNAME
+unset -f link_repo_dotfile
 
 echo 'Finished zsh configuration!'
 echo 'Enjoy zsh!'
