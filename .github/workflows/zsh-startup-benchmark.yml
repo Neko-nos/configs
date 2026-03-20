@@ -76,7 +76,7 @@ jobs:
       - name: Benchmark base revision
         run: |
           git checkout --force "$BENCHMARK_BASE_SHA"
-          script -qec 'zsh -i -c exit' /dev/null >/dev/null
+          script -qec 'zsh -i -c exit' /dev/null
           "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > base-benchmark.json
 
       - name: Seed benchmark baseline
@@ -93,7 +93,7 @@ jobs:
       - name: Benchmark head revision
         run: |
           git checkout --force "$BENCHMARK_HEAD_SHA"
-          script -qec 'zsh -i -c exit' /dev/null >/dev/null
+          script -qec 'zsh -i -c exit' /dev/null
           "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > head-benchmark.json
 
       - name: Compare benchmark results
