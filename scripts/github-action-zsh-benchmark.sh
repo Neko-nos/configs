@@ -20,24 +20,25 @@ source "${SCRIPT_DIR}/zsh-startup-benchmark-common.sh"
 #######################################
 function usage() {
     cat <<'EOF'
-Usage: pre-push-zsh-benchmark.sh [OPTIONS]
+Usage: github-action-zsh-benchmark.sh [OPTIONS]
 
-Benchmark zsh startup with hyperfine before push.
+Benchmark zsh startup for github-action-benchmark custom JSON output.
 
 Options:
-  --initial-runs N   Measure initial interactive startup N times and report mean/std.
+  --initial-runs N   Measure initial interactive startup N times and export mean/std in ms.
   --average-runs N   Measure warmed interactive startup N times after warmup runs.
   --keep-results     Keep intermediate hyperfine JSON files instead of removing them.
   -h, --help         Show this help message and exit.
 EOF
 }
-initial_runs=1
-average_runs=10
+
+initial_runs=20
+average_runs=20
 
 while (($# > 0)); do
     case "${1}" in
         --initial-runs)
-            initial_runs="${2:-1}"
+            initial_runs="${2:-20}"
             if (($# > 1)); then
                 shift 2
             else
@@ -45,7 +46,7 @@ while (($# > 0)); do
             fi
             ;;
         --average-runs)
-            average_runs="${2:-10}"
+            average_runs="${2:-20}"
             if (($# > 1)); then
                 shift 2
             else
@@ -82,4 +83,4 @@ trap 'cleanup_result_dir "${benchmark_result_dir}"' EXIT
 
 measure_initial_startup_time "${benchmark_result_dir}" "${initial_runs}"
 measure_average_startup_time "${benchmark_result_dir}" "${average_runs}"
-record_startup_time "${benchmark_result_dir}" "${initial_runs}" "${average_runs}"
+record_github_action_benchmark "${benchmark_result_dir}"
