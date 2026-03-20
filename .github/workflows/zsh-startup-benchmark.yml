@@ -30,39 +30,20 @@ jobs:
           fetch-depth: 0
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v7.6.0
         # Our .zshrc enables uv shell completion when uv exists, so install uv
         # to keep the benchmarked shell startup path close to normal usage.
+        uses: astral-sh/setup-uv@v7.6.0
 
       - name: Install benchmark dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y zsh
-          # Keep benchmark dependencies aligned with the Ubuntu install script.
-          sudo xargs -a "$GITHUB_WORKSPACE/Ubuntu/install/apt_packages.txt" apt-get install -y
-          mkdir -p "$HOME/.local/bin"
-          git clone --depth 1 https://github.com/seebi/dircolors-solarized.git "$HOME/.dircolors-solarized"
-          curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        uses: ./.github/actions/zsh-startup-benchmark/install-benchmark-dependencies
 
-      # Our .zshrc initializes completion via compinit/compdef, so benchmark
-      # commands should run under a pseudo-TTY to match interactive usage.
       - name: Prepare zsh benchmark environment
-        run: |
-          mkdir -p "$HOME/.config/sheldon"
-          mkdir -p benchmark-cache
-          touch "$HOME/.zsh_history"
-          [[ -e "$HOME/.config/sheldon/plugins.toml" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
-          [[ -e "$HOME/.zshrc" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/.zshrc" "$HOME/.zshrc"
-          [[ -e "$HOME/.p10k.zsh" || -L "$HOME/.p10k.zsh" ]] || ln -s "$GITHUB_WORKSPACE/Ubuntu/.p10k.zsh" "$HOME/.p10k.zsh"
-          {
-            echo 'FILTER_CMD=fzf'
-            echo "CONFIGS_COMMON_ZSH=$GITHUB_WORKSPACE/common/zsh"
-            echo "CONFIGS_LINUX_GNU_ZSH=$GITHUB_WORKSPACE/Ubuntu"
-            echo "HISTFILE=$HOME/.zsh_history"
-            echo "ZSH_STARTUP_BENCHMARK_COMMAND=script -qec 'zsh -i -c exit' /dev/null"
-          } >> "$GITHUB_ENV"
-          "$HOME/.local/bin/sheldon" lock --update >/dev/null
+        uses: ./.github/actions/zsh-startup-benchmark/prepare-environment
+        with:
+          create-benchmark-cache: "true"
+
+      - name: Fix compinit permissions
+        uses: ./.github/actions/zsh-startup-benchmark/fix-compinit-permissions
 
       - name: Stage benchmark scripts
         run: |
@@ -126,38 +107,18 @@ jobs:
           fetch-depth: 0
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v7.6.0
         # Our .zshrc enables uv shell completion when uv exists, so install uv
         # to keep the benchmarked shell startup path close to normal usage.
+        uses: astral-sh/setup-uv@v7.6.0
 
       - name: Install benchmark dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y zsh
-          # Keep benchmark dependencies aligned with the Ubuntu install script.
-          sudo xargs -a "$GITHUB_WORKSPACE/Ubuntu/install/apt_packages.txt" apt-get install -y
-          mkdir -p "$HOME/.local/bin"
-          git clone --depth 1 https://github.com/seebi/dircolors-solarized.git "$HOME/.dircolors-solarized"
-          curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+        uses: ./.github/actions/zsh-startup-benchmark/install-benchmark-dependencies
 
-      # Our .zshrc initializes completion via compinit/compdef, so benchmark
-      # commands should run under a pseudo-TTY to match interactive usage.
       - name: Prepare zsh benchmark environment
-        run: |
-          mkdir -p "$HOME/.config/sheldon"
-          touch "$HOME/.zsh_history"
-          [[ -e "$HOME/.config/sheldon/plugins.toml" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
-          [[ -e "$HOME/.zshrc" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/.zshrc" "$HOME/.zshrc"
-          [[ -e "$HOME/.p10k.zsh" || -L "$HOME/.p10k.zsh" ]] || ln -s "$GITHUB_WORKSPACE/Ubuntu/.p10k.zsh" "$HOME/.p10k.zsh"
-          {
-            echo 'FILTER_CMD=fzf'
-            echo "CONFIGS_COMMON_ZSH=$GITHUB_WORKSPACE/common/zsh"
-            echo "CONFIGS_LINUX_GNU_ZSH=$GITHUB_WORKSPACE/Ubuntu"
-            echo "HISTFILE=$HOME/.zsh_history"
-            echo "ZSH_STARTUP_BENCHMARK_COMMAND=script -qec 'zsh -i -c exit' /dev/null"
-          } >> "$GITHUB_ENV"
-          "$HOME/.local/bin/sheldon" lock --update >/dev/null
+        uses: ./.github/actions/zsh-startup-benchmark/prepare-environment
+
+      - name: Fix compinit permissions
+        uses: ./.github/actions/zsh-startup-benchmark/fix-compinit-permissions
 
       - name: Run benchmark
         run: scripts/github-action-zsh-benchmark.sh > benchmark.json
