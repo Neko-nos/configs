@@ -1,0 +1,151 @@
+name: Zsh Startup Benchmark
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  pr-benchmark:
+    name: Compare base and head on the same runner
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      # Compare base and head on the same hosted VM so the delta is driven more
+      # by the change under test than by runner-to-runner variance.
+      BENCHMARK_ALERT_THRESHOLD: 150%
+      BENCHMARK_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      BENCHMARK_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        # Our .zshrc enables uv shell completion when uv exists, so install uv
+        # to keep the benchmarked shell startup path close to normal usage.
+
+      - name: Install benchmark dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes hyperfine fzf
+          mkdir -p "$HOME/.local/bin"
+          curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Prepare zsh benchmark environment
+        run: |
+          mkdir -p "$HOME/.config/sheldon"
+          mkdir -p benchmark-cache
+          [[ -e "$HOME/.config/sheldon/plugins.toml" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
+          [[ -e "$HOME/.zshrc" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/.zshrc" "$HOME/.zshrc"
+          {
+            echo 'FILTER_CMD=fzf'
+            echo "CONFIGS_COMMON_ZSH=$GITHUB_WORKSPACE/common/zsh"
+            echo "CONFIGS_LINUX_GNU_ZSH=$GITHUB_WORKSPACE/Ubuntu"
+          } >> "$GITHUB_ENV"
+          "$HOME/.local/bin/sheldon" lock --update >/dev/null
+
+      - name: Stage benchmark scripts
+        run: |
+          mkdir -p "$RUNNER_TEMP/zsh-benchmark"
+          cp scripts/github-action-zsh-benchmark.sh "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh"
+          cp scripts/zsh-startup-benchmark-common.sh "$RUNNER_TEMP/zsh-benchmark/zsh-startup-benchmark-common.sh"
+
+      - name: Benchmark base revision
+        run: |
+          git checkout --force "$BENCHMARK_BASE_SHA"
+          "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > base-benchmark.json
+
+      - name: Seed benchmark baseline
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: zsh startup benchmark
+          tool: customSmallerIsBetter
+          output-file-path: base-benchmark.json
+          external-data-json-path: ./benchmark-cache/base-vs-head.json
+
+      - name: Benchmark head revision
+        run: |
+          git checkout --force "$BENCHMARK_HEAD_SHA"
+          "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > head-benchmark.json
+
+      - name: Compare benchmark results
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: zsh startup benchmark
+          tool: customSmallerIsBetter
+          output-file-path: head-benchmark.json
+          external-data-json-path: ./benchmark-cache/base-vs-head.json
+          save-data-file: false
+          summary-always: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-on-alert: true
+          alert-threshold: ${{ env.BENCHMARK_ALERT_THRESHOLD }}
+          ref: ${{ github.event.pull_request.head.sha }}
+
+  push-benchmark:
+    name: Publish benchmark history
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    env:
+      # Push runs are compared against results captured on previous hosted VMs.
+      # The upstream action documents roughly 10-20% variance on hosted runners,
+      # so keep this threshold looser than the same-VM PR comparison threshold.
+      BENCHMARK_ALERT_THRESHOLD: 180%
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        # Our .zshrc enables uv shell completion when uv exists, so install uv
+        # to keep the benchmarked shell startup path close to normal usage.
+
+      - name: Install benchmark dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes hyperfine fzf
+          mkdir -p "$HOME/.local/bin"
+          curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Prepare zsh benchmark environment
+        run: |
+          mkdir -p "$HOME/.config/sheldon"
+          [[ -e "$HOME/.config/sheldon/plugins.toml" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
+          [[ -e "$HOME/.zshrc" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/.zshrc" "$HOME/.zshrc"
+          {
+            echo 'FILTER_CMD=fzf'
+            echo "CONFIGS_COMMON_ZSH=$GITHUB_WORKSPACE/common/zsh"
+            echo "CONFIGS_LINUX_GNU_ZSH=$GITHUB_WORKSPACE/Ubuntu"
+          } >> "$GITHUB_ENV"
+          "$HOME/.local/bin/sheldon" lock --update >/dev/null
+
+      - name: Run benchmark
+        run: scripts/github-action-zsh-benchmark.sh > benchmark.json
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: zsh startup benchmark
+          tool: customSmallerIsBetter
+          output-file-path: benchmark.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          gh-pages-branch: gh-pages
+          benchmark-data-dir-path: dev/bench/zsh-startup
+          comment-on-alert: true
+          alert-threshold: ${{ env.BENCHMARK_ALERT_THRESHOLD }}
+          summary-always: true
