@@ -1,4 +1,4 @@
-autoload -Uz __safe_alias
+autoload -Uz __safe_alias __warn __update_cache
 
 typeset -ga SAFE_ALIAS_MANAGER_CMD SAFE_ALIAS_UPDATE_CMD
 # Use arrays for commands to avoid word-splitting and quoting pitfalls.
@@ -14,7 +14,15 @@ fi
 __safe_alias ls 'ls -AX --color=auto'
 
 # Custom colors for ls and completion
-eval $(dircolors ~/.dircolors-solarized/dircolors.ansi-light)
+function __load_ls_color_cache() {
+    local ls_color_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zshrc/ls_color_cache.zsh"
+    local dircolors_file="${HOME}/.dircolors-solarized/dircolors.ansi-light"
+    __update_cache "dircolors" "${ls_color_cache}" "${dircolors_file}" -- "${dircolors_file}" || true
+    source "${ls_color_cache}"
+}
+__load_ls_color_cache
+unset -f __load_ls_color_cache
+
 if [[ -n "$LS_COLORS" ]]; then
     zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
@@ -37,6 +45,8 @@ function _custom_tree() {
 __safe_alias diff 'colordiff -u'
 __safe_alias icdiff 'icdiff -U 1 --line-numbers'
 
-# Clean up helper functions and variables
+# Clean up helper functions and variables.
+# `__warn` and `__update_cache` are shared helpers that remain available until
+# `.zshrc` finishes loading, so cleanup is centralized there.
 unset -f __safe_alias
 unset -v SAFE_ALIAS_MANAGER_CMD SAFE_ALIAS_UPDATE_CMD

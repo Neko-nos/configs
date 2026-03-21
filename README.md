@@ -168,6 +168,6 @@ The published benchmark history is available here:<br>
 
 > [!NOTE]
 > The published benchmark history and benchmark results shown on pull requests are measured on GitHub Actions runners, so they might be slower than the results on your local machine.<br>
-> As a local reference, on a Mac with Apple M2 and 16 GB memory, `zsh -i -c exit` takes about 237.7 ms in this repository.
+> As a local reference, on a Mac with Apple M2 and 16 GB memory, `zsh -i -c exit` takes about 182.2 ms in this repository.
 
 ![Local benchmark result on Apple M2 with 16 GB memory](images/benchmark_local.png)
