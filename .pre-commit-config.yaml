@@ -1,0 +1,23 @@
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  # Ruff version.
+  rev: v0.15.6
+  hooks:
+    - id: ruff-check
+      args: [ --fix ]
+      exclude: ^Ubuntu/keyboard/autokey/data/
+    - id: ruff-format
+      exclude: ^Ubuntu/keyboard/autokey/data/
+
+- repo: local
+  hooks:
+    - id: zsh-startup-benchmark
+      name: Benchmark zsh startup with hyperfine
+      entry: scripts/pre-push-zsh-benchmark.sh
+      language: unsupported_script
+      verbose: true
+      pass_filenames: false
+      always_run: true
+      stages: [pre-push]

@@ -1,0 +1,48 @@
+name: Prepare benchmark environment
+description: Link zsh benchmark dotfiles and export environment variables for the benchmark workflow.
+
+inputs:
+  create-benchmark-cache:
+    description: Create the benchmark-cache directory used by the PR comparison workflow.
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - name: Prepare benchmark files
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        mkdir -p "$HOME/.config/sheldon"
+        if [[ "${{ inputs.create-benchmark-cache }}" == "true" ]]; then
+          mkdir -p benchmark-cache
+        fi
+
+        touch "$HOME/.zsh_history"
+        [[ -e "$HOME/.config/sheldon/plugins.toml" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/sheldon/plugins.toml" "$HOME/.config/sheldon/plugins.toml"
+        [[ -e "$HOME/.zshrc" ]] || ln -s "$GITHUB_WORKSPACE/common/zsh/.zshrc" "$HOME/.zshrc"
+        [[ -e "$HOME/.p10k.zsh" || -L "$HOME/.p10k.zsh" ]] || ln -s "$GITHUB_WORKSPACE/Ubuntu/.p10k.zsh" "$HOME/.p10k.zsh"
+
+    - name: Export benchmark environment
+      shell: bash
+      # Our .zshrc initializes completion via compinit/compdef, so benchmark
+      # commands should run under a pseudo-TTY to match interactive usage.
+      run: |
+        set -euo pipefail
+
+        {
+          echo 'FILTER_CMD=fzf'
+          echo "CONFIGS_COMMON_ZSH=$GITHUB_WORKSPACE/common/zsh"
+          echo "CONFIGS_LINUX_GNU_ZSH=$GITHUB_WORKSPACE/Ubuntu"
+          echo "HISTFILE=$HOME/.zsh_history"
+          echo "ZSH_STARTUP_BENCHMARK_COMMAND=script -qec 'zsh -i -c exit' /dev/null"
+        } >> "$GITHUB_ENV"
+
+    - name: Refresh sheldon lockfile
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        "$HOME/.local/bin/sheldon" lock --update >/dev/null

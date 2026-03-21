@@ -7,3 +7,4 @@ colordiff
 icdiff
 codex
 shellcheck
+hyperfine

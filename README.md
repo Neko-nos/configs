@@ -145,3 +145,29 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
 #### Instant Prompt
 Powerlevel10k offers an [instant prompt](https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt), allowing you to type commands while plugins are still loading.<br>
 The instructions in `p10k configure` recommend setting `POWERLEVEL9K_INSTANT_PROMPT` to `verbose`, but if you encounter warnings about the instant prompt, set it to `quiet`.
+
+### Development Setup
+
+If you are going to contribute to this repository, install the development dependencies before you start working:
+
+```console
+uv sync
+uv run prek install
+```
+
+`uv sync` installs the tools declared in `pyproject.toml`, including [Ruff](https://github.com/astral-sh/ruff) and [prek](https://github.com/j178/prek).<br>
+`uv run prek install` installs the Git hooks used by this repository.<br>
+Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.<br>
+The `pre-push` hook benchmarks Zsh startup time with [hyperfine](https://github.com/sharkdp/hyperfine) before pushing.<br>
+GitHub Actions also benchmarks Zsh startup time on pull requests by comparing the base and head revisions on the same runner, and it publishes benchmark history for pushes to `main`.
+
+## Benchmark Results
+
+The published benchmark history is available here:<br>
+[Zsh startup benchmark history](https://neko-nos.github.io/configs/dev/bench/zsh-startup/)
+
+> [!NOTE]
+> The published benchmark history and benchmark results shown on pull requests are measured on GitHub Actions runners, so they might be slower than the results on your local machine.<br>
+> As a local reference, on a Mac with Apple M2 and 16 GB memory, `zsh -i -c exit` takes about 237.7 ms in this repository.
+
+![Local benchmark result on Apple M2 with 16 GB memory](images/benchmark_local.png)

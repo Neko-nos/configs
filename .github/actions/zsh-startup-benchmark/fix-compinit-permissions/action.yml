@@ -1,0 +1,40 @@
+name: Fix compinit permissions
+description: Normalize permissions for directories in the effective fpath to avoid compinit prompts in TTY benchmarks.
+
+runs:
+  using: composite
+  steps:
+    # When benchmark commands run under a pseudo-TTY, compinit can prompt about
+    # insecure directories and block the workflow:
+    #   zsh compinit: insecure directories, run compaudit for list.
+    #   Ignore insecure directories and continue [y] or abort compinit [n]?
+    # Normalize permissions for every directory in the effective fpath ahead
+    # of time so the benchmark does not get stuck waiting for input.
+    # ref: https://qiita.com/ayihis@github/items/88f627b2566d6341a741
+    - name: Fix insecure directories
+      shell: zsh {0}
+      run: |
+        set -euo pipefail
+
+        eval "$("$HOME/.local/bin/sheldon" source)"
+        fpath=("$GITHUB_WORKSPACE/common/zsh/functions" "${fpath[@]}")
+
+        typeset -U fpath
+        autoload -Uz compaudit
+
+        typeset -a insecure_dirs
+        insecure_dirs=(${(f)"$(compaudit 2>/dev/null || true)"})
+
+        if (( ${#insecure_dirs[@]} == 0 )); then
+          echo "No insecure directories reported by compaudit."
+          exit 0
+        fi
+
+        typeset -U insecure_dirs
+        typeset dir
+        echo "Fixing insecure directories reported by compaudit:"
+        for dir in "${insecure_dirs[@]}"; do
+          [[ -e "${dir}" ]] || continue
+          echo " ${dir}"
+          sudo chmod 755 -- "${dir}"
+        done

@@ -1,0 +1,138 @@
+name: Zsh Startup Benchmark
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  pr-benchmark:
+    name: Compare base and head on the same runner
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      # Compare base and head on the same hosted VM so the delta is driven more
+      # by the change under test than by runner-to-runner variance.
+      BENCHMARK_ALERT_THRESHOLD: 150%
+      BENCHMARK_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      BENCHMARK_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Set up uv
+        # Our .zshrc enables uv shell completion when uv exists, so install uv
+        # to keep the benchmarked shell startup path close to normal usage.
+        uses: astral-sh/setup-uv@v7.6.0
+
+      - name: Install benchmark dependencies
+        uses: ./.github/actions/zsh-startup-benchmark/install-benchmark-dependencies
+
+      - name: Prepare zsh benchmark environment
+        uses: ./.github/actions/zsh-startup-benchmark/prepare-environment
+        with:
+          create-benchmark-cache: "true"
+
+      - name: Fix compinit permissions
+        uses: ./.github/actions/zsh-startup-benchmark/fix-compinit-permissions
+
+      - name: Stage benchmark scripts
+        run: |
+          mkdir -p "$RUNNER_TEMP/zsh-benchmark"
+          cp scripts/github-action-zsh-benchmark.sh "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh"
+          cp scripts/zsh-startup-benchmark-common.sh "$RUNNER_TEMP/zsh-benchmark/zsh-startup-benchmark-common.sh"
+
+      # Prime startup caches before the measured "initial" benchmark so
+      # base/head comparisons are not skewed by one side paying the first
+      # cache-generation cost alone.
+      - name: Benchmark base revision
+        run: |
+          git checkout --force "$BENCHMARK_BASE_SHA"
+          script -qec 'zsh -i -c exit' /dev/null
+          "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > base-benchmark.json
+
+      - name: Seed benchmark baseline
+        uses: benchmark-action/github-action-benchmark@v1.21.0
+        with:
+          name: zsh startup benchmark
+          tool: customSmallerIsBetter
+          output-file-path: base-benchmark.json
+          external-data-json-path: ./benchmark-cache/base-vs-head.json
+
+      # Prime startup caches before the measured "initial" benchmark so
+      # base/head comparisons are not skewed by one side paying the first
+      # cache-generation cost alone.
+      - name: Benchmark head revision
+        run: |
+          git checkout --force "$BENCHMARK_HEAD_SHA"
+          script -qec 'zsh -i -c exit' /dev/null
+          "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > head-benchmark.json
+
+      - name: Compare benchmark results
+        uses: benchmark-action/github-action-benchmark@v1.21.0
+        with:
+          name: zsh startup benchmark
+          tool: customSmallerIsBetter
+          output-file-path: head-benchmark.json
+          external-data-json-path: ./benchmark-cache/base-vs-head.json
+          save-data-file: false
+          summary-always: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-on-alert: true
+          alert-threshold: ${{ env.BENCHMARK_ALERT_THRESHOLD }}
+          ref: ${{ github.event.pull_request.head.sha }}
+
+  push-benchmark:
+    name: Publish benchmark history
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    env:
+      # Push runs are compared against results captured on previous hosted VMs.
+      # The upstream action documents roughly 10-20% variance on hosted runners,
+      # so keep this threshold looser than the same-VM PR comparison threshold.
+      BENCHMARK_ALERT_THRESHOLD: 180%
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Set up uv
+        # Our .zshrc enables uv shell completion when uv exists, so install uv
+        # to keep the benchmarked shell startup path close to normal usage.
+        uses: astral-sh/setup-uv@v7.6.0
+
+      - name: Install benchmark dependencies
+        uses: ./.github/actions/zsh-startup-benchmark/install-benchmark-dependencies
+
+      - name: Prepare zsh benchmark environment
+        uses: ./.github/actions/zsh-startup-benchmark/prepare-environment
+
+      - name: Fix compinit permissions
+        uses: ./.github/actions/zsh-startup-benchmark/fix-compinit-permissions
+
+      - name: Run benchmark
+        run: scripts/github-action-zsh-benchmark.sh > benchmark.json
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1.21.0
+        with:
+          name: zsh startup benchmark
+          tool: customSmallerIsBetter
+          output-file-path: benchmark.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          gh-pages-branch: gh-pages
+          benchmark-data-dir-path: dev/bench/zsh-startup
+          comment-on-alert: true
+          alert-threshold: ${{ env.BENCHMARK_ALERT_THRESHOLD }}
+          summary-always: true

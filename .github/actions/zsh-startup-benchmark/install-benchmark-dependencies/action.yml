@@ -1,0 +1,32 @@
+name: Install benchmark dependencies
+description: Install OS packages and third-party tools required for the zsh startup benchmark.
+
+runs:
+  using: composite
+  steps:
+    - name: Install apt packages
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        sudo apt-get update
+        sudo apt-get install -y zsh
+        # Keep benchmark dependencies aligned with the Ubuntu install script.
+        sudo xargs -a "$GITHUB_WORKSPACE/Ubuntu/install/apt_packages.txt" apt-get install -y
+
+    - name: Install dircolors-solarized
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        git clone --depth 1 https://github.com/seebi/dircolors-solarized.git "$HOME/.dircolors-solarized"
+
+    - name: Install sheldon
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        mkdir -p "$HOME/.local/bin"
+        curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
+          | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
