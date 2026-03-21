@@ -18,6 +18,24 @@ typeset -gU path fpath
 # Helper functions
 autoload -Uz __warn __info __update_cache
 
+# Keep frequently sourced startup files compiled so later shell startups can
+# reuse the cached bytecode. The temporary `source` wrapper is scoped to the
+# early bootstrap phase and removed after config loading to avoid changing
+# interactive shell behavior outside initialization.
+# ref: https://zenn.dev/fuzmare/articles/zsh-source-zcompile-all
+function __ensure_zcompiled () {
+    local compiled="$1.zwc"
+    if [[ ! -r "${compiled}" || "$1" -nt "${compiled}" ]]; then
+        __info "Compiling ${1}"
+        zcompile "${1}"
+    fi
+}
+function source () {
+    __ensure_zcompiled "$1"
+    builtin source "$1"
+}
+__ensure_zcompiled "${HOME}/.zshrc"
+
 # Sheldon
 # ref: https://zenn.dev/fuzmare/articles/zsh-plugin-manager-cache
 function __load_sheldon_cache() {
@@ -130,6 +148,8 @@ unset -f __warn
 unset -f __info
 unset -f __update_cache
 unset -f __load_zsh_files
+unset -f __ensure_zcompiled
+unfunction source
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
