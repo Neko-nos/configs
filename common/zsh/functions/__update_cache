@@ -61,6 +61,7 @@ function __update_cache() {
 
     if ! "${command_name}" "$@" >| "${tmp_cache}"; then
         __warn "Failed to update cache '${cache_file}' with '${command_name} $*'."
+        rm -f "${tmp_cache}"
         return 1
     fi
 

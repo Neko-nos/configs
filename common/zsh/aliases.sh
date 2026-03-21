@@ -16,7 +16,8 @@ __safe_alias ls 'ls -AX --color=auto'
 # Custom colors for ls and completion
 function __load_ls_color_cache() {
     local ls_color_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zshrc/ls_color_cache.zsh"
-    __update_cache "dircolors" "${ls_color_cache}" -- ~/.dircolors-solarized/dircolors.ansi-light || true
+    local dircolors_file="${HOME}/.dircolors-solarized/dircolors.ansi-light"
+    __update_cache "dircolors" "${ls_color_cache}" "${dircolors_file}" -- "${dircolors_file}" || true
     source "${ls_color_cache}"
 }
 __load_ls_color_cache
