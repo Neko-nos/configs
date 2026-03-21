@@ -38,20 +38,12 @@ average_runs=20
 while (($# > 0)); do
     case "${1}" in
         --initial-runs)
-            initial_runs="${2:-20}"
-            if (($# > 1)); then
-                shift 2
-            else
-                shift
-            fi
+            initial_runs="$(parse_positive_integer_option "${1}" "${2:-}")" || exit 1
+            shift 2
             ;;
         --average-runs)
-            average_runs="${2:-20}"
-            if (($# > 1)); then
-                shift 2
-            else
-                shift
-            fi
+            average_runs="$(parse_positive_integer_option "${1}" "${2:-}")" || exit 1
+            shift 2
             ;;
         --keep-results)
             export ZSH_STARTUP_BENCHMARK_KEEP_RESULTS='true'

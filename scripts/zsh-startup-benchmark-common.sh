@@ -16,6 +16,34 @@ function prepare_benchmark() {
 }
 
 #######################################
+# Validate and echo a positive integer CLI option value.
+# Arguments:
+#   1: Option name
+#   2: Option value
+# Outputs:
+#   Writes the validated value to stdout
+#   Writes an error message to stderr on validation failure
+# Returns:
+#   0 when the value is a positive integer, 1 otherwise
+#######################################
+function parse_positive_integer_option() {
+    local option_name="${1}"
+    local option_value="${2:-}"
+
+    if [[ -z "${option_value}" || "${option_value}" == -* ]]; then
+        print -u2 -- "${option_name} requires 1 argument: a positive integer."
+        return 1
+    fi
+
+    if [[ ! "${option_value}" =~ '^[1-9][0-9]*$' ]]; then
+        print -u2 -- "${option_name} must be a positive integer: ${option_value}"
+        return 1
+    fi
+
+    print -r -- "${option_value}"
+}
+
+#######################################
 # Remove the temporary benchmark directory unless cleanup is disabled.
 # Globals:
 #   ZSH_STARTUP_BENCHMARK_KEEP_RESULTS
