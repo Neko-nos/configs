@@ -61,7 +61,7 @@ jobs:
           "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > base-benchmark.json
 
       - name: Seed benchmark baseline
-        uses: benchmark-action/github-action-benchmark@v1.21.0
+        uses: benchmark-action/github-action-benchmark@v1.22.0
         with:
           name: zsh startup benchmark
           tool: customSmallerIsBetter
@@ -78,7 +78,7 @@ jobs:
           "$RUNNER_TEMP/zsh-benchmark/github-action-zsh-benchmark.sh" > head-benchmark.json
 
       - name: Compare benchmark results
-        uses: benchmark-action/github-action-benchmark@v1.21.0
+        uses: benchmark-action/github-action-benchmark@v1.22.0
         with:
           name: zsh startup benchmark
           tool: customSmallerIsBetter
@@ -124,7 +124,7 @@ jobs:
         run: scripts/github-action-zsh-benchmark.sh > benchmark.json
 
       - name: Store benchmark result
-        uses: benchmark-action/github-action-benchmark@v1.21.0
+        uses: benchmark-action/github-action-benchmark@v1.22.0
         with:
           name: zsh startup benchmark
           tool: customSmallerIsBetter
