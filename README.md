@@ -137,7 +137,8 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
 #### Prompt with Icons
 1. Font Settings<br>
    To display icons using Powerlevel10k, download the `MesloLGS NF` font files from [here](https://github.com/romkatv/powerlevel10k/blob/master/font.md).<br>
-   After downloading, set the font in both your terminal and IDE.
+   After downloading, set the font in both your terminal and IDE.<br>
+   On Mac with the default `Terminal.app`, import [`Mac/default_terminal_profile.terminal`](./Mac/default_terminal_profile.terminal) from `Terminal > Settings > Profiles > Action > Import...` and use that profile.
 
 2. Configure Powerlevel10k<br>
    Once the font is set, run `p10k configure` to generate a new configuration file.
