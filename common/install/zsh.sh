@@ -117,6 +117,7 @@ function ensure_zprofile_envs() {
     if ! read -q; then
         # Print a newline using echo because read -q doesn't.
         echo
+        echo 'Appending FILTER_CMD to ~/.zprofile.'
         echo '# Envs used for .zshrc' >> ~/.zprofile
         echo 'export FILTER_CMD="fzf"' >> ~/.zprofile
     fi
@@ -125,6 +126,7 @@ function ensure_zprofile_envs() {
     printf 'Did you already set envs for CONFIGS_COMMON_ZSH and __os_specific_zsh_var in .zprofile? [y/N]: '
     if ! read -q; then
         echo
+        echo 'Appending CONFIGS_COMMON_ZSH and __os_specific_zsh_var to ~/.zprofile.'
         echo 'export CONFIGS_COMMON_ZSH="$HOME/configs/common/zsh"' >> ~/.zprofile
         echo 'export __os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"' >> ~/.zprofile
         echo "export \${__os_specific_zsh_var}=\"\$HOME/configs/${os_name}\"" >> ~/.zprofile
@@ -155,6 +157,7 @@ function configure_zprofile() {
             if copy_repo_dotfile "${zprofile_template}" ~/.zprofile '.zprofile'; then
                 return 0
             fi
+            ensure_zprofile_envs "${os_name}"
         else
             echo
             ensure_zprofile_envs "${os_name}"

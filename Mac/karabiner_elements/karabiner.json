@@ -4,7 +4,7 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Enable Emacs keybinds in Mircrosoft office apps",
+                        "description": "Enable Emacs keybinds in Microsoft office apps",
                         "manipulators": [
                             {
                                 "conditions": [
