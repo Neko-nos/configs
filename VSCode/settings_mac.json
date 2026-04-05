@@ -132,6 +132,9 @@
         "editor.insertSpaces": true
     },
 
+    // ---------- Terminal ----------
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+
     // ---------- General ----------
     // 末尾に改行を挟む (ref: https://qiita.com/hamamamama/items/11c17c7412a5aeb2ad74)
     "files.insertFinalNewline": true,
