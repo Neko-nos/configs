@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775123264301,
+  "lastUpdate": 1775408651440,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -107,6 +107,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 994.261609,
             "range": "± 9.622872",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "811919c94c9eae63174be4ca0c7510f3e32c0ccd",
+          "message": "Merge pull request #45 from Neko-nos/feature/update-mac-settings\n\nFeature/update mac settings",
+          "timestamp": "2026-04-06T02:02:44+09:00",
+          "tree_id": "3c24df2bc1ca67e3f8814fe786e83a5c19f53ef2",
+          "url": "https://github.com/Neko-nos/configs/commit/811919c94c9eae63174be4ca0c7510f3e32c0ccd"
+        },
+        "date": 1775408651204,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 1088.368942,
+            "range": "± 379.351728",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 1002.267148,
+            "range": "± 7.846685",
             "unit": "ms"
           }
         ]
