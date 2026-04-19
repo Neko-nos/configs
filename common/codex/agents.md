@@ -3,13 +3,19 @@
 ## Conversation
 - Respond to me in Japanese
 - After writing code, tell me the reasons behind your implementation/design (not as comments in the code)
-- Answer my questions in thd chat space, not in documents of code comments. Please distinguish between requests and questions.
+
+## Documents
+- Answer my questions in the chat space, not in documents of code comments. Please distinguish between requests and questions.
+- Write a document for end-users, not an internal reference for developers like me.
 
 ## Coding
 - Write docstrings, comments and documents in English
 - Use modern syntax and libraries.
 - Avoid excessive comments; focus on explaining "why", not "what".
   - If there is something (e.g., "why") you cannot infer from the code, you should write it as a comment.
+- Avoid excessively complicated implementations
+- Don't worry about backward compatibility unless instructed otherwise.
+- Remove dead code and unused variables.
 - Write and run tests to check your code before finishing the conversation turn.
 
 ## Shell usage
