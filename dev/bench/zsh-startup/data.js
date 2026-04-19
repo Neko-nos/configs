@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775408651440,
+  "lastUpdate": 1776591784349,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -143,6 +143,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 1002.267148,
             "range": "± 7.846685",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6def4910cfe874277573e4187fecd39142d0dcb0",
+          "message": "Merge pull request #46 from Neko-nos/feature/update-common-settings\n\nFeature/update common settings",
+          "timestamp": "2026-04-19T18:41:44+09:00",
+          "tree_id": "9cd98de9070cba5a716b6e20986ad68f84903496",
+          "url": "https://github.com/Neko-nos/configs/commit/6def4910cfe874277573e4187fecd39142d0dcb0"
+        },
+        "date": 1776591784110,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 1075.047847,
+            "range": "± 366.241642",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 987.880844,
+            "range": "± 8.613772",
             "unit": "ms"
           }
         ]
