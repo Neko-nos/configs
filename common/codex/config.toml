@@ -1,10 +1,52 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
 # ref: https://github.com/openai/codex/blob/main/docs/config.md#model_providers
 
-model = "gpt-5.3-codex"
+model = "gpt-5.5"
 model_reasoning_effort = "high"
 
 sandbox_mode = "workspace-write"
 approval_policy = "on-request"
+default_permissions = "workspace_with_secret_denies"
 personality = "pragmatic"
+
 [sandbox_workspace_write]
 network_access = true
+
+[permissions.workspace_with_secret_denies.filesystem]
+glob_scan_max_depth = 4
+"~/.netrc" = "none"
+"~/.aws/credentials" = "none"
+"~/**/huggingface/token" = "none"
+
+[permissions.workspace_with_secret_denies.filesystem.":project_roots"]
+"." = "write"
+".env" = "none"
+".env*" = "none"
+"**/.env" = "none"
+"**/.env*" = "none"
+".direnv" = "none"
+".direnv/**" = "none"
+"**/.direnv" = "none"
+"**/.direnv/**" = "none"
+"secrets" = "none"
+"secrets/**" = "none"
+"**/secrets" = "none"
+"**/secrets/**" = "none"
+
+[shell_environment_policy]
+inherit = "all"
+ignore_default_excludes = false
+exclude = [
+    "AWS_*",
+    "AZURE_*",
+    "GCP_*",
+    "GOOGLE_*",
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+    "ANTHROPIC_API_KEY",
+    "OPENAI_API_KEY",
+    "HUGGINGFACE_*",
+    "HF_*",
+    "KAGGLE_*",
+]
