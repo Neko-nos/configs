@@ -32,7 +32,7 @@ jobs:
       - name: Set up uv
         # Our .zshrc enables uv shell completion when uv exists, so install uv
         # to keep the benchmarked shell startup path close to normal usage.
-        uses: astral-sh/setup-uv@v8.0.0
+        uses: astral-sh/setup-uv@v8.1.0
 
       - name: Install benchmark dependencies
         uses: ./.github/actions/zsh-startup-benchmark/install-benchmark-dependencies
@@ -109,7 +109,7 @@ jobs:
       - name: Set up uv
         # Our .zshrc enables uv shell completion when uv exists, so install uv
         # to keep the benchmarked shell startup path close to normal usage.
-        uses: astral-sh/setup-uv@v8.0.0
+        uses: astral-sh/setup-uv@v8.1.0
 
       - name: Install benchmark dependencies
         uses: ./.github/actions/zsh-startup-benchmark/install-benchmark-dependencies
