@@ -97,51 +97,54 @@ After installing it, open its settings and add the JSON files in `karabiner_elem
 There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.<br>
 `install/install.sh` runs all the install scripts including those in the `common/install` directory. Git, Codex, Claude Code, and Python setups are optional and prompted interactively.
 ```console
-chmod +x install.sh
-./install.sh
+zsh install.sh
 ```
 If you want to run a particular script, instead of executing `install.sh`, simply execute the desired script.
 
-1. apt/brew.sh<br>
+1. apt.sh / brew.sh<br>
    Update apt/brew and the packages specified in `apt_packages.txt` or `brew_formulae.txt`.
    ```console
-   cd <Mac/Ubuntu/WSL>/install
-   source apt/brew.sh
+   cd Mac/install
+   zsh brew.sh
+   ```
+   ```console
+   cd <Ubuntu/WSL>/install
+   zsh apt.sh
    ```
 
 2. zsh.sh<br>
    Install [sheldon](https://github.com/rossmacarthur/sheldon) and set up `.zshrc`.
    ```console
    cd common/install
-   source zsh.sh <Mac/Ubuntu/WSL>
+   zsh zsh.sh <Mac/Ubuntu/WSL>
    ```
 
 3. git.sh<br>
    Set up `.gitconfig`.
    ```console
    cd common/install
-   source git.sh
+   zsh git.sh
    ```
 
 4. codex.sh<br>
    Set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
    ```console
    cd common/install
-   source codex.sh
+   zsh codex.sh
    ```
 
 5. claude.sh<br>
    Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
    ```console
    cd common/install
-   source claude.sh
+   zsh claude.sh
    ```
 
 6. python.sh<br>
    Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
    ```console
    cd common/install
-   source python.sh
+   zsh python.sh
    ```
 
 ### Zsh prompt

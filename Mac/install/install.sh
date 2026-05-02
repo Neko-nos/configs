@@ -8,17 +8,17 @@ common_install_dir="${script_dir}/../../common/install"
 common_install_dir="${common_install_dir:A}"
 
 # Homebrew
-source "${script_dir}/brew.sh"
+zsh "${script_dir}/brew.sh"
 
 # Zsh
-source "${common_install_dir}/zsh.sh" Mac
+zsh "${common_install_dir}/zsh.sh" Mac
 
 # Git
 printf 'Do you also want to set up git configurations? [y/N]:'
 if read -q; then
     # Print a newline using echo because read -q doesn't.
     echo
-    source "${common_install_dir}/git.sh"
+    zsh "${common_install_dir}/git.sh"
 else
     echo
 fi
@@ -28,7 +28,7 @@ printf 'Do you also want to set up Codex configurations? [y/N]:'
 if read -q; then
     # Print a newline using echo because read -q doesn't.
     echo
-    source "${common_install_dir}/codex.sh"
+    zsh "${common_install_dir}/codex.sh"
 else
     echo
 fi
@@ -38,7 +38,7 @@ printf 'Do you also want to set up Claude Code configurations? [y/N]:'
 if read -q; then
     # Print a newline using echo because read -q doesn't.
     echo
-    source "${common_install_dir}/claude.sh"
+    zsh "${common_install_dir}/claude.sh"
 else
     echo
 fi
@@ -48,7 +48,7 @@ printf 'Do you also want to set up Python configurations? [y/N]:'
 if read -q; then
     # Print a newline using echo because read -q doesn't.
     echo
-    source "${common_install_dir}/python.sh"
+    zsh "${common_install_dir}/python.sh"
 else
     echo
 fi
