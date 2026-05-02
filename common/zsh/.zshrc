@@ -100,12 +100,13 @@ compdef _uv_run_mod uv
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-HISTORY_IGNORE="(cd|mkdir|pwd|exit|clear|man|history)(| *)"
+HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill)(| *)"
 # Avoid duplicate entries in history
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
 setopt hist_save_no_dups
 setopt hist_no_store
+setopt hist_ignore_space
 # Remove extra blanks in history entries
 setopt hist_reduce_blanks
 # Share history between all sessions

@@ -11,6 +11,7 @@
 ## Coding
 - Write docstrings, comments and documents in English
 - Use modern syntax and libraries.
+- Write simple, readable code; follow the principles in "The Art of Readable Code".
 - Avoid excessive comments; focus on explaining "why", not "what".
   - If there is something (e.g., "why") you cannot infer from the code, you should write it as a comment.
 - Avoid excessively complicated implementations
@@ -37,7 +38,8 @@
 - The script must not start with a shebang unless explicitly requested by me.
 - Keep `try`/`except` blocks to the minimum necessary
   - Do not use bare except or try to hide them with `noqa: BLE001`; Always specify errors. If you can't specify the exception type, the `try`/`except` block is usually unnecessary.
-- Do not add excessive logging or print statements.
+  - Do not use `try` blocks for imports.
+- Do not add excessive functions/modules, logging, or print statements.
 - When using `typing` module, do not use the deprecated classes/methods (e.g. `typing.List` -> `list`)
 - Write docstring with the following style (Google Style):
   ```py
