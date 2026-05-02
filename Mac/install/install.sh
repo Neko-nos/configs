@@ -33,6 +33,16 @@ else
     echo
 fi
 
+# Claude Code
+printf 'Do you also want to set up Claude Code configurations? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${common_install_dir}/claude.sh"
+else
+    echo
+fi
+
 # Python
 printf 'Do you also want to set up Python configurations? [y/N]:'
 if read -q; then

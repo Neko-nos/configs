@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+
+  "model": "claude-opus-4-7",
+  "effortLevel": "high",
+
+  "permissions": {
+    "defaultMode": "auto",
+    "disableBypassPermissionsMode": "disable",
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env*)",
+      "Read(./**/.env)",
+      "Read(./**/.env*)",
+      "Read(./.direnv)",
+      "Read(./.direnv/**)",
+      "Read(./**/.direnv)",
+      "Read(./**/.direnv/**)",
+      "Read(./secrets)",
+      "Read(./secrets/**)",
+      "Read(./**/secrets)",
+      "Read(./**/secrets/**)",
+      "Read(~/.netrc)",
+      "Read(~/.aws/credentials)",
+      "Read(~/**/huggingface/token)"
+    ]
+  },
+
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "allowUnsandboxedCommands": false,
+
+    "filesystem": {
+      "denyRead": [
+        "./.env",
+        "./.env*",
+        "./**/.env",
+        "./**/.env*",
+        "./.direnv",
+        "./.direnv/**",
+        "./**/.direnv",
+        "./**/.direnv/**",
+        "./secrets",
+        "./secrets/**",
+        "./**/secrets",
+        "./**/secrets/**",
+        "~/.netrc",
+        "~/.aws/credentials",
+        "~/**/huggingface/token"
+      ]
+    },
+
+    "network": {
+      "allowedDomains": ["*"]
+    }
+  }
+}

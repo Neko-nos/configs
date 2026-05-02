@@ -48,6 +48,10 @@ For more details, please refer to the files in `common/zsh`.
 - **Shared Codex settings via symlinks**<br>
   `common/install/codex.sh` creates symbolic links for `common/codex/agents.md` and `common/codex/config.toml` in `$CODEX_HOME` (default: `~/.codex`) when those files do not already exist.
 
+#### Claude Code
+- **Claude Code installation and shared settings via symlinks**<br>
+  `common/install/claude.sh` installs Claude Code, and creates symbolic links for `common/claude/settings.json` and `common/codex/agents.md` in `$CLAUDE_HOME` (default: `~/.claude`) when those files do not already exist. The shared agent instructions are linked as `CLAUDE.md`.
+
 #### Python Environment Management
 Provides setup scripts for your choice of modern Python environment tools:<br>
 - **[uv](https://github.com/astral-sh/uv):** An extremely fast Python package and project manager.
@@ -91,7 +95,7 @@ After installing it, open its settings and add the JSON files in `karabiner_elem
 
 ### Command-Line Environment & Tools
 There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.<br>
-`install/install.sh` runs all the install scripts including those in the `common/install` directory. Git, Codex, and Python setups are optional and prompted interactively.
+`install/install.sh` runs all the install scripts including those in the `common/install` directory. Git, Codex, Claude Code, and Python setups are optional and prompted interactively.
 ```console
 chmod +x install.sh
 ./install.sh
@@ -126,7 +130,14 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source codex.sh
    ```
 
-5. python.sh<br>
+5. claude.sh<br>
+   Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
+   ```console
+   cd common/install
+   source claude.sh
+   ```
+
+6. python.sh<br>
    Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
    ```console
    cd common/install
