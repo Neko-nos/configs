@@ -45,8 +45,8 @@ For more details, please refer to the files in `common/zsh`.
   A `.gitignore` tailored for Python projects, ignoring common files/directories like `.venv`, `__pycache__`, etc.
 
 #### Codex
-- **Shared Codex settings via symlinks**<br>
-  `common/install/codex.sh` creates symbolic links for `common/codex/agents.md` and `common/codex/config.toml` in `$CODEX_HOME` (default: `~/.codex`) when those files do not already exist.
+- **Codex CLI installation and shared settings via symlinks**<br>
+  `<Mac/Ubuntu/WSL>/install/codex.sh` installs Codex CLI with the OS-specific package manager, then sources `common/install/codex.sh` to create symbolic links for `common/codex/agents.md` and `common/codex/config.toml` in `$CODEX_HOME` (default: `~/.codex`) when those files do not already exist.
 
 #### Claude Code
 - **Claude Code installation and shared settings via symlinks**<br>
@@ -124,9 +124,9 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 4. codex.sh<br>
-   Set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
+   Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
    ```console
-   cd common/install
+   cd <Mac/Ubuntu/WSL>/install
    source codex.sh
    ```
 
