@@ -1,6 +1,31 @@
 #!/bin/zsh
 
 #######################################
+# Read a yes/no confirmation from stdin.
+# Globals:
+#   None
+# Arguments:
+#   1: Prompt message
+# Outputs:
+#   Writes the prompt and a trailing newline to stdout.
+# Returns:
+#   0 if the user answers yes, 1 otherwise.
+#######################################
+function __confirm() {
+    local prompt="${1}"
+
+    printf '%s' "${prompt}"
+    if read -q; then
+        # Print a newline using echo because read -q doesn't.
+        echo
+        return 0
+    fi
+
+    echo
+    return 1
+}
+
+#######################################
 # Create a symbolic link when target is missing.
 # Globals:
 #   None
