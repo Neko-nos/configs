@@ -18,6 +18,7 @@
 - Don't worry about backward compatibility unless instructed otherwise.
 - Remove dead code and unused variables.
 - Write and run tests to check your code before finishing the conversation turn.
+- Create and use dummy data for test cases instead of real data. Never include real data, even partially.
 
 ## Shell usage
 - Ask me whenever you use deletion commands (e.g. `rm`)
@@ -39,6 +40,7 @@
 - Keep `try`/`except` blocks to the minimum necessary
   - Do not use bare except or try to hide them with `noqa: BLE001`; Always specify errors. If you can't specify the exception type, the `try`/`except` block is usually unnecessary.
   - Do not use `try` blocks for imports.
+- Avoid excessive lazy imports; generally, place all imports at the top of the file.
 - Do not add excessive functions/modules, logging, or print statements.
 - When using `typing` module, do not use the deprecated classes/methods (e.g. `typing.List` -> `list`)
 - Write docstring with the following style (Google Style):
