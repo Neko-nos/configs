@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777713067954,
+  "lastUpdate": 1778344404063,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -251,6 +251,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 996.753848,
             "range": "± 8.438237",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8a3a4856982c4f5b0c201cdfef4442ddd025f91b",
+          "message": "Merge pull request #50 from Neko-nos/feat/update-agents\n\nFeat/update agents",
+          "timestamp": "2026-05-10T01:31:57+09:00",
+          "tree_id": "fe585acd7bf57a3f78e31e879aa5e948ba2c372c",
+          "url": "https://github.com/Neko-nos/configs/commit/8a3a4856982c4f5b0c201cdfef4442ddd025f91b"
+        },
+        "date": 1778344403823,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 1150.884639,
+            "range": "± 364.49593",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 1063.499016,
+            "range": "± 5.790091",
             "unit": "ms"
           }
         ]
