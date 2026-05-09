@@ -17,3 +17,9 @@ wheels/
 .uv-cache/
 .pytest_cache/
 .mypy_cache/
+
+# Codex sandbox-generated placeholders
+.codex
+.direnv
+.env
+secrets

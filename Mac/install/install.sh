@@ -24,11 +24,11 @@ else
 fi
 
 # Codex
-printf 'Do you also want to set up Codex configurations? [y/N]:'
+printf 'Do you also want to set up Codex CLI and configurations? [y/N]:'
 if read -q; then
     # Print a newline using echo because read -q doesn't.
     echo
-    source "${common_install_dir}/codex.sh"
+    source "${script_dir}/codex.sh"
 else
     echo
 fi
