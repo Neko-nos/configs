@@ -11,7 +11,7 @@ source "${script_dir}/utils.sh"
 
 mkdir -p "${codex_home}"
 
-__link_if_missing "${common_codexdir}/agents.md" "${codex_home}/agents.md" 'agents.md' "${codex_home}"
+__link_if_missing "${common_codexdir}/AGENTS.md" "${codex_home}/AGENTS.md" 'AGENTS.md' "${codex_home}"
 __link_if_missing "${common_codexdir}/config.toml" "${codex_home}/config.toml" 'config.toml' "${codex_home}"
 
 echo 'Finished codex configuration!'
