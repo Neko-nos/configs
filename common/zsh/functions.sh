@@ -114,50 +114,20 @@ function _history_entries_nul() {
         return 1
     fi
 
-    local -a entries
-    local current=""
-    local line
-    # ref: https://qiita.com/kawaz/items/00a4b1693bf4cf67e8ca
-    while IFS= read -r line || [[ -n "${line}" ]]; do
-        if [[ "${line}" =~ '^: [0-9]+:[0-9]+;' ]]; then
-            # In extended history, only the first line of a command has a header.
-            # Any following lines belong to the same command until the next header.
-            if [[ -n "${current}" ]]; then
-                entries+=("${current}")
-            fi
-            # Using builtin string operations for better performance
-            local cmd="${line#*: }"
-            cmd="${cmd#*;}"
-            current="${cmd}"
-        else
-            if [[ -n "${current}" ]]; then
-                # ANSI C Quoting for safe newline handling
-                current+=$'\n'"${line}"
-            else
-                # We support non-extended history entries as well.
-                entries+=("${line}")
-            fi
-        fi
-    done < "${histfile}"
-
-    if [[ -n "${current}" ]]; then
-        entries+=("${current}")
-    fi
+    zmodload zsh/parameter || return 1
+    local histsize="${HISTSIZE:-10000}"
+    fc -p -a "${histfile}" "${histsize}" 0 || return 1
 
     local -A seen
-    local -a output_entries
+    local -a event_numbers
+    event_numbers=("${(@kon)history}")
     local i
-    for (( i=${#entries[@]}; i>=1; i-- )); do
-        local item="${entries[i]}"
-        if [[ -z ${seen[${item}]} ]]; then
-            seen[${item}]=1
-            output_entries+=("${item}")
+    for (( i=${#event_numbers[@]}; i>=1; i-- )); do
+        local entry="${history[${event_numbers[i]}]}"
+        if (( ! ${+seen[${entry}]} )); then
+            seen[${entry}]=1
+            print -rn -- "${entry}"$'\0'
         fi
-    done
-
-    local entry
-    for entry in "${output_entries[@]}"; do
-        print -rn -- "${entry}"$'\0'
     done
 }
 

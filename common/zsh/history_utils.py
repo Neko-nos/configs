@@ -1,5 +1,5 @@
 """
-Shared utilities for zsh history processing scripts.
+Shared utilities for decoded zsh history processing scripts.
 """
 
 from __future__ import annotations
