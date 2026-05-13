@@ -50,6 +50,30 @@ function _history_capture_command() {
 add-zsh-hook preexec _history_capture_command
 
 #######################################
+# Print decoded zsh history entries.
+# Globals:
+#   HISTFILE
+#   HISTSIZE
+# Arguments:
+#   1: Optional history file path
+# Outputs:
+#   Writes decoded history entries to stdout
+# Returns:
+#   0 on success, non-zero if the history file cannot be read.
+#######################################
+function zsh-history() {
+    emulate -L zsh
+    local histfile="${1:-${HISTFILE:-$HOME/.zsh_history}}"
+    if [[ -z "${histfile}" || ! -f "${histfile}" ]]; then
+        return 1
+    fi
+
+    local histsize="${HISTSIZE:-10000}"
+    fc -p -a "${histfile}" "${histsize}" 0 || return 1
+    fc -ln 1
+}
+
+#######################################
 # Remove failed commands from the history file while keeping
 # them in the in-memory history list.
 # Globals:
