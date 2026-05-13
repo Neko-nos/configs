@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778649683498,
+  "lastUpdate": 1778663816250,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -323,6 +323,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 1070.536314,
             "range": "± 6.740591",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a692fc3fea6fb8b93f357159578bce659a5e12e0",
+          "message": "Merge pull request #52 from Neko-nos/fix/zsh_history_codec\n\nFix/zsh history codec",
+          "timestamp": "2026-05-13T18:15:20+09:00",
+          "tree_id": "affb3c000a738bb883ff6392436f36d9f7690126",
+          "url": "https://github.com/Neko-nos/configs/commit/a692fc3fea6fb8b93f357159578bce659a5e12e0"
+        },
+        "date": 1778663815979,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 1154.890393,
+            "range": "± 356.280556",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 1071.108178,
+            "range": "± 8.216697",
             "unit": "ms"
           }
         ]
