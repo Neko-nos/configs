@@ -100,7 +100,7 @@ compdef _uv_run_mod uv
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill)(| *)"
+HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill|zsh-history)(| *)"
 # Avoid duplicate entries in history
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
@@ -125,7 +125,7 @@ function __load_zsh_files () {
         __warn "CONFIGS_COMMON_ZSH should be set in .zprofile. Since it is not set, skipping loading zsh configuration files."
         return 0
     fi
-    if [[ -z ${os_specific_zsh_var} ]]; then
+    if [[ -z "${(P)os_specific_zsh_var}" ]]; then
         __info "No OS-specific zsh config files to load. If you have OS-specific zsh config files, please set the variable ${os_specific_zsh_var} in .zprofile."
         local use_os_specific_zsh_var=false
     else

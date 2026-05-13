@@ -8,6 +8,7 @@ import argparse
 import os
 from pathlib import Path
 
+from history_codec import read_history_text, write_history_text
 from history_utils import parse_entries
 
 
@@ -21,7 +22,7 @@ def dedup_history_file(histfile: Path) -> bool:
         bool: True if the file was changed, False otherwise.
     """
 
-    text = histfile.read_text(encoding="utf-8", errors="replace")
+    text = read_history_text(histfile)
     entries = parse_entries(text)
 
     last_index: dict[str, int] = {}
@@ -41,7 +42,7 @@ def dedup_history_file(histfile: Path) -> bool:
         if last_index[entry.command_text()] == idx
     ]
     new_text = "".join("".join(entry.lines) for entry in remaining)
-    histfile.write_text(new_text, encoding="utf-8")
+    write_history_text(histfile, new_text)
     return True
 
 

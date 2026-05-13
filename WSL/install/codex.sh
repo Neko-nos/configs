@@ -9,7 +9,13 @@ common_install_dir="${common_install_dir:A}"
 
 source "${script_dir}/utils.sh"
 
-__install_package npm
+# Respect npm installed by nvm or other non-apt installers.
+if command -v npm >/dev/null 2>&1; then
+    echo 'You have already installed npm.'
+    echo
+else
+    __install_package npm
+fi
 __install_package bubblewrap
 
 if command -v npm >/dev/null 2>&1; then
