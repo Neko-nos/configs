@@ -46,11 +46,11 @@ For more details, please refer to the files in `common/zsh`.
 
 #### Codex
 - **Codex CLI installation and shared settings via symlinks**<br>
-  `<Mac/Ubuntu/WSL>/install/codex.sh` installs Codex CLI with the OS-specific package manager, then sources `common/install/codex.sh` to create symbolic links for `common/codex/agents.md` and `common/codex/config.toml` in `$CODEX_HOME` (default: `~/.codex`) when those files do not already exist.
+  `<Mac/Ubuntu/WSL>/install/codex.sh` installs Codex CLI with the OS-specific package manager, then sources `common/install/codex.sh` to create symbolic links for `common/codex/AGENTS.md` and `common/codex/config.toml` in `$CODEX_HOME` (default: `~/.codex`) when those files do not already exist.
 
 #### Claude Code
 - **Claude Code installation and shared settings via symlinks**<br>
-  `common/install/claude.sh` installs Claude Code, and creates symbolic links for `common/claude/settings.json` and `common/codex/agents.md` in `$CLAUDE_HOME` (default: `~/.claude`) when those files do not already exist. The shared agent instructions are linked as `CLAUDE.md`.
+  `common/install/claude.sh` installs Claude Code, and creates symbolic links for `common/claude/settings.json` and `common/codex/AGENTS.md` in `$CLAUDE_HOME` (default: `~/.claude`) when those files do not already exist. The shared agent instructions are linked as `CLAUDE.md`.
 
 #### Python Environment Management
 Provides setup scripts for your choice of modern Python environment tools:<br>

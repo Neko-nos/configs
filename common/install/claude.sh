@@ -42,7 +42,7 @@ __install_claude_if_missing
 mkdir -p "${claude_home}"
 
 __link_if_missing "${common_claudedir}/settings.json" "${claude_home}/settings.json" 'settings.json' "${claude_home}"
-__link_if_missing "${common_codexdir}/agents.md" "${claude_home}/CLAUDE.md" 'CLAUDE.md' "${claude_home}"
+__link_if_missing "${common_codexdir}/AGENTS.md" "${claude_home}/CLAUDE.md" 'CLAUDE.md' "${claude_home}"
 
 echo 'Finished Claude Code configuration!'
 echo ''
