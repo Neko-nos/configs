@@ -10,6 +10,9 @@ export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Envs used for .zshrc
+# Prefer VS Code for visual editing while keeping nano as a terminal-safe fallback.
+export VISUAL="code --wait"
+export EDITOR="nano"
 export FILTER_CMD="fzf"
 export CONFIGS_COMMON_ZSH="$HOME/configs/common/zsh"
 __mac_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
