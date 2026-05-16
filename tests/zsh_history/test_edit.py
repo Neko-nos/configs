@@ -55,6 +55,7 @@ def test_select_editor_requires_editor_configuration() -> None:
 def test_merges_append_added_while_editor_is_open(
     monkeypatch,
     tmp_path: Path,
+    read_locked_text,
 ) -> None:
     """Ensure editor-time external appends are preserved at the end."""
 
@@ -99,12 +100,12 @@ def test_merges_append_added_while_editor_is_open(
     assert result.editor_append_count == 1
     assert result.save_append_count == 0
     assert "while the editor was open" in stdout.getvalue()
-    assert history_codec.read_history_text(histfile) == (
+    assert read_locked_text(histfile) == (
         initial_history + ": 3:0;echo edited\n" + external_history
     )
 
 
-def test_merges_append_added_during_save(tmp_path: Path) -> None:
+def test_merges_append_added_during_save(tmp_path: Path, read_locked_text) -> None:
     """Ensure save-time external appends are preserved at the end."""
 
     histfile = tmp_path / ".zsh_history"
@@ -122,7 +123,7 @@ def test_merges_append_added_during_save(tmp_path: Path) -> None:
     )
 
     assert count == 1
-    assert history_codec.read_history_text(histfile) == (
+    assert read_locked_text(histfile) == (
         initial_history + ": 3:0;echo edited\n" + external_history
     )
 

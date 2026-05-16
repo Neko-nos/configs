@@ -8,7 +8,7 @@ import history_codec
 import history_dedup
 
 
-def test_preserves_japanese_text(tmp_path: Path) -> None:
+def test_preserves_japanese_text(tmp_path: Path, read_locked_text) -> None:
     """Ensure deduplication keeps Japanese history text readable."""
 
     histfile = tmp_path / ".zsh_history"
@@ -17,13 +17,13 @@ def test_preserves_japanese_text(tmp_path: Path) -> None:
 
     changed = history_dedup.dedup_history_file(histfile)
 
-    decoded = history_codec.read_history_text(histfile)
+    decoded = read_locked_text(histfile)
     assert changed is True
     assert decoded == ": 2:0;echo ok\n: 3:0;echo 日本語\n"
     assert "�" not in decoded
 
 
-def test_drops_invalid_unmetafied_entry(tmp_path: Path) -> None:
+def test_drops_invalid_unmetafied_entry(tmp_path: Path, read_locked_text) -> None:
     """Ensure deduplication drops malformed entries even without duplicates."""
 
     histfile = tmp_path / ".zsh_history"
@@ -35,5 +35,5 @@ def test_drops_invalid_unmetafied_entry(tmp_path: Path) -> None:
 
     history_dedup.dedup_history_file(histfile)
 
-    decoded = history_codec.read_history_text(histfile)
+    decoded = read_locked_text(histfile)
     assert decoded == valid_history

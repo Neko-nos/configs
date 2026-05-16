@@ -16,9 +16,15 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import BinaryIO, TextIO
+from typing import TextIO
 
-from history_codec import decode_history_bytes, encode_history_text
+from history_codec import (
+    decode_history_bytes,
+    encode_history_text,
+    locked_history_file,
+    read_locked_history_bytes,
+    write_locked_history_bytes,
+)
 from history_utils import parse_entries
 
 ABORT_FILE_PREFIX = "zsh-history-edit-abort"
@@ -86,54 +92,6 @@ def _exclusive_editor_lock(lockfile: Path) -> Iterator[None]:
             msg = f"another zsh history editor is already running: {lockfile}"
             raise HistoryEditError(msg) from exc
         yield
-
-
-@contextmanager
-def _history_file_lock(histfile: Path) -> Iterator[BinaryIO]:
-    """Hold a short fcntl lock while reading and writing the history file.
-
-    Args:
-        histfile (Path): History file path.
-    """
-
-    histfile.parent.mkdir(parents=True, exist_ok=True)
-    with histfile.open("a+b") as history_file:
-        # Match zsh's HIST_FCNTL_LOCK: an exclusive fcntl lock over the entire history file.
-        # ref: https://github.com/zsh-users/zsh/blob/zsh-5.9/Src/hist.c#L2866-L2878
-        fcntl.lockf(history_file.fileno(), fcntl.LOCK_EX)
-        yield history_file
-
-
-def _read_locked_bytes(history_file: BinaryIO) -> bytes:
-    """Read all bytes from a locked history file handle.
-
-    Args:
-        history_file (BinaryIO): Locked file handle.
-
-    Returns:
-        bytes: Current history file bytes.
-    """
-
-    history_file.seek(0)
-    return history_file.read()
-
-
-def _write_locked_bytes(
-    history_file: BinaryIO,
-    data: bytes,
-) -> None:
-    """Replace a locked history file with encoded bytes.
-
-    Args:
-        history_file (BinaryIO): Locked file handle.
-        data (bytes): Encoded history bytes to write.
-    """
-
-    history_file.seek(0)
-    history_file.truncate()
-    history_file.write(data)
-    history_file.flush()
-    os.fsync(history_file.fileno())
 
 
 def _timestamped_home_path(reason: str, suffix: str) -> Path:
@@ -263,12 +221,12 @@ def _write_merged_history(
         tuple[int, bytes]: Number of appended entries merged and bytes written.
     """
 
-    with _history_file_lock(histfile) as history_file:
-        current_bytes = _read_locked_bytes(history_file)
+    with locked_history_file(histfile) as history_file:
+        current_bytes = read_locked_history_bytes(history_file)
         append = _decode_external_append(known_bytes, current_bytes)
         merged_text = edited_text + append.text
         encoded = encode_history_text(merged_text)
-        _write_locked_bytes(history_file, encoded)
+        write_locked_history_bytes(history_file, encoded)
         return append.entry_count, encoded
 
 
@@ -297,8 +255,8 @@ def edit_history_file(
             prefix="zsh-history-edit.",
         ) as tmpdir,
     ):
-        with _history_file_lock(histfile) as history_file:
-            base_bytes = _read_locked_bytes(history_file)
+        with locked_history_file(histfile) as history_file:
+            base_bytes = read_locked_history_bytes(history_file)
 
         decoded_text, dropped_invalid = decode_history_bytes(base_bytes)
         if dropped_invalid:
@@ -312,8 +270,8 @@ def edit_history_file(
 
         edited_text = edit_path.read_text(encoding="utf-8")
         try:
-            with _history_file_lock(histfile) as history_file:
-                current_bytes = _read_locked_bytes(history_file)
+            with locked_history_file(histfile) as history_file:
+                current_bytes = read_locked_history_bytes(history_file)
             editor_append = _decode_external_append(base_bytes, current_bytes)
             if editor_append.entry_count > 0:
                 edited_text += editor_append.text

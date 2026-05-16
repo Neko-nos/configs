@@ -8,7 +8,7 @@ import history_codec
 import history_prune
 
 
-def test_preserves_japanese_text(tmp_path: Path) -> None:
+def test_preserves_japanese_text(tmp_path: Path, read_locked_text) -> None:
     """Ensure pruning keeps Japanese history text readable."""
 
     histfile = tmp_path / ".zsh_history"
@@ -17,13 +17,16 @@ def test_preserves_japanese_text(tmp_path: Path) -> None:
 
     changed = history_prune.prune_history_file(histfile, "echo ok")
 
-    decoded = history_codec.read_history_text(histfile)
+    decoded = read_locked_text(histfile)
     assert changed is True
     assert decoded == ": 1:0;echo 日本語\n: 3:0;echo 日本語\n"
     assert "�" not in decoded
 
 
-def test_drops_invalid_unmetafied_entry_without_match(tmp_path: Path) -> None:
+def test_drops_invalid_unmetafied_entry_without_match(
+    tmp_path: Path,
+    read_locked_text,
+) -> None:
     """Ensure pruning drops malformed entries even when no command matches."""
 
     histfile = tmp_path / ".zsh_history"
@@ -35,5 +38,5 @@ def test_drops_invalid_unmetafied_entry_without_match(tmp_path: Path) -> None:
 
     history_prune.prune_history_file(histfile, "echo missing")
 
-    decoded = history_codec.read_history_text(histfile)
+    decoded = read_locked_text(histfile)
     assert decoded == valid_history

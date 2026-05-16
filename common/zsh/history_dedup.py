@@ -8,7 +8,11 @@ import argparse
 import os
 from pathlib import Path
 
-from history_codec import read_history_text, write_history_text
+from history_codec import (
+    locked_history_file,
+    read_locked_history_text,
+    write_locked_history_text,
+)
 from history_utils import parse_entries
 
 
@@ -22,27 +26,28 @@ def dedup_history_file(histfile: Path) -> bool:
         bool: True if the file was changed, False otherwise.
     """
 
-    text = read_history_text(histfile)
-    entries = parse_entries(text)
+    with locked_history_file(histfile) as history_file:
+        text = read_locked_history_text(history_file)
+        entries = parse_entries(text)
 
-    last_index: dict[str, int] = {}
-    dup_found = False
-    for idx, entry in enumerate(entries):
-        cmd = entry.command_text()
-        if cmd in last_index:
-            dup_found = True
-        last_index[cmd] = idx
+        last_index: dict[str, int] = {}
+        dup_found = False
+        for idx, entry in enumerate(entries):
+            cmd = entry.command_text()
+            if cmd in last_index:
+                dup_found = True
+            last_index[cmd] = idx
 
-    if not dup_found:
-        return False
+        if not dup_found:
+            return False
 
-    remaining = [
-        entry
-        for idx, entry in enumerate(entries)
-        if last_index[entry.command_text()] == idx
-    ]
-    new_text = "".join("".join(entry.lines) for entry in remaining)
-    write_history_text(histfile, new_text)
+        remaining = [
+            entry
+            for idx, entry in enumerate(entries)
+            if last_index[entry.command_text()] == idx
+        ]
+        new_text = "".join("".join(entry.lines) for entry in remaining)
+        write_locked_history_text(history_file, new_text)
     return True
 
 

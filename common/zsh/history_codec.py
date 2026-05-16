@@ -12,8 +12,13 @@ Source references:
 
 from __future__ import annotations
 
+import fcntl
+import os
 import re
+from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
+from typing import BinaryIO
 
 META = 0x83
 MARKER = 0xA2
@@ -165,28 +170,75 @@ def encode_history_text(text: str) -> bytes:
     return metafy(text.encode("utf-8"))
 
 
-def read_history_text(histfile: Path) -> str:
-    """Read a zsh history file and remove malformed entries.
+@contextmanager
+def locked_history_file(histfile: Path) -> Iterator[BinaryIO]:
+    """Hold an exclusive fcntl lock on a zsh history file.
 
     Args:
         histfile (Path): History file path.
+    """
+
+    histfile.parent.mkdir(parents=True, exist_ok=True)
+    with histfile.open("a+b") as history_file:
+        # Match zsh's HIST_FCNTL_LOCK so Python helpers cooperate with zsh.
+        # ref: https://github.com/zsh-users/zsh/blob/zsh-5.9/Src/hist.c#L2866-L2878
+        fcntl.lockf(history_file.fileno(), fcntl.LOCK_EX)
+        yield history_file
+
+
+def read_locked_history_bytes(history_file: BinaryIO) -> bytes:
+    """Read all bytes from a locked history file handle.
+
+    Args:
+        history_file (BinaryIO): Locked history file handle.
+
+    Returns:
+        bytes: Current history file bytes.
+    """
+
+    history_file.seek(0)
+    return history_file.read()
+
+
+def write_locked_history_bytes(history_file: BinaryIO, data: bytes) -> None:
+    """Replace a locked history file with raw encoded bytes.
+
+    Args:
+        history_file (BinaryIO): Locked history file handle.
+        data (bytes): Encoded history bytes to write.
+    """
+
+    history_file.seek(0)
+    history_file.truncate()
+    history_file.write(data)
+    history_file.flush()
+    os.fsync(history_file.fileno())
+
+
+def read_locked_history_text(history_file: BinaryIO) -> str:
+    """Read decoded zsh history text from a locked file handle.
+
+    Args:
+        history_file (BinaryIO): Locked history file handle.
 
     Returns:
         str: Decoded history text without malformed entries.
     """
 
-    text, dropped_invalid = decode_history_bytes(histfile.read_bytes())
+    text, dropped_invalid = decode_history_bytes(
+        read_locked_history_bytes(history_file)
+    )
     if dropped_invalid:
-        write_history_text(histfile, text)
+        write_locked_history_text(history_file, text)
     return text
 
 
-def write_history_text(histfile: Path, text: str) -> None:
-    """Write decoded text to a zsh history file.
+def write_locked_history_text(history_file: BinaryIO, text: str) -> None:
+    """Write decoded text to a locked zsh history file handle.
 
     Args:
-        histfile (Path): History file path.
+        history_file (BinaryIO): Locked history file handle.
         text (str): Decoded history text to write.
     """
 
-    histfile.write_bytes(encode_history_text(text))
+    write_locked_history_bytes(history_file, encode_history_text(text))

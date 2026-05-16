@@ -11,7 +11,11 @@ import os
 import sys
 from pathlib import Path
 
-from history_codec import read_history_text, write_history_text
+from history_codec import (
+    locked_history_file,
+    read_locked_history_text,
+    write_locked_history_text,
+)
 from history_utils import parse_entries
 
 
@@ -43,20 +47,21 @@ def prune_history_file(histfile: Path, command: str) -> bool:
     Returns:
         bool: True if a matching entry was removed, False otherwise.
     """
-    text = read_history_text(histfile)
-    entries = parse_entries(text)
+    with locked_history_file(histfile) as history_file:
+        text = read_locked_history_text(history_file)
+        entries = parse_entries(text)
 
-    last_index = -1
-    for idx, entry in enumerate(entries):
-        if entry.command_text() == command:
-            last_index = idx
+        last_index = -1
+        for idx, entry in enumerate(entries):
+            if entry.command_text() == command:
+                last_index = idx
 
-    if last_index == -1:
-        return False
+        if last_index == -1:
+            return False
 
-    remaining = entries[:last_index] + entries[last_index + 1 :]
-    new_text = "".join("".join(entry.lines) for entry in remaining)
-    write_history_text(histfile, new_text)
+        remaining = entries[:last_index] + entries[last_index + 1 :]
+        new_text = "".join("".join(entry.lines) for entry in remaining)
+        write_locked_history_text(history_file, new_text)
     return True
 
 
