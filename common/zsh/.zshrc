@@ -145,7 +145,8 @@ function __load_zsh_files () {
 __load_zsh_files
 
 # cleanup helper variables and functions
-unset -f __warn
+# Keep __warn available because interactive functions loaded above may warn
+# after .zshrc finishes loading.
 unset -f __info
 unset -f __update_cache
 unset -f __load_zsh_files
