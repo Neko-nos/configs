@@ -3,6 +3,7 @@
 ## Conversation
 - Respond to me in Japanese
 - After writing code, tell me the reasons behind your implementation/design (not as comments in the code)
+- When I ask a question, it is not a rejection or a request for changes. Answer the question appropriately without modifying the code.
 
 ## Documents
 - Answer my questions in the chat space, not in documents of code comments. Please distinguish between requests and questions.

@@ -31,11 +31,7 @@ function _search_cdr_warn_once() {
         return 0
     fi
     _cdr_search_warned_unsupported=1
-    if typeset -f __warn >/dev/null 2>&1; then
-        __warn "${message}"
-    else
-        echo "Warning: ${message}" >&2
-    fi
+    __warn "${message}"
 }
 
 #######################################
@@ -90,11 +86,7 @@ function _history_search_warn_once() {
         return 0
     fi
     _history_search_warned_unsupported=1
-    if typeset -f __warn >/dev/null 2>&1; then
-        __warn "${message}"
-    else
-        echo "Warning: ${message}" >&2
-    fi
+    __warn "${message}"
 }
 
 #######################################

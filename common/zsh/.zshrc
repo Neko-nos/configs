@@ -100,7 +100,7 @@ compdef _uv_run_mod uv
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill|zsh-history)(| *)"
+HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill)(| *)"
 # Avoid duplicate entries in history
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
@@ -145,7 +145,8 @@ function __load_zsh_files () {
 __load_zsh_files
 
 # cleanup helper variables and functions
-unset -f __warn
+# Keep __warn available because interactive functions loaded above may warn
+# after .zshrc finishes loading.
 unset -f __info
 unset -f __update_cache
 unset -f __load_zsh_files

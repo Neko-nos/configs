@@ -1,0 +1,32 @@
+#######################################
+# Resolve a Python script runner command.
+# Globals:
+#   reply
+# Arguments:
+#   1: Python script path
+# Outputs:
+#   None
+# Returns:
+#   0 if a runner is available, non-zero otherwise.
+#######################################
+function __python_runner() {
+    emulate -L zsh
+    local script="${1}"
+    # zsh functions can only return a numeric status, so the command array is
+    # returned through the conventional `reply` parameter.
+    reply=()
+    if [[ ! -f "${script}" ]]; then
+        return 1
+    fi
+
+    if command -v uv >/dev/null 2>&1; then
+        reply=(uv run "${script}")
+    elif command -v python >/dev/null 2>&1; then
+        reply=(python "${script}")
+    elif command -v python3 >/dev/null 2>&1; then
+        reply=(python3 "${script}")
+    else
+        return 1
+    fi
+    return 0
+}

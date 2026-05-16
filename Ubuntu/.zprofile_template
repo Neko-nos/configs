@@ -5,6 +5,9 @@ export PATH=/usr/local/cuda:/usr/local/cuda/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
 # Envs used for .zshrc
+# Prefer VS Code for visual editing while keeping nano as a terminal-safe fallback.
+export VISUAL="code --wait"
+export EDITOR="nano"
 export FILTER_CMD="fzf"
 export CONFIGS_COMMON_ZSH="$HOME/configs/common/zsh"
 export __os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"

@@ -2,10 +2,6 @@
 
 Personal configuration files for a consistent development experience across **MacOS** and **Ubuntu (including WSL)**. Includes settings for keyboard layouts (JIS), fonts, command-line tools (Zsh, Git, Codex, Python), and VSCode.
 
-## Core Philosophy
-
-The main goal is to replicate a Mac-like keyboard experience on Windows and Ubuntu (specifically for JIS layout) and establish a comfortable and efficient command-line and coding environment using preferred tools and fonts.
-
 ## Feature Highlights
 ### 1. Mac-like Keyboard Configurations for Windows and Ubuntu
 > [!NOTE]
@@ -21,7 +17,6 @@ Replaces default system fonts, particularly on Windows, with [Moralerspace](http
 #### Enhanced Command-Line Environment (Zsh)
 - **Plugin Management with [sheldon](https://github.com/rossmacarthur/sheldon)**<br>
   Sheldon allows you to install useful plugins for zsh and it is fast. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.<br>
-  (You can see the prompt in the above image.)
 
 - **Efficient Navigation with filter tools (e.g., [fzf](https://github.com/junegunn/fzf))**<br>
   There are useful functions using filter tools such as `search-history` and `search-cdr`.<br>
@@ -31,6 +26,10 @@ Replaces default system fonts, particularly on Windows, with [Moralerspace](http
 - **Smart History Management**<br>
   Prevents failed commands from being saved to `.zsh_history` while enabling `inc_append_history` and `extended_history`. Failed commands remain in memory, so you can still recall and correct them via arrow keys in the session.<br>
   Furthermore, the implementation uses only the Python standard libraries, so it works with the system Python without requiring additional environment setup.
+
+- **Safe History Editing with Normal Editors**<br>
+  zsh assigns special roles to certain bytes and manages `.zsh_history` using ([`metafy`](https://github.com/zsh-users/zsh/blob/zsh-5.9/Src/utils.c#L4764) and [`unmetafy`](https://github.com/zsh-users/zsh/blob/zsh-5.9/Src/utils.c#L4862)). If you edit it directly with a normal editor, these processes are not taken into account, producing invalid bytes.<br>
+  `zsh-history-edit` lets you edit `.zsh_history` with a normal editor without corrupting Japanese text or other multibyte characters.
 
 - **Useful settings, aliases and functions**<br>
   Please refer to `.zshrc` file for details.
@@ -44,13 +43,9 @@ For more details, please refer to the files in `common/zsh`.
 - **A template for `.gitignore` (for Python users)**<br>
   A `.gitignore` tailored for Python projects, ignoring common files/directories like `.venv`, `__pycache__`, etc.
 
-#### Codex
-- **Codex CLI installation and shared settings via symlinks**<br>
-  `<Mac/Ubuntu/WSL>/install/codex.sh` installs Codex CLI with the OS-specific package manager, then sources `common/install/codex.sh` to create symbolic links for `common/codex/AGENTS.md` and `common/codex/config.toml` in `$CODEX_HOME` (default: `~/.codex`) when those files do not already exist.
-
-#### Claude Code
-- **Claude Code installation and shared settings via symlinks**<br>
-  `common/install/claude.sh` installs Claude Code, and creates symbolic links for `common/claude/settings.json` and `common/codex/AGENTS.md` in `$CLAUDE_HOME` (default: `~/.claude`) when those files do not already exist. The shared agent instructions are linked as `CLAUDE.md`.
+#### Coding Agents
+- **Codex and Claude Code setup**<br>
+  Installs the CLI tools and links the shared agent settings into each tool's configuration directory with symbolic links.
 
 #### Python Environment Management
 Provides setup scripts for your choice of modern Python environment tools:<br>
@@ -167,8 +162,6 @@ uv sync
 uv run prek install
 ```
 
-`uv sync` installs the tools declared in `pyproject.toml`, including [Ruff](https://github.com/astral-sh/ruff) and [prek](https://github.com/j178/prek).<br>
-`uv run prek install` installs the Git hooks used by this repository.<br>
 Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.<br>
 The `pre-push` hook benchmarks Zsh startup time with [hyperfine](https://github.com/sharkdp/hyperfine) before pushing.<br>
 GitHub Actions also benchmarks Zsh startup time on pull requests by comparing the base and head revisions on the same runner, and it publishes benchmark history for pushes to `main`.

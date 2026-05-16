@@ -46,7 +46,7 @@ __safe_alias diff 'colordiff -u'
 __safe_alias icdiff 'icdiff -U 1 --line-numbers'
 
 # Clean up helper functions and variables.
-# `__warn` and `__update_cache` are shared helpers that remain available until
-# `.zshrc` finishes loading, so cleanup is centralized there.
+# `__update_cache` is cleaned up by `.zshrc` after startup. `__warn` stays
+# available for interactive functions that may warn after startup.
 unset -f __safe_alias
 unset -v SAFE_ALIAS_MANAGER_CMD SAFE_ALIAS_UPDATE_CMD

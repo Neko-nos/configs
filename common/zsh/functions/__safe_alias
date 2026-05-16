@@ -30,12 +30,7 @@ function __safe_alias() {
     fi
 
     if (( ${#manager_cmd[@]} == 0 )); then
-        # __warn may not be autoloadable here if fpath is not configured.
-        if typeset -f __warn >/dev/null 2>&1; then
-            __warn "Package manager is not configured for ${target_package}; skipping alias '${alias_name}'."
-        else
-            echo "Warning: Package manager is not configured for ${target_package}; skipping alias '${alias_name}'." >&2
-        fi
+        __warn "Package manager is not configured for ${target_package}; skipping alias '${alias_name}'."
         return 0
     fi
 
