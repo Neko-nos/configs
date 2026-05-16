@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778663816250,
+  "lastUpdate": 1778923807572,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -359,6 +359,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 1071.108178,
             "range": "± 8.216697",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "748fdf2c45566ce6e2be1794edcad306eff2778d",
+          "message": "Merge pull request #53 from Neko-nos/fix/history-prune-invalid-utf8\n\nFix/history prune invalid utf8",
+          "timestamp": "2026-05-16T18:28:44+09:00",
+          "tree_id": "b1ce452ebe2231e608f5bcf47478e08511337b34",
+          "url": "https://github.com/Neko-nos/configs/commit/748fdf2c45566ce6e2be1794edcad306eff2778d"
+        },
+        "date": 1778923806934,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 1102.322211,
+            "range": "± 386.114488",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 1015.489083,
+            "range": "± 9.867998",
             "unit": "ms"
           }
         ]
