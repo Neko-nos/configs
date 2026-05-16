@@ -25,11 +25,7 @@ function _history_warn_once() {
         return 0
     fi
     _history_warned_no_py=1
-    if typeset -f __warn >/dev/null 2>&1; then
-        __warn "${message}"
-    else
-        echo "Warning: ${message}" >&2
-    fi
+    __warn "${message}"
 }
 
 #######################################
@@ -51,6 +47,29 @@ function _history_require_writable_file() {
         return 1
     fi
     return 0
+}
+
+#######################################
+# Check that this zsh session uses fcntl history locking.
+# Arguments:
+#   1: Warning mode, either once or always
+# Outputs:
+#   Writes warning to stderr
+# Returns:
+#   0 if hist_fcntl_lock is set, non-zero otherwise.
+#######################################
+function _history_require_fcntl_lock() {
+    local warn_mode="${1:-once}"
+    local message="hist_fcntl_lock must be set in .zshrc or equivalent so all zsh sessions use fcntl history locking."
+    if [[ -o hist_fcntl_lock ]]; then
+        return 0
+    fi
+    if [[ "${warn_mode}" == "always" ]]; then
+        __warn "${message}"
+    else
+        _history_warn_once "${message}"
+    fi
+    return 1
 }
 
 #######################################
@@ -101,6 +120,10 @@ add-zsh-hook preexec _history_capture_command
 #######################################
 function _history_prune_failed_file() {
     local last_status=$?
+    if ! _history_require_fcntl_lock once; then
+        return 0
+    fi
+
     emulate -L zsh
     if (( last_status == 0 )); then
         return 0
@@ -142,6 +165,10 @@ add-zsh-hook precmd _history_prune_failed_file
 #   0 if the function ran without fatal errors.
 #######################################
 function _history_dedup_file() {
+    if ! _history_require_fcntl_lock once; then
+        return 0
+    fi
+
     emulate -L zsh
 
     local histfile="${HISTFILE:-$HOME/.zsh_history}"
@@ -228,7 +255,12 @@ function _history_confirm_interactive_edit() {
 #   0 on success, non-zero if editing fails.
 #######################################
 function zsh-history-edit() {
+    if ! _history_require_fcntl_lock always; then
+        return 1
+    fi
     emulate -L zsh
+    setopt hist_fcntl_lock
+
     local histfile="${1:-${HISTFILE:-$HOME/.zsh_history}}"
     if ! _history_require_writable_file "${histfile}" "history edit"; then
         return 1
