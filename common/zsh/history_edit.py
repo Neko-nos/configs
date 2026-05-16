@@ -98,6 +98,8 @@ def _history_file_lock(histfile: Path) -> Iterator[BinaryIO]:
 
     histfile.parent.mkdir(parents=True, exist_ok=True)
     with histfile.open("a+b") as history_file:
+        # Match zsh's HIST_FCNTL_LOCK: an exclusive fcntl lock over the entire history file.
+        # ref: https://github.com/zsh-users/zsh/blob/zsh-5.9/Src/hist.c#L2866-L2878
         fcntl.lockf(history_file.fileno(), fcntl.LOCK_EX)
         yield history_file
 
@@ -310,14 +312,15 @@ def edit_history_file(
 
         edited_text = edit_path.read_text(encoding="utf-8")
         try:
-            current_bytes = histfile.read_bytes()
+            with _history_file_lock(histfile) as history_file:
+                current_bytes = _read_locked_bytes(history_file)
             editor_append = _decode_external_append(base_bytes, current_bytes)
             if editor_append.entry_count > 0:
                 edited_text += editor_append.text
                 print(
                     "Appended "
                     f"{editor_append.entry_count} external history "
-                    "entrie(s) added while the editor was open.",
+                    "entry/entries added while the editor was open.",
                     file=stdout,
                 )
 
@@ -333,7 +336,7 @@ def edit_history_file(
         if save_append_count > 0:
             print(
                 "Appended "
-                f"{save_append_count} external history entrie(s) "
+                f"{save_append_count} external history entry/entries "
                 "added during save.",
                 file=stdout,
             )
