@@ -186,3 +186,14 @@ function replace_multiple_dots() {
 }
 zle -N replace_multiple_dots
 bindkey "." replace_multiple_dots
+
+# ref: https://qiita.com/mollifier/items/26c67347734f9fcda274
+function show-options() {
+    emulate -L zsh
+    zmodload zsh/parameter
+
+    local option
+    for option in "${(@ok)options}"; do
+        printf "%-24s %s\n" "${option}" "${options[$option]}"
+    done
+}

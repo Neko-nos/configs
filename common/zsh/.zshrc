@@ -49,19 +49,54 @@ __load_sheldon_cache
 unset -f __load_sheldon_cache
 
 # General settings
-setopt extended_glob
+# ref: https://zsh.sourceforge.io/Doc/Release/Options.html
+setopt autoremoveslash
+setopt no_beep
 
 # Completion
 autoload -Uz compinit && compinit
 # Match both lowercase and uppercase letters during completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:default' menu select=1
-setopt autoremoveslash
-setopt no_beep
 # Correct typos
 setopt correct
 setopt correct_all
 
+# Expansion and Globbing
+setopt extended_glob
+setopt glob_dots
+setopt ksh_glob
+setopt numeric_glob_sort
+# Lint
+setopt warn_create_global
+# Avoid setting this option as it causes a lot of warnings in existing files (e.g., p9k-related files).
+# setopt warn_nested_var
+
+# History settings
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill)(| *)"
+# Avoid duplicate entries in history
+setopt hist_ignore_all_dups
+setopt hist_ignore_dups
+setopt hist_save_no_dups
+setopt hist_no_store
+setopt hist_ignore_space
+# Remove extra blanks in history entries
+setopt hist_reduce_blanks
+# Share history between all sessions
+setopt share_history
+setopt append_history
+# Write to the history file immediately, not when the shell exits
+setopt inc_append_history
+setopt extended_history
+setopt hist_fcntl_lock
+
+# Scripts
+setopt interactive_comments
+
+# Key settings
 # Fix Ctrl+Left/Right not working in some terminals
 # ref: https://unix.stackexchange.com/questions/58870/ctrl-left-right-arrow-keys-issue
 bindkey "^[[1;5C" forward-word
@@ -95,27 +130,6 @@ function _uv_run_mod() {
     fi
 }
 compdef _uv_run_mod uv
-
-# History settings
-HISTFILE=~/.zsh_history
-HISTSIZE=10000
-SAVEHIST=10000
-HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill)(| *)"
-# Avoid duplicate entries in history
-setopt hist_ignore_all_dups
-setopt hist_ignore_dups
-setopt hist_save_no_dups
-setopt hist_no_store
-setopt hist_ignore_space
-# Remove extra blanks in history entries
-setopt hist_reduce_blanks
-# Share history between all sessions
-setopt share_history
-setopt append_history
-# Write to the history file immediately, not when the shell exits
-setopt inc_append_history
-setopt extended_history
-setopt hist_fcntl_lock
 
 function __load_zsh_files () {
     emulate -L zsh
