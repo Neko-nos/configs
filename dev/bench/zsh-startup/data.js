@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778923807572,
+  "lastUpdate": 1779110567381,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -395,6 +395,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 1015.489083,
             "range": "± 9.867998",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "654976b1ce25829b66b666c8f1c9f57053db176c",
+          "message": "Merge pull request #54 from Neko-nos/feat/enhance-zsh-options\n\nFeat/enhance zsh options",
+          "timestamp": "2026-05-18T22:21:13+09:00",
+          "tree_id": "5c4ea2f49be5b8d2b08f8c7f5ab4fa4b6119cbce",
+          "url": "https://github.com/Neko-nos/configs/commit/654976b1ce25829b66b666c8f1c9f57053db176c"
+        },
+        "date": 1779110567063,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 1162.218822,
+            "range": "± 386.940627",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 1065.431419,
+            "range": "± 10.230125",
             "unit": "ms"
           }
         ]
