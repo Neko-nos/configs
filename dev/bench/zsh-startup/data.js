@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1779110567381,
+  "lastUpdate": 1779184860250,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -431,6 +431,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 1065.431419,
             "range": "± 10.230125",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3dfa0cbe478cb5d68075ab251f532f2701e3b374",
+          "message": "Merge pull request #55 from Neko-nos/perf/faster-zsh\n\nPerf/faster zsh",
+          "timestamp": "2026-05-19T19:00:19+09:00",
+          "tree_id": "de517caa1f1b6b82094b7a0d8c3af76990e5dfaa",
+          "url": "https://github.com/Neko-nos/configs/commit/3dfa0cbe478cb5d68075ab251f532f2701e3b374"
+        },
+        "date": 1779184859977,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 145.401103,
+            "range": "± 276.666505",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 83.485909,
+            "range": "± 0.433303",
             "unit": "ms"
           }
         ]
