@@ -41,11 +41,10 @@ if command -v brew >/dev/null 2>&1; then
 else
     if __confirm "Install brew? [y/N]: "; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        __append_brew_shellenv_cache
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
 fi
-
-__append_brew_shellenv_cache
 
 # Install the formulae required by brew_formulae.txt (default to the minimum formulae required to source our .zshrc)
 # Read package names from a dedicated file descriptor so interactive prompts can

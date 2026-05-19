@@ -67,7 +67,7 @@ setopt interactive_comments
 autoload -Uz compinit
 typeset -g _zcompdump="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh/.zcompdump-${HOST}-${ZSH_VERSION}"
 [[ -d "${_zcompdump:h}" ]] || mkdir -p "${_zcompdump:h}"
-if [[ -n "${_zcompdump}"(#qN.mh+24) ]]; then
+if [[ ! -r "${_zcompdump}" || -n "${_zcompdump}"(#qN.mh+24) ]]; then
     compinit -d "${_zcompdump}"
     touch "${_zcompdump}"
 else
