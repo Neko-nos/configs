@@ -53,15 +53,6 @@ unset -f __load_sheldon_cache
 setopt autoremoveslash
 setopt no_beep
 
-# Completion
-autoload -Uz compinit && compinit
-# Match both lowercase and uppercase letters during completion
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*:default' menu select=1
-# Correct typos
-setopt correct
-setopt correct_all
-
 # Expansion and Globbing
 setopt extended_glob
 setopt glob_dots
@@ -71,6 +62,29 @@ setopt numeric_glob_sort
 setopt warn_create_global
 # Avoid setting this option as it causes a lot of warnings in existing files (e.g., p9k-related files).
 # setopt warn_nested_var
+
+# Scripts
+setopt interactive_comments
+
+# Completion
+# ref: https://zenn.dev/i9wa4/articles/2026-01-01-zsh-startup-optimization-compinit
+autoload -Uz compinit
+typeset -g _zcompdump="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh/.zcompdump-${HOST}-${ZSH_VERSION}"
+[[ -d "${_zcompdump:h}" ]] || mkdir -p "${_zcompdump:h}"
+if [[ -n "${_zcompdump}"(#qN.mh+24) ]]; then
+    compinit -d "${_zcompdump}"
+    touch "${_zcompdump}"
+else
+    compinit -C -d "${_zcompdump}"
+fi
+unset -v _zcompdump
+
+# Match both lowercase and uppercase letters during completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*:default' menu select=1
+# Correct typos
+setopt correct
+setopt correct_all
 
 # History settings
 HISTFILE=~/.zsh_history
@@ -92,9 +106,6 @@ setopt append_history
 setopt inc_append_history
 setopt extended_history
 setopt hist_fcntl_lock
-
-# Scripts
-setopt interactive_comments
 
 # Key settings
 # Fix Ctrl+Left/Right not working in some terminals
