@@ -58,10 +58,6 @@ setopt extended_glob
 setopt glob_dots
 setopt ksh_glob
 setopt numeric_glob_sort
-# Lint
-setopt warn_create_global
-# Avoid setting this option as it causes a lot of warnings in existing files (e.g., p9k-related files).
-# setopt warn_nested_var
 
 # Scripts
 setopt interactive_comments
