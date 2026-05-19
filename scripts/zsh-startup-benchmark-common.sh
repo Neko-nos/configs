@@ -123,7 +123,7 @@ function measure_startup_time() {
     local output_file_name="${2}"
     local warmup_runs="${3}"
     local benchmark_runs="${4}"
-    local benchmark_command="${ZSH_STARTUP_BENCHMARK_COMMAND:-zsh -i -c exit}"
+    local benchmark_command="${ZSH_STARTUP_BENCHMARK_COMMAND:-zsh -l -i -c \"zshexit_functions=(); exit\"}"
 
     hyperfine \
         --warmup "${warmup_runs}" \

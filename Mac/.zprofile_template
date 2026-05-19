@@ -6,8 +6,6 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
-# brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # Envs used for .zshrc
 # Prefer VS Code for visual editing while keeping nano as a terminal-safe fallback.
@@ -17,4 +15,11 @@ export FILTER_CMD="fzf"
 export CONFIGS_COMMON_ZSH="$HOME/configs/common/zsh"
 __mac_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
 export ${__mac_specific_zsh_var}="$HOME/configs/Mac"
+# Homebrew
+if [[ -n "${(P)__mac_specific_zsh_var}" ]]; then
+    source "${(P)__mac_specific_zsh_var}/brew_shellenv_cache.zsh"
+else
+    echo "Warning: ${__mac_specific_zsh_var} is not set; falling back to brew shellenv." >&2
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 unset -v __mac_specific_zsh_var
