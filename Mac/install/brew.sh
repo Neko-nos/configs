@@ -7,6 +7,29 @@ script_dir="${${(%):-%N}:A:h}"
 
 source "${script_dir}/utils.sh"
 
+#######################################
+# Append cached Homebrew shell environment loader to ~/.zprofile.
+# Globals:
+#   HOME
+#   script_dir
+# Arguments:
+#   None
+# Outputs:
+#   Appends shell code to ~/.zprofile
+#######################################
+function __append_brew_shellenv_cache() {
+    cat <<'EOF' >> ~/.zprofile
+__mac_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
+if [[ -n "${(P)__mac_specific_zsh_var}" ]]; then
+    source "${(P)__mac_specific_zsh_var}/brew_shellenv_cache.zsh"
+else
+    echo "Warning: ${__mac_specific_zsh_var} is not set; falling back to brew shellenv." >&2
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+unset -v __mac_specific_zsh_var
+EOF
+}
+
 # Install Homebrew
 # ref: https://brew.sh/
 if command -v brew >/dev/null 2>&1; then
@@ -18,10 +41,11 @@ if command -v brew >/dev/null 2>&1; then
 else
     if __confirm "Install brew? [y/N]: "; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
 fi
+
+__append_brew_shellenv_cache
 
 # Install the formulae required by brew_formulae.txt (default to the minimum formulae required to source our .zshrc)
 # Read package names from a dedicated file descriptor so interactive prompts can
@@ -43,3 +67,5 @@ fi
 
 echo 'Finished Homebrew configuration!'
 echo ''
+
+unset -f __append_brew_shellenv_cache
