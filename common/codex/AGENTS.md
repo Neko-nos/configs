@@ -25,6 +25,10 @@
 - Ask me whenever you use deletion commands (e.g. `rm`)
 - Do not use `rm` or similar commands with force options (i.e. `-f`)
 
+### Zsh History
+- Do not modify `$HOME/.zsh_history` directly or indirectly. You only have read-only access; writing to it via Python scripts or any other means is strictly prohibited.
+- When setting `HISTSIZE` or `SAVEHIST`, keep both values at least `10000`
+
 # GitHub usage
 - Do not do any tasks on the `main` branch.
 - Do not open Pull Requests or commit yourself; I will review your code and open PRs or commit.
@@ -64,7 +68,29 @@
   ... (`Example` etc.)
   """
   ```
-- Use `jaxtyping` for array/tensor annotations (See https://docs.kidger.site/jaxtyping/api/array/ for details)
+
+## jaxtyping
+Use `jaxtyping` for array/tensor type annotations. See https://docs.kidger.site/jaxtyping/api/array/ for the full reference.
+
+- Annotation form: `Dtype[ArrayType, "shape"]` (e.g., `Float[torch.Tensor, "batch channels height width"]`).
+- `ArrayType` is the array class to constrain: `jax.Array`, `np.ndarray`, `torch.Tensor`, `tf.Tensor`, or `mx.array`.
+- Single-axis shape strings need a leading space (`Float[arr, " dim"]`) to avoid a Ruff F821 false positive on the axis name. The bug is tracked at [astral-sh/ruff#17386](https://github.com/astral-sh/ruff/issues/17386); the leading space is jaxtyping's documented workaround and does not change semantics. Multi-axis strings such as `"batch dim"` are unaffected.
+- Example:
+    ```py
+    from jaxtyping import Float, Int
+    import numpy as np
+
+    def gather_logits(
+        logits: Float[np.ndarray, "*batch num_classes"],   # `*axis` matches zero or more leading axes
+        indices: Int[np.ndarray, "*batch n"],              # named axis `n`; `*batch` must match the logits' batch
+        weights: Float[np.ndarray, "#num_classes"],        # `#axis` allows broadcasting (size num_classes or 1)
+        scratch: Float[np.ndarray, "..."],                 # `...` matches any shape (dtype-only check)
+        bias: Float[np.ndarray, " num_classes"],           # leading space for a single-axis shape
+        scale: Float[np.ndarray, ""],                      # `""` denotes a 0-d (scalar) array
+        anchors: Int[np.ndarray, "n 4"],                   # fixed-size axis next to a named axis
+    ) -> Float[np.ndarray, "*batch num_classes-1"]:        # symbolic expression in the return shape
+        ...
+    ```
 
 ## Coding Rules
 - After writing code, always use `Ruff` as both linter and formatter
