@@ -15,24 +15,22 @@ network_access = true
 
 [permissions.workspace_with_secret_denies.filesystem]
 glob_scan_max_depth = 4
-"~/.netrc" = "none"
-"~/.aws/credentials" = "none"
-"~/**/huggingface/token" = "none"
+"~/.netrc" = "deny"
+"~/.aws/credentials" = "deny"
+"~/**/huggingface/token" = "deny"
 
-[permissions.workspace_with_secret_denies.filesystem.":project_roots"]
+[permissions.workspace_with_secret_denies.filesystem.":workspace_roots"]
 "." = "write"
-".env" = "none"
-".env*" = "none"
-"**/.env" = "none"
-"**/.env*" = "none"
-".direnv" = "none"
-".direnv/**" = "none"
-"**/.direnv" = "none"
-"**/.direnv/**" = "none"
-"secrets" = "none"
-"secrets/**" = "none"
-"**/secrets" = "none"
-"**/secrets/**" = "none"
+".env" = "deny"
+".env*" = "deny"
+"**/.env" = "deny"
+"**/.env*" = "deny"
+".direnv" = "deny"
+".direnv/**" = "deny"
+"**/.direnv/**" = "deny"
+"secrets" = "deny"
+"secrets/**" = "deny"
+"**/secrets/**" = "deny"
 
 [shell_environment_policy]
 inherit = "all"
