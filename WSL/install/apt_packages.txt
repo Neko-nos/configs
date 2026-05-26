@@ -6,3 +6,4 @@ icdiff
 screen
 shellcheck
 hyperfine
+jq

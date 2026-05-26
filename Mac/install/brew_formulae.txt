@@ -7,5 +7,6 @@ colordiff
 icdiff
 shellcheck
 hyperfine
+jq
 # The prebuilt `sheldon` binary may depend on `/opt/homebrew/opt/openssl@3/lib/libssl.3.dylib` on Mac OS.
 openssl@3
