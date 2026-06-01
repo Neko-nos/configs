@@ -13,10 +13,13 @@
     "scm.compactFolders": false,
     "scm.defaultViewMode": "tree",
 
-    // Windows
-    // ctrl + pはsearch-cdr用に使いたい
+    // Terminal
     "terminal.integrated.commandsToSkipShell": [
+        // ctrl + pはsearch-cdr用に使いたい
         "-workbench.action.quickOpen",
+        // our nanorc use ctrl+q to exit, so we need to unbind ctrl+q in vscode terminal
+        // ref: https://github.com/microsoft/vscode/issues/108130#issuecomment-721952005
+        "-workbench.action.quickOpenView"
     ],
 
     // Markdown

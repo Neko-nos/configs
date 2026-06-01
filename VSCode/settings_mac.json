@@ -134,6 +134,11 @@
 
     // ---------- Terminal ----------
     "terminal.integrated.fontFamily": "MesloLGS NF",
+    // our nanorc use ctrl+q to exit, so we need to unbind ctrl+q in vscode terminal
+    // ref: https://github.com/microsoft/vscode/issues/108130#issuecomment-721952005
+    "terminal.integrated.commandsToSkipShell": [
+        "-workbench.action.quickOpenView"
+    ],
 
     // ---------- General ----------
     // 末尾に改行を挟む (ref: https://qiita.com/hamamamama/items/11c17c7412a5aeb2ad74)
