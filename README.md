@@ -43,6 +43,12 @@ For more details, please refer to the files in `common/zsh`.
 - **A template for `.gitignore` (for Python users)**<br>
   A `.gitignore` tailored for Python projects, ignoring common files/directories like `.venv`, `__pycache__`, etc.
 
+#### nano
+- **GNU nano settings from a custom repository**<br>
+  The installer links system nano syntax files into `~/.config/nano/syntax` and links `~/.nanorc` to `~/nanorc/.nanorc`.
+  It also links custom syntax files from `~/nanorc/syntax`.
+  If `~/nanorc` does not exist, the installer asks whether to clone [Neko-nos/nanorc](https://github.com/Neko-nos/nanorc.git), our custom nanorc files inspired by VSCode Dark Modern Theme, there first.
+
 #### Coding Agents
 - **Codex and Claude Code setup**<br>
   Installs the CLI tools and links the shared agent settings into each tool's configuration directory with symbolic links.
@@ -90,7 +96,7 @@ After installing it, open its settings and add the JSON files in `karabiner_elem
 
 ### Command-Line Environment & Tools
 There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.<br>
-`install/install.sh` runs all the install scripts including those in the `common/install` directory. Git, Codex, Claude Code, and Python setups are optional and prompted interactively.
+`install/install.sh` runs all the install scripts including those in the `common/install` directory. Git, nano, Codex, Claude Code, and Python setups are optional and prompted interactively.
 ```console
 chmod +x install.sh
 ./install.sh
@@ -118,21 +124,29 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source git.sh
    ```
 
-4. codex.sh<br>
+4. nano.sh<br>
+   Set up nano with system syntax definitions and optional custom settings from `~/nanorc`.
+   On Mac, install the Homebrew `nano` formula first so the `nano` command resolves to the Homebrew version instead of the system Pico-compatible editor.
+   ```console
+   cd common/install
+   source nano.sh
+   ```
+
+5. codex.sh<br>
    Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
    ```console
    cd <Mac/Ubuntu/WSL>/install
    source codex.sh
    ```
 
-5. claude.sh<br>
+6. claude.sh<br>
    Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
    ```console
    cd common/install
    source claude.sh
    ```
 
-6. python.sh<br>
+7. python.sh<br>
    Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
    ```console
    cd common/install
