@@ -3,102 +3,9 @@
 # Stop running this script if any error occurs
 set -e
 
-#######################################
-# Link a home dotfile to a repository-managed file with an optional prompt.
-# Arguments:
-#   1: Source file path in the repository
-#   2: Destination path in the home directory
-#   3: Human-readable label for prompts and status messages
-# Outputs:
-#   Writes status messages and prompts to stdout
-# Returns:
-#   0 on success, non-zero on failure
-#######################################
-function link_repo_dotfile() {
-    local source_file="${1}"
-    local destination_file="${2}"
-    local display_name="${3}"
-    local timestamp
-    local backup_file
+script_dir="${${(%):-%N}:A:h}"
 
-    if [[ ! -f "${source_file}" ]]; then
-        echo "No repository-managed ${display_name} found at ${source_file}. Skipping."
-        return 0
-    fi
-
-    if [[ -L "${destination_file}" && "${destination_file:A}" == "${source_file:A}" ]]; then
-        echo "You have already linked ${display_name} to the repository copy."
-        return 0
-    fi
-
-    if [[ -e "${destination_file}" || -L "${destination_file}" ]]; then
-        echo "You have already created ${display_name}"
-        printf "Do you want to replace it with our ${display_name}? [y/N]: "
-        if read -q; then
-            timestamp="$(date +%Y%m%d%H%M%S)"
-            backup_file="${destination_file}_old_${timestamp}"
-            # Print a newline using echo because read -q doesn't.
-            echo
-            mv "${destination_file}" "${backup_file}"
-            echo "Renamed your ${display_name} to ${backup_file} as a backup file."
-            ln -s "${source_file:A}" "${destination_file}"
-        else
-            echo
-        fi
-        return 0
-    fi
-
-    ln -s "${source_file:A}" "${destination_file}"
-}
-
-#######################################
-# Copy a repository-managed home dotfile with an optional prompt.
-# Arguments:
-#   1: Source file path in the repository
-#   2: Destination path in the home directory
-#   3: Human-readable label for prompts and status messages
-# Outputs:
-#   Writes status messages and prompts to stdout
-# Returns:
-#   0 if the destination already matches or was copied, 1 if skipped
-#######################################
-function copy_repo_dotfile() {
-    local source_file="${1}"
-    local destination_file="${2}"
-    local display_name="${3}"
-    local timestamp
-    local backup_file
-
-    if [[ ! -f "${source_file}" ]]; then
-        echo "No repository-managed ${display_name} template found at ${source_file}. Skipping."
-        return 1
-    fi
-
-    if [[ -f "${destination_file}" ]] && cmp -s "${source_file}" "${destination_file}"; then
-        echo "You have already created ${display_name} from the repository template."
-        return 0
-    fi
-
-    if [[ -e "${destination_file}" || -L "${destination_file}" ]]; then
-        echo "You have already created ${display_name}"
-        printf "Do you want to replace it with our ${display_name} template? [y/N]: "
-        if read -q; then
-            timestamp="$(date +%Y%m%d%H%M%S)"
-            backup_file="${destination_file}_old_${timestamp}"
-            # Print a newline using echo because read -q doesn't.
-            echo
-            mv "${destination_file}" "${backup_file}"
-            echo "Renamed your ${display_name} to ${backup_file} as a backup file."
-            cp "${source_file}" "${destination_file}"
-            return 0
-        fi
-
-        echo
-        return 1
-    fi
-
-    cp "${source_file}" "${destination_file}"
-}
+source "${script_dir}/utils.sh"
 
 #######################################
 # Append env vars required by .zshrc when they are not already set.
@@ -154,10 +61,7 @@ function configure_zprofile() {
         printf 'Do you want to create ~/.zprofile from our template? [y/N]: '
         if read -q; then
             echo
-            if copy_repo_dotfile "${zprofile_template}" ~/.zprofile '.zprofile'; then
-                return 0
-            fi
-            ensure_zprofile_envs "${os_name}"
+            __install_repo_path "${zprofile_template}" ~/.zprofile '.zprofile' copy
         else
             echo
             ensure_zprofile_envs "${os_name}"
@@ -192,7 +96,6 @@ if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml" ]]; then
 else
     # Use a symlink instead of a direct path because XDG_CONFIG_HOME is shared by tools like git.
     mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/sheldon"
-    script_dir="${${(%):-%N}:A:h}"
     common_sheldon_plugins="${script_dir}/../zsh/sheldon/plugins.toml"
     ln -s "${common_sheldon_plugins:A}" "${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml"
 fi
@@ -205,11 +108,10 @@ else
 fi
 echo
 
-script_dir="${${(%):-%N}:A:h}"
 common_zshrc="${script_dir}/../zsh/.zshrc"
 os_specific_p10k="${script_dir}/../../${OSNAME}/.p10k.zsh"
-link_repo_dotfile "${common_zshrc}" ~/.zshrc '.zshrc'
-link_repo_dotfile "${os_specific_p10k}" ~/.p10k.zsh '.p10k.zsh'
+__install_repo_path "${common_zshrc}" ~/.zshrc '.zshrc' link
+__install_repo_path "${os_specific_p10k}" ~/.p10k.zsh '.p10k.zsh' link
 configure_zprofile "${OSNAME}" "${script_dir}"
 
 # Only source ~/.zprofile here. ~/.zshrc depends on tools and plugins that may
@@ -222,8 +124,6 @@ unset -v script_dir
 unset -v common_zshrc
 unset -v os_specific_p10k
 unset -v OSNAME
-unset -f link_repo_dotfile
-unset -f copy_repo_dotfile
 unset -f ensure_zprofile_envs
 unset -f configure_zprofile
 

@@ -96,10 +96,10 @@ setopt hist_ignore_space
 # Remove extra blanks in history entries
 setopt hist_reduce_blanks
 # Share history between all sessions
+# Write to the history file immediately, not when the shell exits
+# inc_append_history should be turned off when using share_history
 setopt share_history
 setopt append_history
-# Write to the history file immediately, not when the shell exits
-setopt inc_append_history
 setopt extended_history
 setopt hist_fcntl_lock
 

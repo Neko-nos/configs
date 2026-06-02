@@ -21,7 +21,6 @@
     "defaultMode": "auto",
     "disableBypassPermissionsMode": "disable"
   },
-  "model": "claude-opus-4-7",
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": true,
@@ -51,5 +50,5 @@
       ]
     }
   },
-  "effortLevel": "high"
+  "effortLevel": "xhigh"
 }

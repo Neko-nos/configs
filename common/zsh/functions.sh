@@ -58,7 +58,7 @@ function search-cdr () {
     fi
     local selected_dir="$(cdr -l | sed 's/^[0-9]\+ \+//' | awk '!a[$0]++' | "${filter_cmd[@]}" --prompt="cdr >" --query "$LBUFFER")"
     if [[ -n "${selected_dir}" ]]; then
-        BUFFER="cd ${(q)selected_dir}"
+        BUFFER="cd ${selected_dir}"
         zle accept-line
     fi
 }

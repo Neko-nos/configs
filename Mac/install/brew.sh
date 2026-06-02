@@ -59,8 +59,15 @@ done
 exec 3<&-
 
 # PATH settings
+if brew list --formula --versions nano >/dev/null 2>&1; then
+    nano_path="export PATH=\"$(brew --prefix nano)/bin:\$PATH\""
+    if ! grep -Fq "${nano_path}" ~/.zprofile 2>/dev/null; then
+        echo "${nano_path}" >> ~/.zprofile
+    fi
+fi
+
 coreutils_path='export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"'
-if ! grep -F "${coreutils_path}" ~/.zprofile; then
+if ! grep -Fq "${coreutils_path}" ~/.zprofile 2>/dev/null; then
     echo "${coreutils_path}" >> ~/.zprofile
 fi
 
@@ -68,3 +75,4 @@ echo 'Finished Homebrew configuration!'
 echo ''
 
 unset -f __append_brew_shellenv_cache
+unset -v nano_path
