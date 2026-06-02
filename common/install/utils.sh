@@ -30,8 +30,8 @@ function __confirm() {
 # Globals:
 #   None
 # Arguments:
-#   Source file or directory path
-#   Destination file or directory path
+#   Source path; copy mode supports files, link mode supports files and directories
+#   Destination path; copy mode supports files, link mode supports files and directories
 #   Display name for logs and prompts
 #   Install mode: link or copy
 # Outputs:
