@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1780381070481,
+  "lastUpdate": 1780386018889,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -575,6 +575,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 75.92326,
             "range": "± 0.473745",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ce95ff32d1751885477e7ee47b07f726bbbc304f",
+          "message": "Merge pull request #59 from Neko-nos/feature/simple-ruff\n\nfeat(ruff): add ruff-fix function to automatically apply ruff check --fix and ruff format",
+          "timestamp": "2026-06-02T16:39:34+09:00",
+          "tree_id": "4a79b727c5d1eb3ad172bc0b74349a5b1df07ec0",
+          "url": "https://github.com/Neko-nos/configs/commit/ce95ff32d1751885477e7ee47b07f726bbbc304f"
+        },
+        "date": 1780386018283,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 97.932064,
+            "range": "± 191.155882",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 54.174239,
+            "range": "± 0.724237",
             "unit": "ms"
           }
         ]
