@@ -14,6 +14,13 @@ By using my configuration, you can make keyboard shortcuts and behaviors on Wind
 Replaces default system fonts, particularly on Windows, with [Moralerspace](https://github.com/yuru7/moralerspace), a visually appealing font, especially for Japanese characters. Also includes setup for [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md) for terminal/IDEs.
 
 ### 3. Command-Line Environment & Tools
+#### Rootless Server Setup
+For Linux servers where root privileges are unavailable, [`Server`](./Server)
+provides a Bash-based setup that recreates the minimum useful parts of this
+repository's Zsh environment. It installs user-local tools such as `uv`,
+`gdown`, and `shellcheck`, links Bash configuration, and sets up server-side
+nano settings without `sudo`. See [Server/README.md](./Server/README.md) for details.
+
 #### Enhanced Command-Line Environment (Zsh)
 - **Plugin Management with [sheldon](https://github.com/rossmacarthur/sheldon)**<br>
   Sheldon allows you to install useful plugins for zsh and it is fast. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.<br>
