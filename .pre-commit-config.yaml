@@ -11,6 +11,13 @@ repos:
     - id: ruff-format
       exclude: ^Ubuntu/keyboard/autokey/data/
 
+- repo: https://github.com/koalaman/shellcheck-precommit
+  rev: v0.11.0
+  hooks:
+    - id: shellcheck
+      # shellcheck doesn't support zsh; only check bash scripts here.
+      files: ^Server/.*\.sh$
+
 - repo: local
   hooks:
     - id: zsh-startup-benchmark
