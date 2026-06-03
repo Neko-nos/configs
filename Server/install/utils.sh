@@ -39,13 +39,16 @@ function __install_symlink() {
     local destination_path="${2}"
     local display_name="${3}"
     local backup_path
+    local source_resolved_path
 
     if [[ ! -e "${source_path}" && ! -L "${source_path}" ]]; then
         printf "Source not found for %s: %s\n" "${display_name}" "${source_path}" >&2
         return 1
     fi
 
-    if [[ -L "${destination_path}" && "$(readlink -f "${destination_path}")" == "${source_path}" ]]; then
+    source_resolved_path="$(readlink -f "${source_path}")"
+
+    if [[ -L "${destination_path}" && "$(readlink -f "${destination_path}")" == "${source_resolved_path}" ]]; then
         printf "You have already linked %s to the repository copy.\n" "${display_name}"
         return 0
     fi
@@ -60,7 +63,7 @@ function __install_symlink() {
         printf "Renamed existing %s to %s as a backup.\n" "${display_name}" "${backup_path}"
     fi
 
-    ln -s "${source_path}" "${destination_path}"
-    printf "Created symlink: %s -> %s\n" "${destination_path}" "${source_path}"
+    ln -s "${source_resolved_path}" "${destination_path}"
+    printf "Created symlink: %s -> %s\n" "${destination_path}" "${source_resolved_path}"
     return 0
 }
