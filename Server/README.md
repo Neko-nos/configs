@@ -6,8 +6,8 @@ Bash and user-local tools.
 
 ## Installation
 
-Run [install.sh](./install/install.sh) to install commands and link the Bash
-and nano configuration:
+Run [install.sh](./install/install.sh) to install commands, build useful commands from source,
+and link the Bash and nano configuration:
 
 ```bash
 bash Server/install/install.sh
@@ -20,6 +20,18 @@ with `uv tool install`. Currently it installs:
 - `uv` and `uvx`
 - `gdown`
 - `shellcheck`
+
+[build_cmds.sh](./install/build_cmds.sh) builds source-only tools into
+`~/.local`. It currently installs:
+
+- `ncurses`
+- `nano`
+- `tree`
+
+Building source packages still requires normal build tools such as a compiler
+and `make` to already be available on the server. If they are missing, the
+build will fail and you need to use the system commands or ask the server
+administrator to provide the build tools.
 
 [bash.sh](./install/bash.sh) links [.bash_profile](./bash/.bash_profile) and
 [.bashrc](./bash/.bashrc) into `$HOME`.
