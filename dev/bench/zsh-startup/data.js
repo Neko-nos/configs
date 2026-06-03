@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1780474386099,
+  "lastUpdate": 1780474494096,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -683,6 +683,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 67.778708,
             "range": "± 0.440159",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a9a6c9ee955c5477265ddb6e5ada7139203e0853",
+          "message": "Merge pull request #61 from Neko-nos/dependabot/github_actions/actions/checkout-6.0.3\n\nchore(deps): bump actions/checkout from 6.0.2 to 6.0.3",
+          "timestamp": "2026-06-03T17:13:57+09:00",
+          "tree_id": "c3e43e6a83b1296fc57e3b53dc7fb2b0415de962",
+          "url": "https://github.com/Neko-nos/configs/commit/a9a6c9ee955c5477265ddb6e5ada7139203e0853"
+        },
+        "date": 1780474493477,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 134.164467,
+            "range": "± 261.967401",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 75.383352,
+            "range": "± 1.317327",
             "unit": "ms"
           }
         ]
