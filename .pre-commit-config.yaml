@@ -16,10 +16,10 @@ repos:
     # koalaman/shellcheck-precommit uses Docker, so call the local shellcheck binary instead.
     # ref: https://github.com/koalaman/shellcheck-precommit
     - id: lint-bash
-      name: ShellCheck Server bash scripts
+      name: ShellCheck Bash scripts
       entry: shellcheck
       language: system
-      files: ^Server/.*\.sh$
+      files: (^Server/.*\.sh$|(^|/)([^/]+\.bash|\.bashrc|\.bash_profile)$)
 
     - id: zsh-startup-benchmark
       name: Benchmark zsh startup with hyperfine
