@@ -3,12 +3,13 @@
 # Stop running this script if any error occurs
 set -e
 
-script_dir="${${(%):-%N}:A:h}"
-common_install_dir="${script_dir}/../../common/install"
+# Keep this distinct from script_dir; sourced child installers may unset script_dir.
+install_script_dir="${${(%):-%N}:A:h}"
+common_install_dir="${install_script_dir}/../../common/install"
 common_install_dir="${common_install_dir:A}"
 
 # apt
-source "${script_dir}/apt.sh"
+source "${install_script_dir}/apt.sh"
 
 # Zsh
 source "${common_install_dir}/zsh.sh" Ubuntu
@@ -38,7 +39,7 @@ printf 'Do you also want to set up Codex CLI and configurations? [y/N]:'
 if read -q; then
     # Print a newline using echo because read -q doesn't.
     echo
-    source "${script_dir}/codex.sh"
+    source "${install_script_dir}/codex.sh"
 else
     echo
 fi
