@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1780474494096,
+  "lastUpdate": 1781261491084,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -719,6 +719,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 75.383352,
             "range": "± 1.317327",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "368c4c676e1664e5639df1ac73acb4896a01e820",
+          "message": "Merge pull request #63 from Neko-nos/feat/codex-gpu-container\n\nFeat/codex gpu container",
+          "timestamp": "2026-06-12T19:50:51+09:00",
+          "tree_id": "41ce10a4b6dcdd9d3933a60270e854cc71a84dcb",
+          "url": "https://github.com/Neko-nos/configs/commit/368c4c676e1664e5639df1ac73acb4896a01e820"
+        },
+        "date": 1781261490741,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 133.232207,
+            "range": "± 258.856838",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 74.541156,
+            "range": "± 0.553282",
             "unit": "ms"
           }
         ]
