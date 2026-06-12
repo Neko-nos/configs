@@ -65,7 +65,7 @@ Provides setup scripts for your choice of modern Python environment tools:<br>
 - **[uv](https://github.com/astral-sh/uv):** An extremely fast Python package and project manager.
 - **[pyenv](https://github.com/pyenv/pyenv) + [Poetry](https://github.com/python-poetry/poetry):** Classic combination for managing Python versions (pyenv) and project dependencies/packaging (Poetry).
 
-### VSCode Settings & Customizations
+### 4. VSCode Settings & Customizations
 - **Automatic Line Breaks for Markdown with `linebreak.py`**<br>
   Addresses the common issue where Markdown previews (`markdown.preview.break: true`) show line breaks correctly in VSCode, but standard Markdown renderers (like GitHub) require explicit breaks (`<br>` or two spaces).<br>
   It is tedious to manually insert line break tags (i.e., `<br>`, two whitespaces and an extra `\n`) every time you write Markdown, especially in Japanese.<br>
@@ -73,6 +73,27 @@ Provides setup scripts for your choice of modern Python environment tools:<br>
 
 - **Curated `settings.json`**<br>
   Includes not only useful settings for general VSCode usage, Python development, but also specific settings for Markdown and LaTeX (in `settings_mac.json`).
+
+### 5. GPU-Enabled Codex Containers
+
+[The open Codex issue](https://github.com/openai/codex/issues/3141)
+reports that the Linux sandbox prevents access to NVIDIA GPUs. Until sandboxed
+GPU access is supported, Codex must run with full access to use the GPU.
+
+This repository offers containers to limit that full-access environment:
+
+- **Docker support:** [`common/install/docker.sh`](./common/install/docker.sh)
+  installs Docker Engine and NVIDIA Container Toolkit.
+- **WSL configuration:** [`WSL/wsl.conf`](./WSL/wsl.conf) enables systemd and
+  GPU support while disabling Windows drive automounting and interoperability.
+  This keeps the Docker host focused on Linux resources and reduces access to
+  the Windows environment.
+- **Codex CLI container:** [`common/codex/Dockerfile`](./common/codex/Dockerfile)
+  creates a custom container inherited from `nvidia/cuda:12.8.0-devel-ubuntu24.04`.
+- **Codex IDE Dev Container:**
+  [`VSCode/devcontainer.json`](./VSCode/devcontainer.json) opens any project using the
+  above container from VS Code. Select full access in the
+  Codex IDE extension after entering the container.
 
 ## Installation
 
@@ -139,21 +160,35 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source nano.sh
    ```
 
-5. codex.sh<br>
+5. docker.sh<br>
+   Install Docker Engine, and optionally install NVIDIA Container Toolkit for GPU containers.
+   ```console
+   cd common/install
+   source docker.sh
+   ```
+
+6. wsl.sh<br>
+   On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
+   ```console
+   cd WSL/install
+   source wsl.sh
+   ```
+
+7. codex.sh<br>
    Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
    ```console
    cd <Mac/Ubuntu/WSL>/install
    source codex.sh
    ```
 
-6. claude.sh<br>
+8. claude.sh<br>
    Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
    ```console
    cd common/install
    source claude.sh
    ```
 
-7. python.sh<br>
+9. python.sh<br>
    Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
    ```console
    cd common/install
