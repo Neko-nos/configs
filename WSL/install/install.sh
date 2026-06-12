@@ -44,6 +44,16 @@ else
     echo
 fi
 
+# WSL
+printf 'Do you also want to set up WSL system configuration? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/wsl.sh"
+else
+    echo
+fi
+
 # Codex
 printf 'Do you also want to set up Codex CLI and configurations? [y/N]:'
 if read -q; then
