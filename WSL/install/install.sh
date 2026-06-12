@@ -34,6 +34,16 @@ else
     echo
 fi
 
+# Docker
+printf 'Do you also want to set up Docker and NVIDIA Container Toolkit? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${common_install_dir}/docker.sh"
+else
+    echo
+fi
+
 # Codex
 printf 'Do you also want to set up Codex CLI and configurations? [y/N]:'
 if read -q; then
