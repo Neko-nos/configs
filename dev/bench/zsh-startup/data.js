@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1781261491084,
+  "lastUpdate": 1781345580571,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -755,6 +755,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 74.541156,
             "range": "± 0.553282",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e4a5c2e80b55f82cfacbcb161b0ef8cdaeaa4955",
+          "message": "Merge pull request #64 from Neko-nos/feat/markdown-lint\n\nFeat/markdown lint",
+          "timestamp": "2026-06-13T19:12:14+09:00",
+          "tree_id": "c98ce550c43e4014510d7180fe09dc19163eedad",
+          "url": "https://github.com/Neko-nos/configs/commit/e4a5c2e80b55f82cfacbcb161b0ef8cdaeaa4955"
+        },
+        "date": 1781345579973,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 145.863264,
+            "range": "± 284.186579",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 82.593612,
+            "range": "± 0.497373",
             "unit": "ms"
           }
         ]
