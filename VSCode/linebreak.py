@@ -12,7 +12,7 @@ from typing import Literal
 class Patterns:
     # 先頭のtab以外はインデント処理に関係ないので無視する
     tab: re.Pattern = re.compile(r"^\t")
-    br_tag: re.Pattern = re.compile(r"<br>$")
+    hard_break: re.Pattern = re.compile(r"(?:<br\s*/?>|\\)$")
     comment: re.Pattern = re.compile(r"<!--.*-->")
     code: re.Pattern = re.compile(r"```")
     title: re.Pattern = re.compile(r"#+ ")
@@ -92,7 +92,7 @@ def get_newline_suffix(
     next_line: str,
     unset_list: bool,
     is_next_line_list: bool = False,
-) -> Literal["", "\n", "\n\n", "<br>\n"]:
+) -> Literal["", "\n", "\n\n", "\\\n"]:
     is_quote_code_line = is_quote_code_fence_line(patterns, line)
     is_next_quote_code_line = is_quote_code_fence_line(patterns, next_line)
 
@@ -102,7 +102,7 @@ def get_newline_suffix(
     # 他のブロックは優先的に処理されるのでここで考える必要はない
     if not is_next_line_list:
         status.is_list = False
-    # 複数の空行が連続している時、<br>と\n\nによる改行が重複するので\n\nの方を無くす
+    # 複数の空行が連続している時、hard breakと\n\nによる改行が重複するので\n\nの方を無くす
     if not line and not next_line:
         return ""
     elif not line or not next_line:
@@ -133,7 +133,7 @@ def get_newline_suffix(
         return "\n"
     # Treat quote bodies like normal wrapped text and force explicit line breaks.
     elif patterns.quote.match(line) and patterns.quote.match(next_line):
-        return "<br>" + "\n"
+        return "\\\n"
     elif patterns.quote.match(line):
         return "\n\n"
     # alert blockは他の要素内に作ることができないのでここでは考慮しなくて良い (GitHub Markdown)
@@ -152,7 +152,7 @@ def get_newline_suffix(
     # ここで、status.is_listの中でこの関数を使う時には文頭にあるindentをなくしてから渡しているので正規表現ではなく引数からlistの終了を予測する必要がある
     elif patterns.list_item.match(line) and is_next_line_list:
         status.update("list", unset_list=False)
-        return "<br>" + "\n"
+        return "\\\n"
     # 一番外側のlistが終了している
     elif prev_status_list and not is_next_line_list:
         # 全てFalseにする
@@ -169,11 +169,11 @@ def get_newline_suffix(
     ):
         return "\n"
     else:
-        return "<br>" + "\n"
+        return "\\\n"
 
 
 def process_markdown(lines: list[str]) -> list[str]:
-    """Processes a list of Markdown lines and adds <br> tags where needed."""
+    """Process Markdown lines and add trailing backslashes where needed."""
     patterns = Patterns()
     status = Status()
     new_lines = []
@@ -189,13 +189,13 @@ def process_markdown(lines: list[str]) -> list[str]:
             next_line = lines[idx + 1]
 
         # 最初の改行に使われる記号等を削除する
-        # Keep literal "<br>" in code fences because it may be code text, not Markdown.
+        # Preserve literal break-like text in code fences.
         if status.is_code:
             line = line.rstrip()
             next_line = next_line.rstrip()
         else:
-            line = patterns.br_tag.sub("", line).rstrip()
-            next_line = patterns.br_tag.sub("", next_line).rstrip()
+            line = patterns.hard_break.sub("", line.rstrip())
+            next_line = patterns.hard_break.sub("", next_line.rstrip())
         # indentはwhitespaceで数えているのでtabも変換しておく
         line = patterns.tab.sub(" " * 4, line)
         next_line = patterns.tab.sub(" " * 4, next_line)
@@ -237,7 +237,7 @@ def process_markdown(lines: list[str]) -> list[str]:
                     status.is_alert_code = False
                     if is_alert_end:
                         # Alert blocks require an empty line to terminate before
-                        # following plain text; "<br>" cannot switch block context.
+                        # following plain text; a hard break cannot switch block context.
                         if next_line:
                             new_lines.append("\n")
                         status.is_alert = False
@@ -250,12 +250,12 @@ def process_markdown(lines: list[str]) -> list[str]:
                 new_lines.append(line + "\n")
                 # 既に後ろに空行が来ていたら追加の\nを追加しなくても切り替わる
                 if next_line:
-                    # <br>ではblockが切り替わらない
+                    # A hard break cannot switch block context.
                     new_lines.append("\n")
                 status.is_alert = False
                 status.is_alert_code = False
             else:
-                new_lines.append(line + "<br>" + "\n")
+                new_lines.append(line + "\\\n")
         elif status.is_table:
             # is_tableになって1回目(つまり2行目)のみtable_patternに該当する
             if status.is_list:
@@ -279,7 +279,7 @@ def process_markdown(lines: list[str]) -> list[str]:
                 new_lines.append(line + "\n")
             elif is_table_current:
                 new_lines.append(line + "\n")
-                # <br>では段落が分けられない
+                # A hard break cannot separate paragraphs.
                 if next_line:
                     new_lines.append("\n")
                 status.is_table = False
@@ -341,7 +341,7 @@ def main(filepath: str | Path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Adds <br> tags to Markdown paragraphs for explicit line breaks."
+        description="Adds trailing backslashes to Markdown paragraphs for explicit line breaks."
     )
     parser.add_argument(
         "-f", "--file", required=True, type=str, help="The path of the markdown file."

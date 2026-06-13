@@ -15,11 +15,11 @@ personality = "pragmatic"
 network_access = true
 writable_roots = [
     # Somehow, codex fails to use any command due to bwrap failure in WSL
-    "~.vscode-server/extensions/openai.chatgpt-26.602.40724-linux-x64",
-    "~.nvm/versions/node/v22.22.0/lib/node_modules/@openai/codex",
+    "~/.vscode-server/extensions/openai.chatgpt-26.602.40724-linux-x64",
+    "~/.nvm/versions/node/v22.22.0/lib/node_modules/@openai/codex",
     # codex always struggle with uv cache
-    "~.cache/uv",
-    "~.cache/huggingface"
+    "~/.cache/uv",
+    "~/.cache/huggingface"
 ]
 
 [permissions.workspace_with_secret_denies.filesystem]

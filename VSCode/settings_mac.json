@@ -84,7 +84,7 @@
     // 改行の設定: https://qiita.com/fuk101/items/0fea05c93e70195275c3
     /// GitHubのプレビューと改行で揃わなくなるので注意
     // "markdown.preview.breaks": true,
-    // その為、Markdownの保存時に自動で<br>を入れてくれるファイルを走らせる
+    // その為、Markdownの保存時に自動で行末にバックスラッシュを入れてくれるファイルを走らせる
     // RunOnSave: https://github.com/pucelle/vscode-run-on-save
     "runOnSave.commands": [
         {
