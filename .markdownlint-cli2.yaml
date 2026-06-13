@@ -1,0 +1,8 @@
+config:
+  # ref: https://github.com/DavidAnson/markdownlint#rules--aliases
+  MD013: false  # line-length
+  MD024: false  # no-duplicate-heading
+  MD033:  # no-inline-html
+    allowed_elements:
+      - img
+  MD045: false  # no-alt-text
