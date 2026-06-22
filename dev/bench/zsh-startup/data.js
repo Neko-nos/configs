@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1781345580571,
+  "lastUpdate": 1782125594127,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -791,6 +791,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 82.593612,
             "range": "± 0.497373",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1a21cdca4268a63000726f330d5198718e4ad21e",
+          "message": "Merge pull request #65 from Neko-nos/feat/actionlint-support\n\nFeat/actionlint support",
+          "timestamp": "2026-06-22T19:52:33+09:00",
+          "tree_id": "e926e3cc9ae5de28e98e5bcd3003a8927b48c734",
+          "url": "https://github.com/Neko-nos/configs/commit/1a21cdca4268a63000726f330d5198718e4ad21e"
+        },
+        "date": 1782125593501,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 133.009924,
+            "range": "± 260.096421",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 74.718713,
+            "range": "± 0.50969",
             "unit": "ms"
           }
         ]
