@@ -232,6 +232,14 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source markdownlint.sh
     ```
 
+11. actionlint.sh\
+    Install [actionlint](https://github.com/rhysd/actionlint) with Homebrew on Mac or the official prebuilt binary installer on Ubuntu and WSL.
+
+    ```console
+    cd <Mac/Ubuntu/WSL>/install
+    source actionlint.sh
+    ```
+
 ### Zsh prompt
 
 #### Prompt with Icons
@@ -259,6 +267,7 @@ uv run prek install
 ```
 
 Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.\
+The actionlint hook also requires the `actionlint` command. Install it with `<Mac/Ubuntu/WSL>/install/actionlint.sh` if it is missing.\
 The `pre-push` hook benchmarks Zsh startup time with [hyperfine](https://github.com/sharkdp/hyperfine) before pushing.\
 GitHub Actions also benchmarks Zsh startup time on pull requests by comparing the base and head revisions on the same runner, and it publishes benchmark history for pushes to `main`.
 
