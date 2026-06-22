@@ -84,5 +84,15 @@ else
     echo
 fi
 
+# actionlint
+printf 'Do you also want to install actionlint? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/actionlint.sh"
+else
+    echo
+fi
+
 echo 'All installation scripts have been executed successfully.'
 echo 'For additional installation instructions, please refer to the configs/README.md file.'
