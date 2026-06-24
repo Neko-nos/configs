@@ -103,6 +103,39 @@ function add_key_to_agent() {
 }
 
 #######################################
+# Add GitHub SSH host configuration when it does not already exist.
+# Globals:
+#   HOME
+# Arguments:
+#   1: Private key path.
+# Outputs:
+#   Writes status messages to stdout.
+#######################################
+function ensure_ssh_config() {
+    local key_path="${1}"
+    local config_path="${HOME}/.ssh/config"
+
+    mkdir -p "${config_path:h}"
+    chmod 700 "${config_path:h}"
+
+    if [[ -f "${config_path}" ]] && grep -Eq '^[[:space:]]*Host[[:space:]]+.*github\.com([[:space:]]|$)' "${config_path}"; then
+        echo 'SSH config already has a Host github.com block. Please verify its IdentityFile manually.'
+        return 0
+    fi
+
+    cat <<EOF >> "${config_path}"
+
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ${key_path}
+    IdentitiesOnly yes
+EOF
+    chmod 600 "${config_path}"
+    echo "Added GitHub SSH host configuration to ${config_path}."
+}
+
+#######################################
 # Upload the selected public key to the authenticated GitHub account.
 # Globals:
 #   None
@@ -182,16 +215,17 @@ function test_connection() {
 
 echo 'This script sets up GitHub SSH authentication.'
 echo 'You can reuse an existing SSH key, or press Enter to use the default path and create it if needed.'
-printf 'SSH private key path [~/.ssh/id_ed25519]: '
+printf 'SSH private key path [~/.ssh/id_ed25519_github]: '
 read -r key_path
 if [[ -z "${key_path}" ]]; then
-    key_path='~/.ssh/id_ed25519'
+    key_path='~/.ssh/id_ed25519_github'
 fi
 key_path="$(resolve_path "${key_path}")"
 
 ensure_key "${key_path}"
 ensure_agent
 add_key_to_agent "${key_path}"
+ensure_ssh_config "${key_path}"
 if command -v gh >/dev/null 2>&1; then
     upload_key "${key_path}.pub"
     test_connection
@@ -209,6 +243,7 @@ unset -f resolve_path
 unset -f ensure_key
 unset -f ensure_agent
 unset -f add_key_to_agent
+unset -f ensure_ssh_config
 unset -f show_manual_key_instructions
 unset -f upload_key
 unset -f test_connection
