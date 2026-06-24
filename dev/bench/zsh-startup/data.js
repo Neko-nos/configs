@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1782125594127,
+  "lastUpdate": 1782322190429,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -827,6 +827,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 74.718713,
             "range": "± 0.50969",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1e275a2f3b4e8e2ed36e36078287a7c0fccf1c2b",
+          "message": "Merge pull request #66 from Neko-nos/feat/gh-support\n\nFeat/gh support",
+          "timestamp": "2026-06-25T02:29:14+09:00",
+          "tree_id": "29d1a162c1ea0b9d731085bd190fd4e421cfafec",
+          "url": "https://github.com/Neko-nos/configs/commit/1e275a2f3b4e8e2ed36e36078287a7c0fccf1c2b"
+        },
+        "date": 1782322190207,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 143.218884,
+            "range": "± 307.332523",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 74.449945,
+            "range": "± 0.399035",
             "unit": "ms"
           }
         ]
