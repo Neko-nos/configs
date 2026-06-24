@@ -11,3 +11,4 @@ jq
 nano
 # The prebuilt `sheldon` binary may depend on `/opt/homebrew/opt/openssl@3/lib/libssl.3.dylib` on Mac OS.
 openssl@3
+gh
