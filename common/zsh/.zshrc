@@ -109,11 +109,12 @@ setopt hist_fcntl_lock
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
-# uv
-# ref: https://docs.astral.sh/uv/getting-started/installation/
-function __load_uv_completion_cache() {
+# Command completions
+function __load_completion_cache() {
     local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zshrc"
 
+    # uv
+    # ref: https://docs.astral.sh/uv/getting-started/installation/
     local uv_cache="${cache_dir}/uv-completion.zsh"
     __update_cache "uv" "${uv_cache}" -- generate-shell-completion zsh || true
     source "${uv_cache}"
@@ -121,11 +122,17 @@ function __load_uv_completion_cache() {
     local uvx_cache="${cache_dir}/uvx-completion.zsh"
     __update_cache "uvx" "${uvx_cache}" -- --generate-shell-completion zsh || true
     source "${uvx_cache}"
-}
-__load_uv_completion_cache
-unset -f __load_uv_completion_cache
 
-# Additional configuration required for zsh
+    if command -v gh >/dev/null 2>&1; then
+        local gh_cache="${cache_dir}/gh-completion.zsh"
+        __update_cache "gh" "${gh_cache}" -- completion -s zsh || true
+        source "${gh_cache}"
+    fi
+}
+__load_completion_cache
+unset -f __load_completion_cache
+
+# uv
 # ref: https://github.com/astral-sh/uv/issues/8432#issuecomment-2965692994
 function _uv_run_mod() {
     # Filter out options
