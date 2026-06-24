@@ -24,6 +24,16 @@ else
     echo
 fi
 
+# GitHub SSH
+printf 'Do you also want to set up GitHub SSH authentication? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${common_install_dir}/github_ssh.sh"
+else
+    echo
+fi
+
 # Nano
 printf 'Do you also want to set up GNU nano configurations? [y/N]:'
 if read -q; then
