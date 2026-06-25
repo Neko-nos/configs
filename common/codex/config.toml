@@ -5,25 +5,25 @@
 model = "gpt-5.5"
 model_reasoning_effort = "high"
 
-sandbox_mode = "workspace-write"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
 default_permissions = "workspace_with_secret_denies"
 personality = "pragmatic"
 
-[sandbox_workspace_write]
-network_access = true
-writable_roots = [
-    # Somehow, codex fails to use any command due to bwrap failure in WSL
-    "~/.vscode-server/extensions/openai.chatgpt-26.602.40724-linux-x64",
-    "~/.nvm/versions/node/v22.22.0/lib/node_modules/@openai/codex",
-    # codex always struggle with uv cache
-    "~/.cache/uv",
-    "~/.cache/huggingface"
-]
+[permissions.workspace_with_secret_denies]
+# ref: https://developers.openai.com/codex/permissions#extend-a-profile
+extends = ":workspace"
+
+[permissions.workspace_with_secret_denies.workspace_roots]
+# Codex always struggles with uv cache.
+"~/.cache/uv" = true
+"~/.cache/huggingface" = true
 
 [permissions.workspace_with_secret_denies.filesystem]
 glob_scan_max_depth = 4
+# Somehow, codex fails to use any command due to bwrap failure in WSL.
+"~/.vscode-server/extensions/openai.chatgpt-26.602.40724-linux-x64" = "read"
+"~/.nvm/versions/node/v22.22.0/lib/node_modules/@openai/codex" = "read"
 "~/.netrc" = "deny"
 "~/.aws/credentials" = "deny"
 "~/**/huggingface/token" = "deny"
@@ -40,6 +40,9 @@ glob_scan_max_depth = 4
 "secrets" = "deny"
 "secrets/**" = "deny"
 "**/secrets/**" = "deny"
+
+[permissions.workspace_with_secret_denies.network]
+enabled = true
 
 [shell_environment_policy]
 inherit = "all"
