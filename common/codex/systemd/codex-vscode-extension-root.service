@@ -1,0 +1,7 @@
+[Unit]
+Description=Update Codex VS Code extension config entry
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/configs
+ExecStart=/bin/zsh -lc 'uv run common/codex/update_vscode_extension_root.py --force'

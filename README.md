@@ -224,6 +224,16 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source codex.sh
    ```
 
+   On environments with systemd, install the background scheduler to keep
+   Codex's VS Code extension config entry updated. It runs once per day at
+   00:00 and refreshes the read-only extension path in
+   `common/codex/config.toml` from the installed VS Code server extension:
+
+   ```console
+   cd ~/configs
+   common/codex/install_vscode_extension_scheduler.sh
+   ```
+
 10. claude.sh\
     Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
 

@@ -6,6 +6,8 @@
 
 - After writing code, tell me the reasons behind your implementation/design (not as comments in the code)
 - When I ask a question, it is not a rejection or a request for changes. Answer the question appropriately without modifying the code.
+- When citing code, make sure to indicate the line numbers.
+  - For GitHub links, you can indicate the line by adding `#L<int>` to the end of the URL.
 
 ### Documents
 
@@ -14,13 +16,13 @@
 
 ### Coding
 
-- Write docstrings, comments and documents in English
+- Do not unnecessarily modify existing comments unless they are within the specified scope.
 - Use modern syntax and libraries.
 - Write simple, readable code; follow the principles in "The Art of Readable Code".
 - Avoid excessive global variants, especially CONSTANTS.
 - Avoid excessive comments; focus on explaining "why", not "what".
   - If there is something (e.g., "why") you cannot infer from the code, you should write it as a comment.
-- Avoid excessively complicated implementations (e.g., too many thin wrappers)
+- Avoid excessively complicated implementations (e.g., thin wrappers/functions)
 - Don't worry about backward compatibility unless instructed otherwise.
 - Remove dead code and unused variables.
 - Write and run tests to check your code before finishing the conversation turn.
