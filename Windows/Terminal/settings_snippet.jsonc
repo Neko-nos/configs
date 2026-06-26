@@ -1,0 +1,11 @@
+{
+    "actions": [
+        {
+            "command": {
+                "action": "sendInput",
+                "input": "\u000a"
+            },
+            "keys": "shift+enter"
+        }
+    ]
+}

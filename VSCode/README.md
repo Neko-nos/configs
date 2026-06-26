@@ -25,6 +25,11 @@ PYTHONPATH=. uv run pytest VSCode/test_linebreak.py
 
 The `settings.json` for Ubuntu(and WSL).
 
+## keybindings.json
+
+The `keybindings.json` for VSCode. In the integrated terminal, Shift+Enter
+sends `\u001b[13;2u`. This lets Codex CLI insert a newline without submitting the prompt.
+
 ## settings_mac.json
 
 The `settings.json` for Mac.\

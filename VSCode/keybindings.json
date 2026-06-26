@@ -1,0 +1,14 @@
+[
+    {
+        "key": "shift+enter",
+        "command": "workbench.action.terminal.sendSequence",
+        // ref: https://zenn.dev/tanadeyu/articles/b1ac52a262ea4a
+        "args": { "text": "\u001b[13;2u" },
+        "when": "terminalFocus"
+    },
+
+    {
+        "key": "shift+alt+m",
+        "command": "markdown.preview.refresh"
+    }
+]

@@ -21,9 +21,6 @@ extends = ":workspace"
 
 [permissions.workspace_with_secret_denies.filesystem]
 glob_scan_max_depth = 4
-# Somehow, codex fails to use any command due to bwrap failure in WSL.
-"~/.vscode-server/extensions/openai.chatgpt-26.602.40724-linux-x64" = "read"
-"~/.nvm/versions/node/v22.22.0/lib/node_modules/@openai/codex" = "read"
 "~/.netrc" = "deny"
 "~/.aws/credentials" = "deny"
 "~/**/huggingface/token" = "deny"
