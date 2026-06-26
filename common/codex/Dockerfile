@@ -38,8 +38,11 @@ RUN usermod --shell /bin/zsh "${USERNAME}" \
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}
 
+# codex somehow uses sandbox in full access if the default_permission is not set to :danger-full-access
 RUN mkdir -p "${CODEX_HOME}" "${NPM_CONFIG_PREFIX}/bin" \
-    && git clone "${CONFIGS_REPOSITORY}" "${HOME}/configs"
+    && git clone "${CONFIGS_REPOSITORY}" "${HOME}/configs" \
+    && sed -i 's/default_permissions = "workspace_with_secret_denies"/default_permissions = ":danger-full-access"/' "${HOME}/configs/common/codex/config.toml" \
+    && grep -q 'default_permissions = ":danger-full-access"' "${HOME}/configs/common/codex/config.toml"
 
 WORKDIR /workspace
 
