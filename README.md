@@ -142,7 +142,7 @@ After installing it, open its settings and add the JSON files in `karabiner_elem
 ### Command-Line Environment & Tools
 
 There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.\
-`install/install.sh` runs all the install scripts including those in the `common/install` directory. Git, GitHub CLI, GitHub SSH, nano, Codex, Claude Code, Python, and markdownlint setups are optional and prompted interactively.
+`install/install.sh` runs all the install scripts including those in the `common/install` directory. Git, GitHub CLI, GitHub SSH, VSCode, nano, Codex, Claude Code, Python, and markdownlint setups are optional and prompted interactively.
 
 ```console
 chmod +x install.sh
@@ -191,7 +191,15 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source github_ssh.sh
    ```
 
-6. nano.sh\
+6. vscode.sh\
+   Set up VSCode user `settings.json` and `keybindings.json` for the current OS. Mac uses `settings_mac.json`; Ubuntu and WSL use `settings.json`.
+
+   ```console
+   cd <Mac/Ubuntu/WSL>/install
+   source vscode.sh
+   ```
+
+7. nano.sh\
    Set up nano with system syntax definitions and optional custom settings from `~/nanorc`.
    On Mac, install the Homebrew `nano` formula first so the `nano` command resolves to the Homebrew version instead of the system Pico-compatible editor.
 
@@ -200,7 +208,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source nano.sh
    ```
 
-7. docker.sh\
+8. docker.sh\
    Install Docker Engine, and optionally install NVIDIA Container Toolkit for GPU containers.
 
    ```console
@@ -208,7 +216,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source docker.sh
    ```
 
-8. wsl.sh\
+9. wsl.sh\
    On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
 
    ```console
@@ -216,15 +224,15 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source wsl.sh
    ```
 
-9. codex.sh\
+10. codex.sh\
    Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
 
-   ```console
-   cd <Mac/Ubuntu/WSL>/install
-   source codex.sh
-   ```
+    ```console
+    cd <Mac/Ubuntu/WSL>/install
+    source codex.sh
+    ```
 
-10. claude.sh\
+11. claude.sh\
     Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
 
     ```console
@@ -232,7 +240,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source claude.sh
     ```
 
-11. python.sh\
+12. python.sh\
     Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
 
     ```console
@@ -240,7 +248,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source python.sh
     ```
 
-12. markdownlint.sh\
+13. markdownlint.sh\
     Install [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) with Homebrew on Mac or npm on Ubuntu and WSL.
 
     ```console
@@ -248,7 +256,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source markdownlint.sh
     ```
 
-13. actionlint.sh\
+14. actionlint.sh\
     Install [actionlint](https://github.com/rhysd/actionlint) with Homebrew on Mac or the official prebuilt binary installer on Ubuntu and WSL.
 
     ```console

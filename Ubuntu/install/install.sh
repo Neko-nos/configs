@@ -44,6 +44,16 @@ else
     echo
 fi
 
+# VSCode
+printf 'Do you also want to set up VSCode configurations? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/vscode.sh"
+else
+    echo
+fi
+
 # Nano
 printf 'Do you also want to set up nano configurations? [y/N]:'
 if read -q; then
