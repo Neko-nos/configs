@@ -19,14 +19,21 @@
 - Do not unnecessarily modify existing comments unless they are within the specified scope.
 - Use modern syntax and libraries.
 - Write simple, readable code; follow the principles in "The Art of Readable Code".
-- Avoid excessive global variants, especially CONSTANTS.
-- Avoid excessive comments; focus on explaining "why", not "what".
+- Avoid global variables, except for compiled regex patterns.
+- when writing a comment, focus on explaining "why", not "what".
   - If there is something (e.g., "why") you cannot infer from the code, you should write it as a comment.
-- Avoid excessively complicated implementations (e.g., thin wrappers/functions)
+- Avoid excessively complicated implementations (e.g., trivial thin wrappers/functions)
 - Don't worry about backward compatibility unless instructed otherwise.
-- Remove dead code and unused variables.
-- Write and run tests to check your code before finishing the conversation turn.
+- Do not leave dead code or unused variables.
 - Create and use dummy data for test cases instead of real data. Never include real data, even partially.
+
+### Tests
+
+- Write and run tests to verify your code before finishing the conversation turn.
+  - Test execution is not required if the changes are limited to docs or comments.
+- Use actual modules instead of fakes or mocks. If a GPU is required, configure it to run exclusively in a GPU environment. Should an unavoidable situation arise where the use of fakes or mocks is strictly necessary, you must explicitly state this and its reason at the end of the turn.
+- Do not add tests intended to verify that old behaviors no longer occur.
+- Do not focus solely on smoke tests.
 
 ### Shell usage
 
