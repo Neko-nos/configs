@@ -10,5 +10,81 @@
     {
         "key": "shift+alt+m",
         "command": "markdown.preview.refresh"
+    },
+
+    // Emacs-style editor editing.
+    {
+        "key": "ctrl+a",
+        "command": "cursorHome",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+e",
+        "command": "cursorEnd",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+b",
+        "command": "cursorLeft",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+f",
+        "command": "cursorRight",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "cursorUp",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "cursorDown",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+d",
+        "command": "deleteRight",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+h",
+        "command": "deleteLeft",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "deleteAllRight",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+u",
+        "command": "deleteAllLeft",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+w",
+        "command": "deleteWordLeft",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+y",
+        "command": "editor.action.clipboardPasteAction",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "editor.action.transposeLetters",
+        "when": "editorTextFocus && !terminalFocus"
+    },
+
+    {
+        "key": "ctrl+w",
+        "command": "-workbench.action.closeActiveEditor"
+    },
+    {
+        "key": "cmd+w",
+        "command": "-workbench.action.closeActiveEditor"
     }
 ]
