@@ -13,7 +13,7 @@ source "${script_dir}/utils.sh"
 
 mkdir -p "${vscode_user_dir}"
 
-__install_repo_path "${repo_vscodedir}/settings_mac.json" "${vscode_user_dir}/settings.json" 'VSCode settings.json' link
+__install_repo_path "${repo_vscodedir}/settings.json" "${vscode_user_dir}/settings.json" 'VSCode settings.json' link
 __install_repo_path "${repo_vscodedir}/keybindings.json" "${vscode_user_dir}/keybindings.json" 'VSCode keybindings.json' link
 
 echo 'Finished VSCode configuration!'

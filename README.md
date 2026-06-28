@@ -84,7 +84,7 @@ Provides setup scripts for your choice of modern Python environment tools:\
   This script, used with the [Run on save](https://marketplace.visualstudio.com/items?itemName=pucelle.run-on-save) extension, automatically inserts trailing backslashes into your Markdown file.
 
 - **Curated `settings.json`**\
-  Includes not only useful settings for general VSCode usage, Python development, but also specific settings for Markdown and LaTeX (in `settings_mac.json`).
+  Includes useful settings for general VSCode usage, Python development, Markdown, and LaTeX.
 
 ### 5. GPU-Enabled Codex Containers
 
@@ -192,7 +192,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 6. vscode.sh\
-   Set up VSCode user `settings.json` and `keybindings.json` for the current OS. Mac uses `settings_mac.json`; Ubuntu and WSL use `settings.json`.
+   Set up VSCode user `settings.json` and `keybindings.json` for the current OS.
 
    ```console
    cd <Mac/Ubuntu/WSL>/install

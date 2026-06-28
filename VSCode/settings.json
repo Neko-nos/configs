@@ -1,53 +1,186 @@
 {
-    // General
-    "workbench.iconTheme": "vscode-icons",
-    "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true,
-    "terminal.integrated.enableMultiLinePasteWarning": "auto",
-    "editor.minimap.enabled": false,
-    "editor.fontFamily": "Consolas, 'Moralerspace Neon', monospace",
-    // ref: https://zenn.dev/yutotnh/articles/1577b6dc5ab7d9
-    "editor.dragAndDrop": false,
-    "editor.wrappingIndent": "indent",
-    "explorer.compactFolders": false,
-    "scm.compactFolders": false,
-    "scm.defaultViewMode": "tree",
+    // ---------- Language ----------
 
-    // Terminal
-    "terminal.integrated.commandsToSkipShell": [
-        // ctrl + pはsearch-cdr用に使いたい
-        "-workbench.action.quickOpen",
-        // our nanorc use ctrl+q to exit, so we need to unbind ctrl+q in vscode terminal
-        // ref: https://github.com/microsoft/vscode/issues/108130#issuecomment-721952005
-        "-workbench.action.quickOpenView"
+    "[tex]": {
+        // Allow completions while snippet completions are active.
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.tabSize": 2
+    },
+
+    "[latex]": {
+        // Allow completions while snippet completions are active.
+        "editor.suggest.snippetsPreventQuickSuggestions": false,
+        "editor.tabSize": 2
+    },
+
+    "[bibtex]": {
+        "editor.tabSize": 2
+    },
+
+
+    // ---------- LaTeX Workshop ----------
+
+    "latex-workshop.intellisense.package.enabled": true,
+
+    // Files to delete when cleaning generated files.
+    // Adds "*.synctex.gz" to the default values.
+    "latex-workshop.latex.clean.fileTypes": [
+        "*.aux",
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.snm",
+        "*.nav",
+        "*.dvi",
+        "*.synctex.gz"
     ],
 
-    // Markdown
-    // 改行の設定: https://qiita.com/fuk101/items/0fea05c93e70195275c3
-    /// GitHubのプレビューと改行で揃わなくなるので注意
+    "latex-workshop.latex.outDir": "out",
+
+    // Build
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk",
+            "tools": [
+                "latexmk"
+            ]
+        },
+    ],
+
+    // Tools used by build recipes.
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-silent",
+                "-outdir=%OUTDIR%",
+                "%DOC%"
+            ],
+        },
+    ],
+
+    // ---------- Markdown ----------
+    /// Be careful because line breaks will no longer match the GitHub preview.
     // "markdown.preview.breaks": true,
-    // その為、Markdownの保存時に自動で行末バックスラッシュを入れてくれるファイルを走らせる
+    // Instead, run a script that automatically inserts trailing backslashes when saving Markdown files.
     // RunOnSave: https://github.com/pucelle/vscode-run-on-save
     "runOnSave.commands": [
         {
             "globMatch": "**/*.md",
-            // ファイルを書き換えているのでcommandBeforeSavingにしてはいけない
-            "command": "python ~/linebreak.py -f ${file}",
+            // Do not use commandBeforeSaving because this command modifies the file.
+            // Specify the Python executable directly because VSCode changes can make the normal python command unavailable.
+            "command": "~/.local/bin/python ~/linebreak.py -f ${file}",
+            // Use terminal if command not found errors still occur.
+            // ref: https://github.com/pucelle/vscode-run-on-save/issues/37
             "runIn": "backend",
             "runningStatusMessage": "Start insert line-break symbols into ${fileBasename}.",
             "finishStatusMessage": "Finished.",
             "statusMessageTimeout": 1000,
         }
     ],
+    "markdown-pdf.displayHeaderFooter": false,
 
+    // ---------- Python ----------
 
-    // Python
-    // terminal起動直後に仮想環境を開かないようにする
+    // Virtual environment folders.
+    "python.venvFolders": [
+        ".venv"
+    ],
+
+    // Do not activate virtual environments immediately after opening a terminal.
     // ref: https://code.visualstudio.com/docs/python/environments
     "python.terminal.activateEnvironment": false,
-    "remote.autoForwardPortsSource": "hybrid",
 
+    // Jupyter Notebook settings.
+    "notebook.lineNumbers": "on",
+    "notebook.editorOptionsCustomizations": {
+        "editor.tabSize": 4,
+        "editor.indentSize": 4,
+        "editor.insertSpaces": true
+    },
+    "jupyter.askForKernelRestart": true,
+
+    // ---------- C/C++ ----------
+    "[cpp]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
+    "[c]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
+
+    // ---------- General ----------
+
+    // ---------- Terminal ----------
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "terminal.integrated.commandsToSkipShell": [
+        // Use ctrl+p for search-cdr.
+        "-workbench.action.quickOpen",
+        // Our nanorc uses ctrl+q to exit, so unbind ctrl+q in the VSCode terminal.
+        // ref: https://github.com/microsoft/vscode/issues/108130#issuecomment-721952005
+        "-workbench.action.quickOpenView"
+    ],
+    "terminal.integrated.enableMultiLinePasteWarning": "auto",
+
+    // ---------- Workbench ----------
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.colorTheme": "Dark Modern",
+
+    // ---------- Editor ----------
+    "editor.minimap.enabled": false,
+    "editor.fontFamily": "Consolas, 'Moralerspace Neon', monospace",
+    // ref: https://zenn.dev/yutotnh/articles/1577b6dc5ab7d9
+    "editor.dragAndDrop": false,
+    "editor.wrappingIndent": "indent",
+
+    // ---------- Explorer ----------
+    // ref: https://zenn.dev/yutotnh/articles/1577b6dc5ab7d9
+    "explorer.compactFolders": false,
+    "scm.compactFolders": false,
+    "scm.defaultViewMode": "tree",
+    "git.openRepositoryInParentFolders": "never",
+
+    // ---------- Files ----------
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
     "files.exclude": {
         "**/.git": false
-    }
+    },
+
+    // ---------- Remote ----------
+    "remote.autoForwardPortsSource": "hybrid",
+    "remote.SSH.useExecServer": false,
+
+    // ---------- Window ----------
+    // Mac-only
+    // ref: https://tech.sompo.io/entry/2023/04/06/161035
+    "window.nativeTabs": true,
+    "window.titleBarStyle": "native",
+
+    // ---------- Docker ----------
+    "[dockercompose]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+    },
+
+    // ---------- Claude Code ----------
+    "claudeCode.preferredLocation": "panel",
 }
