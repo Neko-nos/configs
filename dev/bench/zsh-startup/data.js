@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1782575218815,
+  "lastUpdate": 1782666594173,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -935,6 +935,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 75.262363,
             "range": "± 0.455234",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7bea9d10bf44e8eac59ef98acda3ad7d77d62dd7",
+          "message": "Merge pull request #70 from Neko-nos/feat/vscode-settings\n\nFeat/vscode settings",
+          "timestamp": "2026-06-29T02:09:16+09:00",
+          "tree_id": "aa90127932b41b9440877d53485cef5f96382674",
+          "url": "https://github.com/Neko-nos/configs/commit/7bea9d10bf44e8eac59ef98acda3ad7d77d62dd7"
+        },
+        "date": 1782666593932,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 151.314118,
+            "range": "± 302.619813",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 83.299226,
+            "range": "± 0.266087",
             "unit": "ms"
           }
         ]
