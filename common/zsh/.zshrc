@@ -104,6 +104,8 @@ setopt extended_history
 setopt hist_fcntl_lock
 
 # Key settings
+# Treat path separators as word boundaries for zle word-editing commands such as Ctrl+w.
+WORDCHARS="${WORDCHARS//\/}"
 # Fix Ctrl+Left/Right not working in some terminals
 # ref: https://unix.stackexchange.com/questions/58870/ctrl-left-right-arrow-keys-issue
 bindkey "^[[1;5C" forward-word
