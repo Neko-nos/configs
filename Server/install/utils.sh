@@ -65,5 +65,4 @@ function __install_symlink() {
 
     ln -s "${source_resolved_path}" "${destination_path}"
     printf "Created symlink: %s -> %s\n" "${destination_path}" "${source_resolved_path}"
-    return 0
 }
