@@ -8,5 +8,6 @@ bash "${script_dir}/commands.sh"
 bash "${script_dir}/build_cmds.sh"
 bash "${script_dir}/bash.sh"
 bash "${script_dir}/nano.sh"
+bash "${script_dir}/codex.sh"
 
 echo "Finished server configuration!"

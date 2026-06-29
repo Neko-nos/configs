@@ -6,8 +6,8 @@ Bash and user-local tools.
 
 ## Installation
 
-Run [install.sh](./install/install.sh) to install commands, build useful commands from source,
-and link the Bash and nano configuration:
+Run [install.sh](./install/install.sh) to install commands, install Codex CLI,
+build useful commands from source, and link the Bash and nano configuration:
 
 ```bash
 bash Server/install/install.sh
@@ -20,6 +20,14 @@ with `uv tool install`. Currently it installs:
 - `uv` and `uvx`
 - `gdown`
 - `shellcheck`
+
+[codex.sh](./install/codex.sh) installs Codex CLI and the commands it needs
+without root privileges. It currently installs:
+
+- `bwrap`, extracted from Ubuntu's `bubblewrap` package into `~/.local/bin`
+- Codex CLI, using the official Codex installer with `CODEX_INSTALL_DIR` set to
+  `~/.local/bin`
+- Codex configuration links in `~/.codex`
 
 [build_cmds.sh](./install/build_cmds.sh) builds source-only tools into
 `~/.local`. It currently installs:
