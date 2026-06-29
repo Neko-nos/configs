@@ -85,8 +85,9 @@ mkdir -p "${HOME}/.local/bin"
 export PATH="${HOME}/.local/bin:${PATH}"
 
 install_uv
-# Use uv tool instead of apt so gdown can be installed without sudo.
+# Use uv tool instead of apt so the commands can be installed without sudo.
 uv tool install gdown
+uv tool install hf
 install_shellcheck
 
 echo "Finished command installation!"
