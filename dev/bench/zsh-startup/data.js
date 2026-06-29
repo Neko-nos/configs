@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1782666594173,
+  "lastUpdate": 1782751610459,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -971,6 +971,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 83.299226,
             "range": "± 0.266087",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "55efa0a617d3e1ac6e22e9d038f4b8de5116cb2d",
+          "message": "Merge pull request #71 from Neko-nos/feat/more-commands-server\n\nFeat/more commands server",
+          "timestamp": "2026-06-30T01:46:09+09:00",
+          "tree_id": "32758889666d5c144984ee2bfaf44b3d2e3188b5",
+          "url": "https://github.com/Neko-nos/configs/commit/55efa0a617d3e1ac6e22e9d038f4b8de5116cb2d"
+        },
+        "date": 1782751609873,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 104.772084,
+            "range": "± 211.793652",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 57.942561,
+            "range": "± 1.506607",
             "unit": "ms"
           }
         ]
