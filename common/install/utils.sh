@@ -61,7 +61,7 @@ function __install_repo_path {
         return 0
     fi
 
-    if [[ "${install_mode}" == 'copy' && -f "${destination_path}" ]] && cmp -s "${source_path}" "${destination_path}"; then
+    if [[ "${install_mode}" == 'copy' && -f "${destination_path}" && ! -L "${destination_path}" ]] && cmp -s "${source_path}" "${destination_path}"; then
         echo "You have already created ${display_name} from the repository template."
         return 0
     fi
