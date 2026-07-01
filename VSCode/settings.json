@@ -170,6 +170,7 @@
 
     // ---------- Window ----------
     // Mac-only
+    // Non-Mac users should remove or override these settings if the native title bar changes the window layout.
     // ref: https://tech.sompo.io/entry/2023/04/06/161035
     "window.nativeTabs": true,
     "window.titleBarStyle": "native",
