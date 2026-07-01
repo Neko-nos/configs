@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1782751610459,
+  "lastUpdate": 1782923021359,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1007,6 +1007,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 57.942561,
             "range": "± 1.506607",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b06bf3ab379e3551c57d2baa2b78c111d8595067",
+          "message": "Merge pull request #74 from Neko-nos/fix/wsl-vscode-install\n\nFix/wsl vscode install",
+          "timestamp": "2026-07-02T01:23:01+09:00",
+          "tree_id": "df04f6278e8f5355f25428cb90fe9e4de3888eb5",
+          "url": "https://github.com/Neko-nos/configs/commit/b06bf3ab379e3551c57d2baa2b78c111d8595067"
+        },
+        "date": 1782923021122,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 152.063894,
+            "range": "± 308.68456",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 82.927386,
+            "range": "± 0.244046",
             "unit": "ms"
           }
         ]
