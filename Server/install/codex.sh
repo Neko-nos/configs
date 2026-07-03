@@ -4,9 +4,6 @@ set -euo pipefail
 
 script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 
-# shellcheck source=/dev/null
-source "${script_dir}/utils.sh"
-
 #######################################
 # Install bwrap by extracting Ubuntu's bubblewrap package into ~/.local.
 # Arguments:
@@ -84,25 +81,6 @@ function install_codex_cli() {
 }
 
 #######################################
-# Link this repository's Codex configuration into CODEX_HOME.
-# Arguments:
-#   Codex home directory.
-#   Repository Codex configuration directory.
-# Outputs:
-#   Writes symlink status messages to stdout.
-# Returns:
-#   0 if configuration is installed, non-zero otherwise.
-#######################################
-function install_codex_configuration() {
-    local codex_home="${1}"
-    local common_codex_dir="${2}"
-
-    mkdir -p "${codex_home}"
-    __install_symlink "${common_codex_dir}/AGENTS.md" "${codex_home}/AGENTS.md" "Codex AGENTS.md"
-    __install_symlink "${common_codex_dir}/config.toml" "${codex_home}/config.toml" "Codex config.toml"
-}
-
-#######################################
 # Install Codex CLI and its server-side dependencies without root privileges.
 # Arguments:
 #   None
@@ -121,7 +99,7 @@ function main() {
 
     install_bwrap "${cache_dir}" "${user_bin_dir}"
     install_codex_cli "${cache_dir}" "${user_bin_dir}" "${codex_home}"
-    install_codex_configuration "${codex_home}" "${repo_root}/common/codex"
+    CODEX_HOME="${codex_home}" zsh "${repo_root}/common/install/codex.sh"
 }
 
 main
