@@ -11,6 +11,16 @@ common_install_dir="${common_install_dir:A}"
 # Homebrew
 source "${install_script_dir}/brew.sh"
 
+# Karabiner-Elements
+printf 'Do you also want to set up Karabiner-Elements? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/karabiner_elements.sh"
+else
+    echo
+fi
+
 # Zsh
 source "${common_install_dir}/zsh.sh" Mac
 
