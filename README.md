@@ -135,9 +135,9 @@ Please refer to the `README.md` file in the Ubuntu directory for the installatio
 #### Mac
 
 Since `.zshrc` doesn't support command key configuration, I use [Karabiner-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.\
-After installing it, open its settings and add the JSON files in `karabiner_elements`.
-
-<img width="750" src="images/karabiner_elements.png">
+Run `Mac/install/karabiner_elements.sh` to install Karabiner-Elements with Homebrew and link the selected keyboard configuration to `~/.config/karabiner/karabiner.json`.\
+Choose `jis` for a JIS keyboard or `us` for a US keyboard that should behave like the JIS configuration.\
+After the first installation, open Karabiner-Elements and grant the macOS permissions it requests.
 
 ### Command-Line Environment & Tools
 
@@ -159,7 +159,15 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source apt/brew.sh
    ```
 
-2. zsh.sh\
+2. karabiner_elements.sh\
+   Install Karabiner-Elements with Homebrew on Mac, ask whether the keyboard is JIS or US, and link the corresponding Karabiner configuration file.
+
+   ```console
+   cd Mac/install
+   source karabiner_elements.sh
+   ```
+
+3. zsh.sh\
    Install [sheldon](https://github.com/rossmacarthur/sheldon) and set up `.zshrc`.
 
    ```console
@@ -167,7 +175,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source zsh.sh <Mac/Ubuntu/WSL>
    ```
 
-3. git.sh\
+4. git.sh\
    Set up `.gitconfig`.
 
    ```console
@@ -175,7 +183,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source git.sh
    ```
 
-4. gh.sh\
+5. gh.sh\
    Install [GitHub CLI](https://cli.github.com/) on Ubuntu or WSL from the official GitHub CLI apt repository. On Mac, `gh` is installed by `brew.sh` from `brew_formulae.txt`.
 
    ```console
@@ -183,7 +191,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source gh.sh
    ```
 
-5. github_ssh.sh\
+6. github_ssh.sh\
    Set up SSH authentication for GitHub. The script generates or reuses an Ed25519 SSH key, adds it to the ssh-agent, uploads the public key with `gh` when available, and tests `ssh -T git@github.com`.
 
    ```console
@@ -191,7 +199,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source github_ssh.sh
    ```
 
-6. vscode.sh\
+7. vscode.sh\
    Set up VSCode user `settings.json` and `keybindings.json` for the current OS.
 
    ```console
@@ -199,7 +207,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source vscode.sh
    ```
 
-7. nano.sh\
+8. nano.sh\
    Set up nano with system syntax definitions and optional custom settings from `~/nanorc`.
    On Mac, install the Homebrew `nano` formula first so the `nano` command resolves to the Homebrew version instead of the system Pico-compatible editor.
 
@@ -208,7 +216,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source nano.sh
    ```
 
-8. docker.sh\
+9. docker.sh\
    Install Docker Engine, and optionally install NVIDIA Container Toolkit for GPU containers.
 
    ```console
@@ -216,15 +224,15 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source docker.sh
    ```
 
-9. wsl.sh\
+10. wsl.sh\
    On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
 
-   ```console
-   cd WSL/install
-   source wsl.sh
-   ```
+    ```console
+    cd WSL/install
+    source wsl.sh
+    ```
 
-10. codex.sh\
+11. codex.sh\
    Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
 
     ```console
@@ -232,7 +240,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source codex.sh
     ```
 
-11. claude.sh\
+12. claude.sh\
     Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
 
     ```console
@@ -240,7 +248,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source claude.sh
     ```
 
-12. python.sh\
+13. python.sh\
     Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
 
     ```console
@@ -248,7 +256,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source python.sh
     ```
 
-13. markdownlint.sh\
+14. markdownlint.sh\
     Install [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) with Homebrew on Mac or npm on Ubuntu and WSL.
 
     ```console
@@ -256,7 +264,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source markdownlint.sh
     ```
 
-14. actionlint.sh\
+15. actionlint.sh\
     Install [actionlint](https://github.com/rhysd/actionlint) with Homebrew on Mac or the official prebuilt binary installer on Ubuntu and WSL.
 
     ```console
