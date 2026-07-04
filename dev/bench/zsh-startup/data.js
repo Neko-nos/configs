@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1783140491102,
+  "lastUpdate": 1783165458602,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1115,6 +1115,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 86.508068,
             "range": "± 1.906798",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c77e15bd722cf9fbb9535d1b4acb07ad2a385cd7",
+          "message": "Merge pull request #76 from Neko-nos/feat/karabiner-install\n\nFeat/karabiner install",
+          "timestamp": "2026-07-04T20:43:36+09:00",
+          "tree_id": "14715af9148a4405d3019711568020901b06405d",
+          "url": "https://github.com/Neko-nos/configs/commit/c77e15bd722cf9fbb9535d1b4acb07ad2a385cd7"
+        },
+        "date": 1783165458014,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 150.159773,
+            "range": "± 327.328995",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 77.121701,
+            "range": "± 0.607552",
             "unit": "ms"
           }
         ]
