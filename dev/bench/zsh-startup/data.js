@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1782986895939,
+  "lastUpdate": 1783140491102,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1079,6 +1079,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 75.175641,
             "range": "± 0.504684",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c2f58ce974d78ed8b68620fca82742d018c95f57",
+          "message": "Merge pull request #75 from Neko-nos/feat/codex-diff-turn-level\n\nFeat/codex diff turn level",
+          "timestamp": "2026-07-04T13:47:30+09:00",
+          "tree_id": "cd4e7452d8c7c43c02905e4cd6e483fd33b3226f",
+          "url": "https://github.com/Neko-nos/configs/commit/c2f58ce974d78ed8b68620fca82742d018c95f57"
+        },
+        "date": 1783140490862,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 162.641087,
+            "range": "± 328.877329",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 86.508068,
+            "range": "± 1.906798",
             "unit": "ms"
           }
         ]
