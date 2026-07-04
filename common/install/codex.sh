@@ -13,6 +13,7 @@ mkdir -p "${codex_home}"
 
 __install_repo_path "${common_codexdir}/AGENTS.md" "${codex_home}/AGENTS.md" 'AGENTS.md' link
 __install_repo_path "${common_codexdir}/config.toml" "${codex_home}/config.toml" 'config.toml' link
+__install_repo_path "${common_codexdir}/hooks.json" "${codex_home}/hooks.json" 'hooks.json' link
 
 echo 'Finished codex configuration!'
 echo ''

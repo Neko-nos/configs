@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/codex/hooks\" \"$HOME/configs/common/codex/hooks/turn_diff.py\" start",
+            "timeout": 30,
+            "statusMessage": "Capturing turn diff baseline"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/codex/hooks\" \"$HOME/configs/common/codex/hooks/turn_diff.py\" stop",
+            "timeout": 30,
+            "statusMessage": "Saving turn diff"
+          }
+        ]
+      }
+    ]
+  }
+}
