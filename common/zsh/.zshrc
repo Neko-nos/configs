@@ -86,7 +86,7 @@ setopt correct_all
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill|less|cat)(| *)"
+HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill|less|cat|git branch -d)(| *)"
 # Avoid duplicate entries in history
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
