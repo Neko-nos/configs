@@ -7,6 +7,7 @@ from pathlib import Path
 import pyperclip
 from git_snapshot import (
     git_cache_dir,
+    git_worktree_root,
     run_git,
     worktree_tree,
 )
@@ -17,9 +18,10 @@ def start_turn() -> None:
     """Capture a baseline working-tree snapshot for the current turn."""
     # ref: https://developers.openai.com/codex/hooks#common-input-fields
     payload = json.loads(sys.stdin.read())
-    root = Path(
-        run_git(["rev-parse", "--show-toplevel"], Path(payload["cwd"])).stdout.strip()
-    )
+    root = git_worktree_root(Path(payload["cwd"]))
+    if root is None:
+        return
+
     session_dir = git_cache_dir(root) / payload["session_id"] / payload["turn_id"]
     session_dir.mkdir(parents=True, exist_ok=True)
 
@@ -34,11 +36,17 @@ def stop_turn() -> None:
     """Save a diff from the turn baseline to the current working tree."""
     # ref: https://developers.openai.com/codex/hooks#common-input-fields
     payload = json.loads(sys.stdin.read())
-    root = Path(
-        run_git(["rev-parse", "--show-toplevel"], Path(payload["cwd"])).stdout.strip()
-    )
+    root = git_worktree_root(Path(payload["cwd"]))
+    if root is None:
+        print(json.dumps({"continue": True}))
+        return
+
     session_dir = git_cache_dir(root) / payload["session_id"] / payload["turn_id"]
     state_path = session_dir / "state.json"
+    if not state_path.exists():
+        print(json.dumps({"continue": True}))
+        return
+
     state = json.loads(state_path.read_text(encoding="utf-8"))
 
     current_tree = worktree_tree(root, session_dir / "current.index")
