@@ -33,6 +33,20 @@ repos:
       language: system
       files: (^Server/.*\.sh$|(^|/)([^/]+\.bash|\.bashrc|\.bash_profile)$)
 
+    - id: format-rust
+      name: Format Rust code
+      entry: cargo fmt --manifest-path common/codex/hooks/syntect_highlight/Cargo.toml --all
+      language: system
+      files: ^common/codex/hooks/syntect_highlight/.*\.(rs|toml|lock)$
+      pass_filenames: false
+
+    - id: lint-rust
+      name: Lint and fix Rust code
+      entry: cargo clippy --manifest-path common/codex/hooks/syntect_highlight/Cargo.toml --all-targets --all-features --fix --allow-dirty --allow-staged -- -D warnings
+      language: system
+      files: ^common/codex/hooks/syntect_highlight/.*\.(rs|toml|lock)$
+      pass_filenames: false
+
     - id: zsh-startup-benchmark
       name: Benchmark zsh startup with hyperfine
       entry: scripts/pre-push-zsh-benchmark.sh

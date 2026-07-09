@@ -17,6 +17,7 @@ extends = ":workspace"
 [permissions.workspace_with_secret_denies.workspace_roots]
 # Codex always struggles with uv cache.
 "~/.cache/uv" = true
+"~/.cargo" = true
 "~/.cache/huggingface" = true
 
 [permissions.workspace_with_secret_denies.filesystem]
@@ -57,3 +58,6 @@ exclude = [
     "HF_*",
     "KAGGLE_*",
 ]
+
+[notice]
+hide_rate_limit_model_nudge = true

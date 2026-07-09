@@ -43,6 +43,26 @@ def git_cache_dir(root: Path) -> Path:
     return root / Path(git_path.stdout.strip())
 
 
+def git_worktree_root(cwd: Path) -> Path | None:
+    """
+    Return the Git worktree root for a directory, if one exists.
+
+    Args:
+        cwd (Path): Directory to inspect.
+
+    Returns:
+        Path | None: Git worktree root, or None outside a Git worktree.
+    """
+    inside_worktree = run_git(["rev-parse", "--is-inside-work-tree"], cwd)
+    if inside_worktree.returncode != 0 or inside_worktree.stdout.strip() != "true":
+        return None
+
+    root = run_git(["rev-parse", "--show-toplevel"], cwd)
+    if root.returncode != 0:
+        return None
+    return Path(root.stdout.strip())
+
+
 def worktree_tree(root: Path, index_path: Path) -> str:
     """
     Write the current working tree state to a Git tree object.
