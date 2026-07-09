@@ -8,6 +8,7 @@ common_codexdir="${script_dir}/../codex"
 codex_home="${CODEX_HOME:-$HOME/.codex}"
 
 source "${script_dir}/utils.sh"
+source "${script_dir}/rust.sh"
 
 mkdir -p "${codex_home}"
 

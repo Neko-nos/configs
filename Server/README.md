@@ -28,7 +28,8 @@ without root privileges. It currently installs:
 - `bwrap`, extracted from Ubuntu's `bubblewrap` package into `~/.local/bin`
 - Codex CLI, using the official Codex installer with `CODEX_INSTALL_DIR` set to
   `~/.local/bin`
-- Codex configuration links in `~/.codex`
+- Codex configuration links in `~/.codex`, including Rustup from
+  [rust.sh](../common/install/rust.sh) for hook tools that use Rust
 
 [build_cmds.sh](./install/build_cmds.sh) builds source-only tools into
 `~/.local`. It currently installs:
