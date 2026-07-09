@@ -6,8 +6,9 @@ Bash and user-local tools.
 
 ## Installation
 
-Run [install.sh](./install/install.sh) to install commands, install Codex CLI,
-build useful commands from source, and link the Bash and nano configuration:
+Run [install.sh](./install/install.sh) to install commands, build useful
+commands from source, link the Bash configuration, and optionally set up Git,
+GitHub SSH, nano, and Codex CLI:
 
 ```bash
 bash Server/install/install.sh
@@ -43,6 +44,15 @@ administrator to provide the build tools.
 
 [bash.sh](./install/bash.sh) links [.bash_profile](./bash/.bash_profile) and
 [.bashrc](./bash/.bashrc) into `$HOME`.
+
+[git.sh](../common/install/git.sh) creates `~/.gitconfig` with your GitHub
+email and username, includes the shared repository Git settings, and links the
+shared global Git ignore file.
+
+[github_ssh.sh](../common/install/github_ssh.sh) creates or reuses an Ed25519
+SSH key, adds it to `ssh-agent`, configures `github.com` in `~/.ssh/config`,
+and either adds the public key with GitHub CLI or prints manual setup
+instructions.
 
 [nano.sh](./install/nano.sh) links nano syntax files and the custom
 `~/nanorc/.nanorc` configuration into the server-side home directory.
