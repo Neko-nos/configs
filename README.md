@@ -167,7 +167,15 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source karabiner_elements.sh
    ```
 
-3. zsh.sh\
+3. clipy.sh\
+   Install Clipy with Homebrew and print a reminder to import the prepared snippets file.
+
+   ```console
+   cd Mac/install
+   source clipy.sh
+   ```
+
+4. zsh.sh\
    Install [sheldon](https://github.com/rossmacarthur/sheldon) and set up `.zshrc`.
 
    ```console
@@ -175,7 +183,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source zsh.sh <Mac/Ubuntu/WSL>
    ```
 
-4. git.sh\
+5. git.sh\
    Set up `.gitconfig`.
 
    ```console
@@ -183,7 +191,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source git.sh
    ```
 
-5. gh.sh\
+6. gh.sh\
    Install [GitHub CLI](https://cli.github.com/) on Ubuntu or WSL from the official GitHub CLI apt repository. On Mac, `gh` is installed by `brew.sh` from `brew_formulae.txt`.
 
    ```console
@@ -191,7 +199,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source gh.sh
    ```
 
-6. github_ssh.sh\
+7. github_ssh.sh\
    Set up SSH authentication for GitHub. The script generates or reuses an Ed25519 SSH key, adds it to the ssh-agent, uploads the public key with `gh` when available, and tests `ssh -T git@github.com`.
 
    ```console
@@ -199,7 +207,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source github_ssh.sh
    ```
 
-7. vscode.sh\
+8. vscode.sh\
    Set up VSCode user `settings.json` and `keybindings.json` for the current OS.
 
    ```console
@@ -207,7 +215,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source vscode.sh
    ```
 
-8. nano.sh\
+9. nano.sh\
    Set up nano with system syntax definitions and optional custom settings from `~/nanorc`.
    On Mac, install the Homebrew `nano` formula first so the `nano` command resolves to the Homebrew version instead of the system Pico-compatible editor.
 
@@ -216,15 +224,15 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source nano.sh
    ```
 
-9. docker.sh\
+10. docker.sh\
    Install Docker Engine, and optionally install NVIDIA Container Toolkit for GPU containers.
 
-   ```console
-   cd common/install
-   source docker.sh
-   ```
+    ```console
+    cd common/install
+    source docker.sh
+    ```
 
-10. wsl.sh\
+11. wsl.sh\
    On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
 
     ```console
@@ -232,7 +240,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source wsl.sh
     ```
 
-11. codex.sh\
+12. codex.sh\
    Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
 
     ```console
@@ -240,7 +248,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source codex.sh
     ```
 
-12. claude.sh\
+13. claude.sh\
     Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
 
     ```console
@@ -248,7 +256,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source claude.sh
     ```
 
-13. python.sh\
+14. python.sh\
     Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
 
     ```console
@@ -256,7 +264,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source python.sh
     ```
 
-14. markdownlint.sh\
+15. markdownlint.sh\
     Install [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) with Homebrew on Mac or npm on Ubuntu and WSL.
 
     ```console
@@ -264,7 +272,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source markdownlint.sh
     ```
 
-15. actionlint.sh\
+16. actionlint.sh\
     Install [actionlint](https://github.com/rhysd/actionlint) with Homebrew on Mac or the official prebuilt binary installer on Ubuntu and WSL.
 
     ```console
