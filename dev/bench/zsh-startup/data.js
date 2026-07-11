@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1783663726190,
+  "lastUpdate": 1783752618293,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1223,6 +1223,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 88.255291,
             "range": "± 1.9946",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7dfb55b70995f874c81a0d38ffcff4f87faf3b23",
+          "message": "Merge pull request #79 from Neko-nos/feat/clipy-support\n\nFeat/clipy support",
+          "timestamp": "2026-07-11T15:49:35+09:00",
+          "tree_id": "0794186922b383f56670fba0e07d8e66d5abbe11",
+          "url": "https://github.com/Neko-nos/configs/commit/7dfb55b70995f874c81a0d38ffcff4f87faf3b23"
+        },
+        "date": 1783752617694,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 162.031788,
+            "range": "± 377.382008",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 78.051953,
+            "range": "± 0.591132",
             "unit": "ms"
           }
         ]
