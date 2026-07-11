@@ -21,6 +21,16 @@ else
     echo
 fi
 
+# Clipy
+printf 'Do you also want to install and configure Clipy? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/clipy.sh"
+else
+    echo
+fi
+
 # Zsh
 source "${common_install_dir}/zsh.sh" Mac
 

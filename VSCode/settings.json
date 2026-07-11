@@ -70,6 +70,7 @@
             "args": [
                 "-silent",
                 "-outdir=%OUTDIR%",
+                "-auxdir=%OUTDIR%",
                 "%DOC%"
             ],
         },
@@ -130,6 +131,8 @@
 
     // ---------- Terminal ----------
     "terminal.integrated.fontFamily": "MesloLGS NF",
+    // Keep pasted screenshots available to terminal apps such as Codex.
+    "terminal.integrated.enableImages": false,
     "terminal.integrated.commandsToSkipShell": [
         // Use ctrl+p for search-cdr.
         "-workbench.action.quickOpen",
@@ -142,6 +145,10 @@
     // ---------- Workbench ----------
     "workbench.iconTheme": "vscode-icons",
     "workbench.colorTheme": "Dark Modern",
+    "workbench.editor.showTabs": "multiple",
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "workbench.editor.limit.enabled": false,
 
     // ---------- Editor ----------
     "editor.minimap.enabled": false,
@@ -184,4 +191,5 @@
 
     // ---------- Claude Code ----------
     "claudeCode.preferredLocation": "panel",
+    "diffEditor.hideUnchangedRegions.enabled": true,
 }

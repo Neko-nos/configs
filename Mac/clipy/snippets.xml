@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<folders>
+	<folder>
+		<title>codex</title>
+		<snippets>
+			<snippet>
+				<title>commit</title>
+				<content>I want to commit the current changes. Could you suggest how to split them and provide the corresponding commit messages with appropriate prefixes?</content>
+			</snippet>
+			<snippet>
+				<title>clean_code</title>
+				<content>remove legacy compatibility, tests checking old behaviours, redundant code and dead code</content>
+			</snippet>
+		</snippets>
+	</folder>
+</folders>
