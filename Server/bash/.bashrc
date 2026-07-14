@@ -8,11 +8,17 @@ case $- in
 esac
 
 # Match the zsh setup's no_beep and case-insensitive completion behavior.
+set -o emacs
 bind 'set bell-style none'
 bind 'set completion-ignore-case on'
 bind 'set show-all-if-ambiguous on'
 bind '"\e[1;5C": forward-word'
 bind '"\e[1;5D": backward-word'
+# ref: https://stackoverflow.com/questions/10980575/how-can-i-unbind-and-remap-c-w-in-bash
+if [[ -t 0 ]]; then
+    stty werase undef
+fi
+bind -m emacs-standard '"\C-w": unix-filename-rubout'
 
 # Keep Bash behavior close to zsh's glob, script, and history options where
 # Bash has a direct equivalent.
