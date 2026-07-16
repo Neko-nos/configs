@@ -91,6 +91,46 @@ function install_shellcheck() {
     return 0
 }
 
+#######################################
+# Install or update fzf without root privileges.
+# Arguments:
+#   None
+# Outputs:
+#   Writes installer output to stdout and stderr.
+# Returns:
+#   0 if fzf is available after installation or update, non-zero otherwise.
+#######################################
+function install_fzf() {
+    local install_dir="${HOME}/.fzf"
+    local link_path="${HOME}/.local/bin/fzf"
+
+    if [[ -d "${install_dir}/.git" ]]; then
+        if command -v fzf >/dev/null 2>&1 && ! __confirm "Do you want to update fzf? [y/N]: "; then
+            echo "Skipping fzf update."
+            return 0
+        fi
+        echo "Updating fzf."
+        git -C "${install_dir}" pull --ff-only
+    elif command -v fzf >/dev/null 2>&1; then
+        printf "fzf is installed outside %s; use its package manager to update it.\n" "${install_dir}"
+        return 0
+    elif [[ -e "${install_dir}" ]]; then
+        printf "fzf installation path exists but is not a Git checkout: %s\n" "${install_dir}" >&2
+        return 1
+    else
+        echo "Installing fzf."
+        git clone --depth 1 https://github.com/junegunn/fzf.git "${install_dir}"
+    fi
+
+    # Shell integration is managed in this repository, so only let the
+    # upstream installer download its binary.
+    "${install_dir}/install" --bin
+    if [[ ! -e "${link_path}" && ! -L "${link_path}" ]]; then
+        ln -s "${install_dir}/bin/fzf" "${link_path}"
+    fi
+    return 0
+}
+
 mkdir -p "${HOME}/.local/bin"
 export PATH="${HOME}/.local/bin:${PATH}"
 
@@ -98,6 +138,7 @@ install_uv
 # Use uv tool instead of apt so the commands can be installed without sudo.
 uv tool install gdown
 uv tool install hf
+install_fzf
 install_shellcheck
 
 echo "Finished command installation!"
