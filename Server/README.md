@@ -16,11 +16,10 @@ bash Server/install/install.sh
 
 [commands.sh](./install/commands.sh) avoids root access by downloading
 standalone binaries into your home directory and installing Python CLI tools
-with `uv tool install`. Currently it installs:
+with `uv tool install`.
 
-- `uv` and `uvx`
-- `gdown`
-- `shellcheck`
+To check for the updates of installed commands, run [commands.sh](./install/commands.sh)
+again.
 
 [codex.sh](./install/codex.sh) installs Codex CLI and the commands it needs
 without root privileges. It currently installs:

@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+
+# shellcheck source=/dev/null
+source "${script_dir}/utils.sh"
+
 #######################################
 # Install uv and uvx without root privileges.
 # Arguments:
@@ -47,13 +52,13 @@ function __shellcheck_platform() {
 }
 
 #######################################
-# Install ShellCheck without root privileges.
+# Install or update ShellCheck without root privileges.
 # Arguments:
 #   None
 # Outputs:
 #   Writes installer output to stdout and stderr.
 # Returns:
-#   0 if shellcheck is available after installation, non-zero otherwise.
+#   0 if shellcheck is available after installation or update, non-zero otherwise.
 #######################################
 function install_shellcheck() {
     local cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/server-install"
@@ -61,8 +66,13 @@ function install_shellcheck() {
     local package_name archive_path extract_dir
 
     if command -v shellcheck >/dev/null 2>&1; then
-        echo "You have already installed shellcheck."
-        return 0
+        if ! __confirm "Do you want to update shellcheck? [y/N]: "; then
+            echo "Skipping shellcheck update."
+            return 0
+        fi
+        echo "Updating shellcheck."
+    else
+        echo "Installing shellcheck."
     fi
 
     platform="$(__shellcheck_platform)"
