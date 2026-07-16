@@ -54,3 +54,69 @@ function replace_multiple_dots() {
     READLINE_POINT="${#before}"
 }
 bind -x '".": replace_multiple_dots'
+
+#######################################
+# Select a command from the complete Bash history using fzf.
+# Globals:
+#   HISTFILE
+#   READLINE_LINE
+#   READLINE_POINT
+# Arguments:
+#   None
+# Outputs:
+#   Writes an error to stderr when fzf is unavailable.
+#######################################
+function search_history() {
+    local output
+    local script
+
+    if ! command -v fzf >/dev/null 2>&1; then
+        printf "search_history: fzf is unavailable.\n" >&2
+        return 0
+    fi
+
+    # Include commands written by other sessions before building the choices.
+    builtin history -a
+    builtin history -n
+
+    # fc prefixes each history entry with a tab, which lets awk preserve
+    # multiline commands while converting the entries to NUL-delimited records.
+    # Keep awk variables literal until awk evaluates the program.
+    # shellcheck disable=SC2016
+    script='function emit(entry) {
+        sub(/^[ *]/, "", entry)
+        if (!seen[entry]++) {
+            printf "%s%c", entry, 0
+        }
+    }
+    NR == 1 {
+        entry = substr($0, 2)
+        next
+    }
+    /^\t/ {
+        emit(entry)
+        entry = substr($0, 2)
+        next
+    }
+    {
+        entry = entry ORS $0
+    }
+    END {
+        if (NR) {
+            emit(entry)
+        }
+    }'
+
+    output="$({
+        set +o pipefail
+        builtin fc -lnr -2147483648 2>/dev/null |
+            awk "${script}" |
+            fzf --read0 --query "${READLINE_LINE:0:READLINE_POINT}"
+    })" || return 0
+
+    if [[ -n "${output}" ]]; then
+        READLINE_LINE="${output}"
+        READLINE_POINT="${#READLINE_LINE}"
+    fi
+}
+bind -x '"\C-r": search_history'
