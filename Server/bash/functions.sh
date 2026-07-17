@@ -33,6 +33,76 @@ function ruff-fix() {
 }
 
 #######################################
+# Append the current directory to the persistent recent-directory log.
+# Globals:
+#   HOME
+#   PWD
+#   XDG_CACHE_HOME
+# Arguments:
+#   None
+# Returns:
+#   0 on success, non-zero if the cache cannot be updated.
+#######################################
+function _record_cdr() {
+    local cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}"
+    local cache_file="${cache_dir}/bash-recent-dirs"
+    local latest_dir
+
+    if [[ -r "${cache_file}" ]]; then
+        latest_dir="$(tail -n 1 "${cache_file}")" || return 1
+        if [[ "${latest_dir}" == "${PWD}" ]]; then
+            return 0
+        fi
+    else
+        mkdir -p "${cache_dir}" || return 1
+    fi
+
+    printf "%s\n" "${PWD}" >>"${cache_file}"
+}
+
+#######################################
+# Select a recent directory using fzf.
+# Globals:
+#   HOME
+#   PWD
+#   XDG_CACHE_HOME
+# Arguments:
+#   None
+# Outputs:
+#   Writes a shell-escaped cd command to stdout.
+#######################################
+function search_cdr() {
+    local cache_file="${XDG_CACHE_HOME:-${HOME}/.cache}/bash-recent-dirs"
+    local escaped_dir
+    local selected_dir
+
+    selected_dir="$(
+        awk '
+            { directories[NR] = $0 }
+            END {
+                for (i = NR; i >= 1; i--) {
+                    directory = directories[i]
+                    if (directory != ENVIRON["PWD"] && !seen[directory]++) {
+                        print directory
+                    }
+                }
+            }
+        ' "${cache_file}" |
+            fzf --prompt="cdr >"
+    )" || return 0
+
+    if [[ -n "${selected_dir}" ]]; then
+        printf -v escaped_dir "%q" "${selected_dir}"
+        printf "cd %s" "${escaped_dir}"
+    fi
+}
+# Native Readline must execute cd through accept-line to refresh the prompt.
+bind -m emacs-standard '"\C-\e(": redraw-current-line'
+# Keep the command substitution literal until Readline invokes the macro.
+# shellcheck disable=SC2016
+bind -m emacs-standard '"\C-p": " \C-b\C-k \C-u`search_cdr`\e\C-e\C-\e(\C-m\C-y\C-h\e \C-y\ey\C-x\C-x\C-d\C-y\ey\C-_"'
+
+#######################################
 # Expand repeated dots into parent-directory paths while editing a command.
 # Globals:
 #   READLINE_LINE

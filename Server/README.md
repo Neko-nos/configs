@@ -67,6 +67,7 @@ instructions.
 - Loads [aliases.sh](./bash/aliases.sh), [functions.sh](./bash/functions.sh),
   and [prompt.sh](./bash/prompt.sh).
 - Shares command history across SSH sessions.
+- Searches recent directories with an interactive fuzzy selector on `Ctrl-P`.
 - Searches the complete history with an interactive fuzzy selector on `Ctrl-R`.
 - Shows Git branch information in the prompt.
 - Expands repeated dots while editing commands, so `...` becomes `../..`.
@@ -74,8 +75,8 @@ instructions.
 [aliases.sh](./bash/aliases.sh) adds compact defaults for `ls`, `tree`, and
 colored `grep`.
 
-[functions.sh](./bash/functions.sh) provides fuzzy history search, `ruff-fix`,
-and the Bash version of the Zsh repeated-dot path expansion.
+[functions.sh](./bash/functions.sh) provides fuzzy recent-directory and history
+search, `ruff-fix`, and the Bash version of the Zsh repeated-dot path expansion.
 
 [prompt.sh](./bash/prompt.sh) enables Git branch information in the prompt. It
 uses `~/git-prompt.sh`, and downloads it with `wget` if it is missing.

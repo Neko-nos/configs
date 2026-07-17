@@ -36,9 +36,9 @@ HISTFILESIZE=10000
 HISTCONTROL="ignoreboth:erasedups"
 HISTIGNORE="cd:cd *:pushd:pushd *:popd:popd *:mkdir:mkdir *:pwd:exit:clear:man:man *:history:history *:kill:kill *"
 
-# Append, reload, and deduplicate history at each prompt so separate SSH
-# sessions can see each other's recent commands.
-PROMPT_COMMAND="history -a; history -c; history -r"
+# Append and incrementally load history at each prompt so separate SSH sessions
+# can see each other's recent commands without rereading the complete file.
+PROMPT_COMMAND="history -a; history -n; _record_cdr"
 
 eval "$(uv generate-shell-completion bash)"
 eval "$(uvx --generate-shell-completion bash)"
