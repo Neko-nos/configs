@@ -40,8 +40,18 @@ HISTIGNORE="cd:cd *:pushd:pushd *:popd:popd *:mkdir:mkdir *:pwd:exit:clear:man:m
 # can see each other's recent commands without rereading the complete file.
 PROMPT_COMMAND="history -a; history -n; _record_cdr"
 
+# Completions
 eval "$(uv generate-shell-completion bash)"
 eval "$(uvx --generate-shell-completion bash)"
+
+git_completion_path="${HOME}/git-completion.bash"
+if [[ ! -f "${git_completion_path}" ]]; then
+    wget https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -O "${git_completion_path}"
+fi
+# shellcheck source=/dev/null
+source "${git_completion_path}"
+
+unset -v git_completion_path
 
 script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 # shellcheck source=/dev/null
