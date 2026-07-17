@@ -40,17 +40,14 @@ HISTIGNORE="cd:cd *:pushd:pushd *:popd:popd *:mkdir:mkdir *:pwd:exit:clear:man:m
 # sessions can see each other's recent commands.
 PROMPT_COMMAND="history -a; history -c; history -r"
 
-if command -v uv >/dev/null 2>&1; then
-    eval "$(uv generate-shell-completion bash)"
-    eval "$(uvx --generate-shell-completion bash)"
-fi
+eval "$(uv generate-shell-completion bash)"
+eval "$(uvx --generate-shell-completion bash)"
 
 script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 # shellcheck source=/dev/null
 source "${script_dir}/aliases.sh"
 # shellcheck source=/dev/null
 source "${script_dir}/functions.sh"
-bind -x '".": replace_multiple_dots'
 # shellcheck source=/dev/null
 source "${script_dir}/prompt.sh"
 unset -v script_dir

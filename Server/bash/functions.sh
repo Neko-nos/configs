@@ -63,17 +63,10 @@ bind -x '".": replace_multiple_dots'
 #   READLINE_POINT
 # Arguments:
 #   None
-# Outputs:
-#   Writes an error to stderr when fzf is unavailable.
 #######################################
 function search_history() {
     local output
     local script
-
-    if ! command -v fzf >/dev/null 2>&1; then
-        printf "search_history: fzf is unavailable.\n" >&2
-        return 0
-    fi
 
     # Include commands written by other sessions before building the choices.
     builtin history -a
