@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1783752618293,
+  "lastUpdate": 1784304395302,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1259,6 +1259,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 78.051953,
             "range": "± 0.591132",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b3f3edefee144b38ebcb9477414a5e789201febe",
+          "message": "Merge pull request #80 from Neko-nos/feat/server-bash-update\n\nFeat/server bash update",
+          "timestamp": "2026-07-18T01:05:33+09:00",
+          "tree_id": "010e9f4eb11cb19dba41082c4fb623709b355fea",
+          "url": "https://github.com/Neko-nos/configs/commit/b3f3edefee144b38ebcb9477414a5e789201febe"
+        },
+        "date": 1784304394698,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 420.001726,
+            "range": "± 1532.805458",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 78.011748,
+            "range": "± 0.479205",
             "unit": "ms"
           }
         ]
