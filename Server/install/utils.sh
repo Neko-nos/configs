@@ -24,6 +24,41 @@ function __confirm() {
 }
 
 #######################################
+# Resolve the latest stable version published in an archive directory.
+# Arguments:
+#   Archive directory URL.
+#   Package name prefix.
+#   Archive extension without a leading dot.
+# Outputs:
+#   Writes the latest version to stdout or an error to stderr.
+# Returns:
+#   0 if a version is found, non-zero otherwise.
+#######################################
+function __latest_archive_version() {
+    local index_url="${1}"
+    local package_name="${2}"
+    local extension="${3}"
+    local extension_pattern="${extension//./\\.}"
+    local version
+
+    if ! version="$(
+        wget -qO - "${index_url}" |
+            sed -n "s/.*href=[\"'][^\"']*${package_name}-\\([0-9][0-9.]*\\)\\.${extension_pattern}[\"'].*/\\1/p" |
+            sort -V |
+            tail -n 1
+    )"; then
+        printf "Failed to read releases for %s from %s\n" "${package_name}" "${index_url}" >&2
+        return 1
+    fi
+    if [[ -z "${version}" ]]; then
+        printf "No stable release found for %s at %s\n" "${package_name}" "${index_url}" >&2
+        return 1
+    fi
+
+    printf "%s\n" "${version}"
+}
+
+#######################################
 # Install a symlink, backing up an existing destination after confirmation.
 # Arguments:
 #   Source path.

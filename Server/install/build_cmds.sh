@@ -48,16 +48,22 @@ function __fetch_source() {
 #######################################
 function install_ncurses() {
     # ref: https://ftp.gnu.org/gnu/ncurses/
-    local ncurses_version="6.6"
-    local package_name="ncurses-${ncurses_version}"
-    local source_dir="${CACHE_DIR}/${package_name}"
+    local index_url="https://ftp.gnu.org/gnu/ncurses/"
+    local extension="tar.gz"
+    local ncurses_version
+    local package_name
+    local source_dir
 
-    if command -v ncursesw6-config >/dev/null 2>&1 || command -v ncursesw5-config >/dev/null 2>&1; then
+    if command -v ncursesw6-config >/dev/null 2>&1; then
         echo "You already installed ncurses."
         return 0
     fi
 
-    __fetch_source "${package_name}" "https://ftp.gnu.org/gnu/ncurses/${package_name}.tar.gz" "tar.gz"
+    ncurses_version="$(__latest_archive_version "${index_url}" "ncurses" "${extension}")"
+    package_name="ncurses-${ncurses_version}"
+    source_dir="${CACHE_DIR}/${package_name}"
+
+    __fetch_source "${package_name}" "${index_url}${package_name}.${extension}" "${extension}"
     (
         cd "${source_dir}"
         ./configure --prefix="${INSTALL_PREFIX}" --with-shared --enable-widec --without-debug --without-ada
@@ -77,26 +83,32 @@ function install_ncurses() {
 #   0 if nano is installed, non-zero otherwise.
 #######################################
 function install_nano() {
-    local nano_version="9.0"
-    local package_name="nano-${nano_version}"
-    local source_dir="${CACHE_DIR}/${package_name}"
+    local index_url="https://www.nano-editor.org/dist/latest/"
+    local extension="tar.xz"
     local nano_major_version
+    local nano_version
+    local package_name
+    local source_dir
 
     if command -v nano >/dev/null 2>&1; then
         nano_major_version="$(nano --version | sed -n 's/^ GNU nano, version \([0-9][0-9]*\).*/\1/p' | head -n 1)"
         if [[ -n "${nano_major_version}" && "${nano_major_version}" -ge 9 ]]; then
-            echo "You have already installed nano ${nano_version} or newer."
+            echo "You have already installed a compatible nano version."
             return 0
         fi
 
-        echo "Your nano version does not meet the requirement. You have nano ${nano_major_version}, but nano>=${nano_version} is required for our custom nano settings."
-        if ! __confirm "Do you want to build nano ${nano_version} under ${INSTALL_PREFIX}? [y/N]: "; then
+        echo "Your nano version does not meet the requirement. You have nano ${nano_major_version}, but nano>=9 is required for our custom nano settings."
+        if ! __confirm "Do you want to build the latest nano under ${INSTALL_PREFIX}? [y/N]: "; then
             return 0
         fi
     fi
 
+    nano_version="$(__latest_archive_version "${index_url}" "nano" "${extension}")"
+    package_name="nano-${nano_version}"
+    source_dir="${CACHE_DIR}/${package_name}"
+
     # ref: https://www.nano-editor.org/dist/latest/INSTALL
-    __fetch_source "${package_name}" "https://www.nano-editor.org/dist/latest/${package_name}.tar.xz" "tar.xz"
+    __fetch_source "${package_name}" "${index_url}${package_name}.${extension}" "${extension}"
 
     (
         cd "${source_dir}"
@@ -125,17 +137,23 @@ function install_nano() {
 #   0 if tree is installed, non-zero otherwise.
 #######################################
 function install_tree() {
-    local tree_version="2.3.2"
-    local package_name="tree-${tree_version}"
-    local source_dir="${CACHE_DIR}/${package_name}"
+    local index_url="https://oldmanprogrammer.net/tar/tree/"
+    local extension="tgz"
+    local tree_version
+    local package_name
+    local source_dir
 
     if command -v tree >/dev/null 2>&1; then
         echo "You have already installed tree."
         return 0
     fi
 
+    tree_version="$(__latest_archive_version "${index_url}" "tree" "${extension}")"
+    package_name="tree-${tree_version}"
+    source_dir="${CACHE_DIR}/${package_name}"
+
     # ref: https://gitlab.com/OldManProgrammer/unix-tree/-/blob/master/INSTALL
-    __fetch_source "${package_name}" "https://oldmanprogrammer.net/tar/tree/${package_name}.tgz" "tgz"
+    __fetch_source "${package_name}" "${index_url}${package_name}.${extension}" "${extension}"
     (
         cd "${source_dir}"
         make -j"${BUILD_JOBS}"
