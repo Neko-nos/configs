@@ -24,6 +24,30 @@ function __confirm() {
 }
 
 #######################################
+# Select the interactive shell for this server.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Writes "bash" for Slurm-managed servers or "zsh" otherwise.
+# Returns:
+#   0 on success.
+#######################################
+function __select_server_shell() {
+    local slurm_command
+
+    for slurm_command in sbatch scontrol sinfo squeue srun; do
+        if command -v "${slurm_command}" >/dev/null 2>&1; then
+            printf "bash\n"
+            return 0
+        fi
+    done
+
+    printf "zsh\n"
+}
+
+#######################################
 # Resolve the latest stable version published in an archive directory.
 # Arguments:
 #   Archive directory URL.

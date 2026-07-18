@@ -201,7 +201,13 @@ uv tool install gdown
 uv tool install hf
 uv tool install icdiff
 install_fzf
-install_gitstatus
+install_colordiff
+if [[ "${1:-bash}" == "bash" ]]; then
+    install_gitstatus
+elif [[ "${1:-bash}" != "zsh" ]]; then
+    printf "Expected shell argument to be bash or zsh; received: %s\n" "${1}" >&2
+    exit 1
+fi
 install_shellcheck
 
 echo "Finished command installation!"

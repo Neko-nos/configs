@@ -1,14 +1,14 @@
 # Rootless Server Setup
 
-This setup is for Linux servers where you cannot get root privileges. It
-recreates the minimum useful parts of this repository's Zsh environment with
-Bash and user-local tools.
+This setup is for Linux servers where you cannot get root privileges. It uses
+Zsh on ordinary servers and Bash on Slurm-managed login or head nodes.
+Tools that are not provided by the server are installed under `~/.local`.
 
 ## Installation
 
-Run [install.sh](./install/install.sh) to install commands, build useful
-commands from source, link the Bash configuration, and optionally set up Git,
-GitHub SSH, nano, and Codex CLI:
+Run [install.sh](./install/install.sh) to detect the server type, install and
+configure the selected shell, and optionally set up Git, GitHub SSH, nano, and
+Codex CLI:
 
 ```bash
 bash Server/install/install.sh
