@@ -76,8 +76,10 @@ elif [[ "${(L)OSNAME}" == 'ubuntu' ]]; then
     OSNAME='Ubuntu'
 elif [[ "${(L)OSNAME}" == 'wsl' ]]; then
     OSNAME='WSL'
+elif [[ "${(L)OSNAME}" == 'server' ]]; then
+    OSNAME='Server'
 else
-    echo 'Please specify the OS name as the first argument: mac, ubuntu, or wsl.'
+    echo 'Please specify the OS name as the first argument: mac, server, ubuntu, or wsl.'
     exit 1
 fi
 
@@ -109,7 +111,11 @@ fi
 echo
 
 common_zshrc="${script_dir}/../zsh/.zshrc"
-os_specific_p10k="${script_dir}/../../${OSNAME}/.p10k.zsh"
+if [[ "${OSNAME}" == 'Server' ]]; then
+    os_specific_p10k="${script_dir}/../../Ubuntu/.p10k.zsh"
+else
+    os_specific_p10k="${script_dir}/../../${OSNAME}/.p10k.zsh"
+fi
 __install_repo_path "${common_zshrc}" ~/.zshrc '.zshrc' link
 __install_repo_path "${os_specific_p10k}" ~/.p10k.zsh '.p10k.zsh' link
 configure_zprofile "${OSNAME}" "${script_dir}"

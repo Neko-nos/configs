@@ -132,6 +132,36 @@ function install_fzf() {
 }
 
 #######################################
+# Install colordiff without root privileges.
+# Arguments:
+#   None
+# Outputs:
+#   Writes download and installation status to stdout and stderr.
+# Returns:
+#   0 if colordiff is available, non-zero otherwise.
+#######################################
+function install_colordiff() {
+    local cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/server-install"
+    local archive_path="${cache_dir}/colordiff-latest.tar.gz"
+    local extract_dir
+    local user_bin_dir="${HOME}/.local/bin"
+
+    if command -v colordiff >/dev/null 2>&1; then
+        echo "You have already installed colordiff."
+        return 0
+    fi
+
+    echo "Installing colordiff."
+    mkdir -p "${cache_dir}" "${user_bin_dir}"
+    extract_dir="$(mktemp -d "${cache_dir}/colordiff.XXXXXX")"
+    wget "https://www.colordiff.org/colordiff-latest.tar.gz" -O "${archive_path}"
+    tar -xzf "${archive_path}" -C "${extract_dir}" --strip-components 1
+    cp "${extract_dir}/colordiff.pl" "${user_bin_dir}/colordiff"
+    chmod 755 "${user_bin_dir}/colordiff"
+    return 0
+}
+
+#######################################
 # Install gitstatus for fast Git information in the Bash prompt.
 # Arguments:
 #   None
@@ -169,8 +199,15 @@ install_uv
 # Use uv tool instead of apt so the commands can be installed without sudo.
 uv tool install gdown
 uv tool install hf
+uv tool install icdiff
 install_fzf
-install_gitstatus
+install_colordiff
+if [[ "${1:-bash}" == "bash" ]]; then
+    install_gitstatus
+elif [[ "${1:-bash}" != "zsh" ]]; then
+    printf "Expected shell argument to be bash or zsh; received: %s\n" "${1}" >&2
+    exit 1
+fi
 install_shellcheck
 
 echo "Finished command installation!"
