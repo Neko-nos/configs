@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1784304395302,
+  "lastUpdate": 1784366867339,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1295,6 +1295,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 78.011748,
             "range": "± 0.479205",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ee7109891b4c6318b71a16d31da16e57e421ddc1",
+          "message": "Merge pull request #81 from Neko-nos/feat/server-zsh-nonslurm\n\nFeat/server zsh nonslurm",
+          "timestamp": "2026-07-18T18:26:58+09:00",
+          "tree_id": "523b6e3b5cfdccbc6ebfd212cc883e8151effd11",
+          "url": "https://github.com/Neko-nos/configs/commit/ee7109891b4c6318b71a16d31da16e57e421ddc1"
+        },
+        "date": 1784366866736,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 224.278546,
+            "range": "± 661.097738",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 78.65052,
+            "range": "± 1.7148",
             "unit": "ms"
           }
         ]
