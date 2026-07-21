@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1784366867339,
+  "lastUpdate": 1784622185021,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1331,6 +1331,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 78.65052,
             "range": "± 1.7148",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fc1be280aecd758ed13d0f3154557dcef17d9e85",
+          "message": "Merge pull request #82 from Neko-nos/feat/update-nano-settings\n\nFeat/update nano settings",
+          "timestamp": "2026-07-21T17:22:17+09:00",
+          "tree_id": "b86d4514b6e278c445146b35854cde2a8b9f7abb",
+          "url": "https://github.com/Neko-nos/configs/commit/fc1be280aecd758ed13d0f3154557dcef17d9e85"
+        },
+        "date": 1784622184270,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 197.728869,
+            "range": "± 539.405761",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 76.454911,
+            "range": "± 0.634031",
             "unit": "ms"
           }
         ]
