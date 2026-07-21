@@ -131,6 +131,7 @@
 
     // ---------- Terminal ----------
     "terminal.integrated.fontFamily": "MesloLGS NF",
+    "terminal.integrated.macOptionClickForcesSelection": true,
     // Keep pasted screenshots available to terminal apps such as Codex.
     "terminal.integrated.enableImages": false,
     "terminal.integrated.commandsToSkipShell": [
@@ -169,6 +170,17 @@
     "files.trimFinalNewlines": true,
     "files.exclude": {
         "**/.git": false
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/.venv/**": true,
+        "**/outputs/**": true,
+        "**/hostfile/**": true,
+        "**/__pycache__/**": true,
+        "**/data/**": true,
+        "**/wandb/**": true,
+        "**/checkpoints/**": true,
     },
 
     // ---------- Remote ----------
