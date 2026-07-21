@@ -22,6 +22,7 @@
 - Avoid global variables, except for compiled regex patterns.
 - when writing a comment, focus on explaining "why", not "what".
   - If there is something (e.g., "why") you cannot infer from the code, you should write it as a comment.
+  - Regarding magic numbers, do not replace them with variables or global constants. Write a comment to tell readers the intent, not a variable name.
 - Avoid excessively complicated implementations (e.g., trivial thin wrappers/functions)
 - Don't worry about backward compatibility unless instructed otherwise.
 - Do not leave dead code or unused variables.
@@ -64,7 +65,8 @@
 - Keep `try`/`except` blocks to the minimum necessary
   - Do not use bare except or try to hide them with `noqa: BLE001`; Always specify errors. If you can't specify the exception type, the `try`/`except` block is usually unnecessary.
   - Do not use `try` blocks for imports.
-  - Do not use unncessary `getattr` (do not use it when you know the return value/type)
+  - Do not use unncessary `get*` (do not use it when you know the return value/type)
+- Do not write guards for args or file contents. In most cases you shouldn't because standard tracebacks will give users much more rich information.
 - Avoid excessive lazy imports; generally, place all imports at the top of the file.
 - Do not add excessive functions/modules, logging, or print statements.
 - When using `typing` module, do not use the deprecated classes/methods (e.g. `typing.List` -> `list`)

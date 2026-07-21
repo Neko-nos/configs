@@ -134,10 +134,18 @@ Please refer to the `README.md` file in the Ubuntu directory for the installatio
 
 #### Mac
 
+##### Karabiner-Elements
+
 Since `.zshrc` doesn't support command key configuration, I use [Karabiner-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.\
 Run `Mac/install/karabiner_elements.sh` to install Karabiner-Elements with Homebrew and link the selected keyboard configuration to `~/.config/karabiner/karabiner.json`.\
 Choose `jis` for a JIS keyboard or `us` for a US keyboard that should behave like the JIS configuration.\
 After the first installation, open Karabiner-Elements and grant the macOS permissions it requests.
+
+##### Hammerspoon
+
+I use [Hammerspoon](https://www.hammerspoon.org/) to enable Option-drag text selection in Terminal when applications such as nano capture mouse input.\
+Run `Mac/install/hammerspoon.sh` to install Hammerspoon with Homebrew and link the configuration to `~/.hammerspoon/init.lua`.\
+After the first installation, open Hammerspoon and grant the macOS permissions it requests.
 
 ### Command-Line Environment & Tools
 

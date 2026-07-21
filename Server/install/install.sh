@@ -25,7 +25,7 @@ if __confirm "Do you also want to set up GitHub SSH authentication? [y/N]: "; th
 fi
 
 if __confirm "Do you also want to set up nano configurations? [y/N]: "; then
-    bash "${script_dir}/nano.sh"
+    zsh "${common_install_dir}/nano.sh"
 fi
 
 if __confirm "Do you also want to set up Codex CLI and configurations? [y/N]: "; then

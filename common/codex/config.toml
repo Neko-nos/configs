@@ -2,13 +2,14 @@
 
 # ref: https://github.com/openai/codex/blob/main/docs/config.md#model_providers
 
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
 default_permissions = "workspace_with_secret_denies"
 personality = "pragmatic"
+service_tier = "priority"
 
 [permissions.workspace_with_secret_denies]
 # ref: https://developers.openai.com/codex/permissions#extend-a-profile

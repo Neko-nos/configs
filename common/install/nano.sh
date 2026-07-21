@@ -7,6 +7,7 @@ script_dir="${${(%):-%N}:A:h}"
 nanorc_repo_dir="${HOME}/nanorc"
 nano_repo_url="https://github.com/Neko-nos/nanorc.git"
 nano_syntax_dir="${HOME}/.config/nano/syntax"
+user_bin_dir="${HOME}/.local/bin"
 
 source "${script_dir}/utils.sh"
 
@@ -94,6 +95,8 @@ function __link_custom_nano_syntax_files {
     return 0
 }
 
+mkdir -p "${user_bin_dir}"
+__install_repo_path "${script_dir}/../bin/clipboard-copy" "${user_bin_dir}/clipboard-copy" 'clipboard-copy' link
 mkdir -p "${nano_syntax_dir}"
 __link_system_nano_syntax_files
 
@@ -107,6 +110,7 @@ unset -v script_dir
 unset -v nanorc_repo_dir
 unset -v nano_repo_url
 unset -v nano_syntax_dir
+unset -v user_bin_dir
 unset -f __ensure_nanorc_repository
 unset -f __link_system_nano_syntax_files
 unset -f __link_custom_nano_syntax_files
