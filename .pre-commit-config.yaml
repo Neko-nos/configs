@@ -23,6 +23,21 @@ repos:
     - id: actionlint-system
       files: ^\.github/workflows/.*\.ya?ml$
 
+- repo: https://github.com/lunarmodules/luacheck
+  rev: v1.2.0
+  hooks:
+    - id: luacheck
+      language: system
+      args: [--config, Mac/hammerspoon/.luacheckrc]
+      files: ^Mac/hammerspoon/init\.lua$
+
+- repo: https://github.com/JohnnyMorganz/StyLua
+  rev: v2.5.2
+  hooks:
+    - id: stylua-system
+      args: [--config-path, Mac/hammerspoon/.stylua.toml]
+      files: ^Mac/hammerspoon/init\.lua$
+
 - repo: local
   hooks:
     # koalaman/shellcheck-precommit uses Docker, so call the local shellcheck binary instead.
