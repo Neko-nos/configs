@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1784622185021,
+  "lastUpdate": 1784741998377,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1367,6 +1367,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 76.454911,
             "range": "± 0.634031",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9f1485c9558597d6bf3a0d6729178bf1f0e345fd",
+          "message": "Merge pull request #83 from Neko-nos/feat/update-lua-tools\n\nFeat/update lua tools",
+          "timestamp": "2026-07-23T02:39:08+09:00",
+          "tree_id": "204e32c94fe721f3ccf319d58f0d10eab7c44b36",
+          "url": "https://github.com/Neko-nos/configs/commit/9f1485c9558597d6bf3a0d6729178bf1f0e345fd"
+        },
+        "date": 1784741996941,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 125.621016,
+            "range": "± 296.700552",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 60.097181,
+            "range": "± 1.189141",
             "unit": "ms"
           }
         ]
