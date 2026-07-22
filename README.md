@@ -143,8 +143,8 @@ After the first installation, open Karabiner-Elements and grant the macOS permis
 
 ##### Hammerspoon
 
-I use [Hammerspoon](https://www.hammerspoon.org/) to enable Option-drag text selection in Terminal when applications such as nano capture mouse input.\
-Run `Mac/install/hammerspoon.sh` to install Hammerspoon with Homebrew and link the configuration to `~/.hammerspoon/init.lua`.\
+I use [Hammerspoon](https://www.hammerspoon.org/) to enable text selection by dragging in Terminal when applications such as nano capture mouse input.\
+Run `Mac/install/hammerspoon.sh` to install Hammerspoon, Luacheck, and StyLua with Homebrew and link the configuration to `~/.hammerspoon/init.lua`.\
 After the first installation, open Hammerspoon and grant the macOS permissions it requests.
 
 ### Command-Line Environment & Tools

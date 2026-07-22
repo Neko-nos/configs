@@ -11,9 +11,11 @@ source "${script_dir}/utils.sh"
 
 if command -v brew >/dev/null 2>&1; then
     __install_formula hammerspoon
+    __install_formula luacheck
+    __install_formula stylua
 else
-    echo 'Homebrew is required to install Hammerspoon from this script.'
-    echo 'Skipping Hammerspoon installation.'
+    echo 'Homebrew is required to install Hammerspoon, Luacheck, and StyLua from this script.'
+    echo 'Skipping Hammerspoon and Lua tooling installation.'
 fi
 
 mkdir -p "${hammerspoon_config_dir}"
