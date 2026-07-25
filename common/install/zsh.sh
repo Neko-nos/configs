@@ -85,6 +85,11 @@ fi
 
 __os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
 
+# Users can install screen>=5 via Homebrew
+if [[ "${OSNAME}" != 'Mac' ]]; then
+    bash -c 'source "${1}"; install_screen' bash "${script_dir}/../../Server/install/build_cmds.sh"
+fi
+
 # sheldon
 if command -v sheldon >/dev/null 2>&1; then
     echo 'You have already installed sheldon.'
@@ -111,6 +116,7 @@ fi
 echo
 
 common_zshrc="${script_dir}/../zsh/.zshrc"
+common_screenrc="${script_dir}/../screen/.screenrc"
 if [[ "${OSNAME}" == 'Server' ]]; then
     os_specific_p10k="${script_dir}/../../Ubuntu/.p10k.zsh"
 else
@@ -118,6 +124,7 @@ else
 fi
 __install_repo_path "${common_zshrc}" ~/.zshrc '.zshrc' link
 __install_repo_path "${os_specific_p10k}" ~/.p10k.zsh '.p10k.zsh' link
+__install_repo_path "${common_screenrc}" ~/.screenrc '.screenrc' link
 configure_zprofile "${OSNAME}" "${script_dir}"
 
 # Only source ~/.zprofile here. ~/.zshrc depends on tools and plugins that may
@@ -128,6 +135,7 @@ source ~/.zprofile
 # Cleaning up
 unset -v script_dir
 unset -v common_zshrc
+unset -v common_screenrc
 unset -v os_specific_p10k
 unset -v OSNAME
 unset -f ensure_zprofile_envs

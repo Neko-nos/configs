@@ -128,6 +128,57 @@ function install_nano() {
 }
 
 #######################################
+# Build and install GNU Screen without root privileges.
+# Arguments:
+#   None
+# Outputs:
+#   Writes build output to stdout and stderr.
+# Returns:
+#   0 if Screen is installed, non-zero otherwise.
+#######################################
+function install_screen() {
+    local index_url="https://ftp.gnu.org/gnu/screen/"
+    local extension="tar.gz"
+    local screen_major_version
+    local screen_version
+    local package_name
+    local source_dir
+
+    if command -v screen >/dev/null 2>&1; then
+        screen_major_version="$(screen --version | sed -n 's/^Screen version \([0-9][0-9]*\).*/\1/p' | head -n 1)"
+        if [[ -n "${screen_major_version}" && "${screen_major_version}" -ge 5 ]]; then
+            echo "You have already installed a compatible screen version."
+            return 0
+        fi
+
+        echo "Your screen version does not meet the requirement. You have screen ${screen_major_version}, but screen>=5 is required for our custom screen settings."
+        if ! __confirm "Do you want to build the latest screen under ${INSTALL_PREFIX}? [y/N]: "; then
+            return 0
+        fi
+    fi
+
+    install_ncurses
+
+    screen_version="$(__latest_archive_version "${index_url}" "screen" "${extension}")"
+    package_name="screen-${screen_version}"
+    source_dir="${CACHE_DIR}/${package_name}"
+
+    # ref: https://www.gnu.org/software/screen/manual/html_node/Compiling-Screen.html
+    __fetch_source "${package_name}" "${index_url}${package_name}.${extension}" "${extension}"
+    (
+        cd "${source_dir}"
+        # PAM development files commonly require administrator access and are only needed for Screen's password authentication.
+        CPPFLAGS="-I${INSTALL_PREFIX}/include -I${INSTALL_PREFIX}/include/ncursesw ${CPPFLAGS:-}" \
+        LDFLAGS="-L${INSTALL_PREFIX}/lib -L${INSTALL_PREFIX}/lib64 -Wl,-rpath,${INSTALL_PREFIX}/lib -Wl,-rpath,${INSTALL_PREFIX}/lib64 ${LDFLAGS:-}" \
+        ./configure --prefix="${INSTALL_PREFIX}" --disable-pam
+        make -j"${BUILD_JOBS}"
+        make check
+        make install
+    )
+    return 0
+}
+
+#######################################
 # Build and install tree without root privileges.
 # Arguments:
 #   None
@@ -162,9 +213,13 @@ function install_tree() {
     return 0
 }
 
-mkdir -p "${CACHE_DIR}" "${INSTALL_PREFIX}/bin"
-install_ncurses
-install_nano
-install_tree
+# Keep individual installers callable when another script sources this file.
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    mkdir -p "${CACHE_DIR}" "${INSTALL_PREFIX}/bin"
+    install_ncurses
+    install_nano
+    install_screen
+    install_tree
 
-echo "Finished source builds!"
+    echo "Finished source builds!"
+fi

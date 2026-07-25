@@ -1,0 +1,27 @@
+# ref: https://www.gnu.org/software/screen/manual/html_node/Command-Summary.html
+
+# Preserve application backgrounds, Powerlevel10k's palette, and multibyte text.
+term screen-256color
+truecolor on
+defbce on
+defutf8 on
+
+# Restore the shell display after full-screen programs such as editors exit.
+altscreen on
+
+# Keep the outer terminal's scrollback available for ordinary mouse-wheel scrolling.
+termcapinfo xterm* ti@:te@
+
+# Keep sessions usable across terminal disconnects and slow clients.
+autodetach on
+defnonblock 5
+
+# Retain useful command output without filling history with trailing blank lines.
+defscrollback 10000
+compacthist on
+
+# Skip the introductory license page shown for every new session.
+startup_message off
+
+# Show the session and windows without duplicating the prompt's clock.
+hardstatus alwayslastline "%S | %w"
