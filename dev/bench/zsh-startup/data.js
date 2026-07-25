@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1784741998377,
+  "lastUpdate": 1784962273964,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1403,6 +1403,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 60.097181,
             "range": "± 1.189141",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7efec2a67d9cd8dbcd2c580da00192a54e2d9df2",
+          "message": "Merge pull request #84 from Neko-nos/feat/enhance-screen\n\nFeat/enhance screen",
+          "timestamp": "2026-07-25T15:50:20+09:00",
+          "tree_id": "77fa0c7686012ca3719e12f73e5bc4c6cb449651",
+          "url": "https://github.com/Neko-nos/configs/commit/7efec2a67d9cd8dbcd2c580da00192a54e2d9df2"
+        },
+        "date": 1784962273431,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 268.733403,
+            "range": "± 853.665659",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 77.451665,
+            "range": "± 0.341566",
             "unit": "ms"
           }
         ]
