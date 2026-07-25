@@ -116,6 +116,7 @@ fi
 echo
 
 common_zshrc="${script_dir}/../zsh/.zshrc"
+common_screenrc="${script_dir}/../screen/.screenrc"
 if [[ "${OSNAME}" == 'Server' ]]; then
     os_specific_p10k="${script_dir}/../../Ubuntu/.p10k.zsh"
 else
@@ -123,6 +124,7 @@ else
 fi
 __install_repo_path "${common_zshrc}" ~/.zshrc '.zshrc' link
 __install_repo_path "${os_specific_p10k}" ~/.p10k.zsh '.p10k.zsh' link
+__install_repo_path "${common_screenrc}" ~/.screenrc '.screenrc' link
 configure_zprofile "${OSNAME}" "${script_dir}"
 
 # Only source ~/.zprofile here. ~/.zshrc depends on tools and plugins that may
@@ -133,6 +135,7 @@ source ~/.zprofile
 # Cleaning up
 unset -v script_dir
 unset -v common_zshrc
+unset -v common_screenrc
 unset -v os_specific_p10k
 unset -v OSNAME
 unset -f ensure_zprofile_envs
