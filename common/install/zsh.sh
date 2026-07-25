@@ -85,6 +85,11 @@ fi
 
 __os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
 
+# Users can install screen>=5 via Homebrew
+if [[ "${OSNAME}" != 'Mac' ]]; then
+    bash -c 'source "${1}"; install_screen' bash "${script_dir}/../../Server/install/build_cmds.sh"
+fi
+
 # sheldon
 if command -v sheldon >/dev/null 2>&1; then
     echo 'You have already installed sheldon.'
