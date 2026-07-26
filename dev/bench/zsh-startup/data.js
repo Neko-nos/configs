@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1784962273964,
+  "lastUpdate": 1785081020697,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1439,6 +1439,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 77.451665,
             "range": "± 0.341566",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4b70dd52309fa4d072efe7fd7ffba09ec563b632",
+          "message": "Merge pull request #85 from Neko-nos/feat/enhance-gadgets-macos\n\nFeat/enhance gadgets macos",
+          "timestamp": "2026-07-27T00:49:44+09:00",
+          "tree_id": "4dee109ea3c16600a71713286ce5cf205587c3fe",
+          "url": "https://github.com/Neko-nos/configs/commit/4b70dd52309fa4d072efe7fd7ffba09ec563b632"
+        },
+        "date": 1785081020491,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 153.85948,
+            "range": "± 337.982424",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 78.208098,
+            "range": "± 0.610594",
             "unit": "ms"
           }
         ]
