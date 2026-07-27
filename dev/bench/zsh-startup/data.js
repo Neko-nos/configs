@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1785081020697,
+  "lastUpdate": 1785162872294,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1475,6 +1475,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 78.208098,
             "range": "± 0.610594",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cb27511d774ae213f619db6a8842dd5cd4f48762",
+          "message": "Merge pull request #86 from Neko-nos/fix/codex-ssd-bug\n\nfix(codex): disable SQLite diagnostic logging, avoiding excessive SSD writes",
+          "timestamp": "2026-07-27T23:33:48+09:00",
+          "tree_id": "0a8ad0592b73ca64b6fdb3c12e10fcfe5b42b017",
+          "url": "https://github.com/Neko-nos/configs/commit/cb27511d774ae213f619db6a8842dd5cd4f48762"
+        },
+        "date": 1785162872034,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 233.865214,
+            "range": "± 643.376369",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 89.682871,
+            "range": "± 0.493245",
             "unit": "ms"
           }
         ]
