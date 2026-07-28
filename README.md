@@ -86,26 +86,31 @@ Provides setup scripts for your choice of modern Python environment tools:\
 - **Curated `settings.json`**\
   Includes useful settings for general VSCode usage, Python development, Markdown, and LaTeX.
 
-### 5. GPU-Enabled Codex Containers
+### 5. Dev Containers for Codex
+
+#### Why Full Access Is Required
 
 [The open Codex issue](https://github.com/openai/codex/issues/3141)
 reports that the Linux sandbox prevents access to NVIDIA GPUs. Until sandboxed
 GPU access is supported, Codex must run with full access to use the GPU.
 
-This repository offers containers to limit that full-access environment:
+The templates in this repository limit that full-access session to a disposable
+Ubuntu environment.
 
-- **Docker support:** [`common/install/docker.sh`](./common/install/docker.sh)
-  installs Docker Engine and NVIDIA Container Toolkit.
-- **WSL configuration:** [`WSL/wsl.conf`](./WSL/wsl.conf) enables systemd and
-  GPU support while disabling Windows drive automounting and interoperability.
-  This keeps the Docker host focused on Linux resources and reduces access to
-  the Windows environment.
-- **Codex CLI container:** [`common/codex/Dockerfile`](./common/codex/Dockerfile)
-  creates a custom container inherited from `nvidia/cuda:12.8.0-devel-ubuntu24.04`.
-- **Codex IDE Dev Container:**
-  [`VSCode/devcontainer.json`](./VSCode/devcontainer.json) opens any project using the
-  above container from VS Code. Select full access in the
-  Codex IDE extension after entering the container.
+#### WSL Configuration
+
+[`WSL/wsl.conf`](./WSL/wsl.conf) enables systemd and GPU support while
+disabling Windows drive automounting and interoperability. This keeps the
+Docker host focused on Linux resources and reduces access to the Windows
+environment.
+
+#### Available Templates
+
+- **Ubuntu:** [`common/codex/containers/ubuntu`](./common/codex/containers/ubuntu)
+  provides the default CPU-only environment.
+- **Ubuntu GPU:**
+  [`common/codex/containers/ubuntu-gpu`](./common/codex/containers/ubuntu-gpu)
+  provides an NVIDIA CUDA environment for Linux and WSL hosts.
 
 ## Installation
 

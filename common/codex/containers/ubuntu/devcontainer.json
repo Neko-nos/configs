@@ -1,0 +1,22 @@
+{
+    "name": "Codex Ubuntu Full Access",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "remoteUser": "ubuntu",
+    "updateRemoteUserUID": true,
+    "workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind",
+    "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "openai.chatgpt",
+                "tamasfe.even-better-toml",
+                "yzhang.markdown-all-in-one",
+                "ms-python.python",
+                "shardulm94.trailing-spaces"
+            ]
+        }
+    }
+}
