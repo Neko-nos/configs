@@ -233,10 +233,18 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 10. docker.sh\
-   Install Docker Engine, and optionally install NVIDIA Container Toolkit for GPU containers.
+   On Ubuntu or WSL, install Docker Engine and optionally install NVIDIA
+   Container Toolkit for GPU containers.
 
     ```console
     cd common/install
+    source docker.sh
+    ```
+
+    On macOS, install Docker Desktop and optionally install Rosetta 2 on Apple silicon.
+
+    ```console
+    cd Mac/install
     source docker.sh
     ```
 

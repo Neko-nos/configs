@@ -11,6 +11,26 @@ common_install_dir="${common_install_dir:A}"
 # Homebrew
 source "${install_script_dir}/brew.sh"
 
+# Docker
+printf 'Do you also want to install Docker Desktop? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/docker.sh"
+else
+    echo
+fi
+
+# Tart
+printf 'Do you also want to install Tart and Packer for macOS virtual machines? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/tart.sh"
+else
+    echo
+fi
+
 # Karabiner-Elements
 printf 'Do you also want to set up Karabiner-Elements? [y/N]:'
 if read -q; then
