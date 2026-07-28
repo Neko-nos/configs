@@ -1,7 +1,6 @@
 {
-    "name": "Codex GPU Full Access",
+    "name": "Codex Ubuntu GPU Full Access",
     "build": {
-        // ln -s /path/to/common/codex/DockerFile .devcontainer/Dockerfile
         "dockerfile": "Dockerfile"
     },
     "remoteUser": "ubuntu",

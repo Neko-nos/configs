@@ -16,6 +16,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # ref: https://github.com/verl-project/verl/blob/41a52449db58996731f54b79d20b939f5297fc4d/docker/Dockerfile.stable.vllm#L29
 RUN apt-get update && apt-get install -y \
         git \
+        git-lfs \
         wget \
         curl \
         cmake \
@@ -38,7 +39,7 @@ RUN usermod --shell /bin/zsh "${USERNAME}" \
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}
 
-# codex somehow uses sandbox in full access if the default_permission is not set to :danger-full-access
+# Codex may still apply its sandbox unless full access is also the configured default.
 RUN mkdir -p "${CODEX_HOME}" "${NPM_CONFIG_PREFIX}/bin" \
     && git clone "${CONFIGS_REPOSITORY}" "${HOME}/configs" \
     && sed -i 's/default_permissions = "workspace_with_secret_denies"/default_permissions = ":danger-full-access"/' "${HOME}/configs/common/codex/config.toml" \
