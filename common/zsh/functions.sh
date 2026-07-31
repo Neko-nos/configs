@@ -1,3 +1,8 @@
+# Top-level `set -euo pipefail` would not apply when these functions run later
+# and could change the caller's options if this file is sourced directly.
+# Each function instead combines `emulate -L zsh` with `ERR_RETURN` to localize
+# option changes and stop on command failure without exiting the caller's shell.
+
 autoload -Uz __warn
 
 # cdr customization
@@ -26,6 +31,7 @@ typeset -g _cdr_search_warned_unsupported=0
 #######################################
 function _search_cdr_warn_once() {
     emulate -L zsh
+    setopt err_return
     local message="${1}"
     if (( _cdr_search_warned_unsupported != 0 )); then
         return 0
@@ -47,6 +53,7 @@ function _search_cdr_warn_once() {
 #######################################
 function search-cdr () {
     emulate -L zsh
+    setopt err_return
     local -a filter_cmd
     if [[ -n "${FILTER_CMD:-}" ]]; then
         filter_cmd=(${(z)FILTER_CMD})
@@ -81,6 +88,7 @@ typeset -g _history_search_warned_unsupported=0
 #######################################
 function _history_search_warn_once() {
     emulate -L zsh
+    setopt err_return
     local message="${1}"
     if (( _history_search_warned_unsupported != 0 )); then
         return 0
@@ -102,14 +110,15 @@ function _history_search_warn_once() {
 #######################################
 function _history_entries_nul() {
     emulate -L zsh
+    setopt err_return
     local histfile="${HISTFILE:-$HOME/.zsh_history}"
     if [[ -z "${histfile}" || ! -f "${histfile}" ]]; then
         return 1
     fi
 
-    zmodload zsh/parameter || return 1
+    zmodload zsh/parameter
     local histsize="${HISTSIZE:-10000}"
-    fc -p -a "${histfile}" "${histsize}" 0 || return 1
+    fc -p -a "${histfile}" "${histsize}" 0
 
     local -A seen
     local -a event_numbers
@@ -138,6 +147,7 @@ function _history_entries_nul() {
 #######################################
 function search-history() {
     emulate -L zsh
+    setopt err_return
     local -a filter_cmd
     if [[ -n "${FILTER_CMD:-}" ]]; then
         filter_cmd=(${(z)FILTER_CMD})
@@ -178,6 +188,8 @@ bindkey '^r' search-history
 
 # ref: https://qiita.com/momo-lab/items/523fc83fbfa39fa5fd60
 function replace_multiple_dots() {
+    emulate -L zsh
+    setopt err_return
     local dots=$LBUFFER[-2,-1]
     if [[ $dots == ".." ]]; then
         LBUFFER=$LBUFFER[1,-3]'../.'
@@ -190,6 +202,7 @@ bindkey "." replace_multiple_dots
 # ref: https://qiita.com/mollifier/items/26c67347734f9fcda274
 function show-options() {
     emulate -L zsh
+    setopt err_return
     zmodload zsh/parameter
 
     local option
@@ -209,6 +222,7 @@ function show-options() {
 #######################################
 function ruff-fix() {
     emulate -L zsh
+    setopt err_return
     if (( $# == 0 )); then
         printf "usage: ruff-fix <path-or-ruff-options>...\n" >&2
         return 2
