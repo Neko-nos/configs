@@ -7,11 +7,11 @@ common_install_dir="${common_install_dir:A}"
 source "${common_install_dir}/utils.sh"
 
 #######################################
-# Install a package via apt-get if it is not already installed.
+# Install or update a package via apt-get.
 # Globals:
 #   None
 # Arguments:
-#   Package name to check and install.
+#   Package name to check, install, or update.
 # Outputs:
 #   Writes status messages and prompts to stdout.
 # Returns:
@@ -22,6 +22,11 @@ function __install_package {
 
     if dpkg -L "${package_name}" >/dev/null 2>&1; then
         echo "You have already installed ${package_name}."
+        if __confirm "Update ${package_name}? [y/N]: "; then
+            # Keep apt-get from consuming package lists that the caller may read.
+            sudo apt-get update </dev/null
+            sudo apt-get install "${package_name}" -y </dev/null
+        fi
     else
         if __confirm "Install ${package_name}? [y/N]: "; then
             # Keep apt-get from consuming package lists that the caller may read.
