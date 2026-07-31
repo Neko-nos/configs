@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1785162872294,
+  "lastUpdate": 1785477259094,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1511,6 +1511,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 89.682871,
             "range": "± 0.493245",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "454c6a040eca07b88aa29276548319780ce13374",
+          "message": "Merge pull request #87 from Neko-nos/feat/more-images-supoort\n\nFeat/more images supoort",
+          "timestamp": "2026-07-31T14:53:40+09:00",
+          "tree_id": "edec0780fee7d15bd060fbdb83ac388adfe8205b",
+          "url": "https://github.com/Neko-nos/configs/commit/454c6a040eca07b88aa29276548319780ce13374"
+        },
+        "date": 1785477258742,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 148.940013,
+            "range": "± 320.102831",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 79.268174,
+            "range": "± 1.17513",
             "unit": "ms"
           }
         ]
