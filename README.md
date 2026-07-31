@@ -68,6 +68,8 @@ For more details, please refer to the files in `common/zsh`.
 
 - **Codex and Claude Code setup**\
   Installs the CLI tools and links the shared agent settings into each tool's configuration directory with symbolic links.
+  Codex Git index rules are kept in a separate tracked file and copied into
+  `$CODEX_HOME/rules` because Codex does not discover symlinked rule files.
 
 #### Python Environment Management
 
@@ -86,26 +88,24 @@ Provides setup scripts for your choice of modern Python environment tools:\
 - **Curated `settings.json`**\
   Includes useful settings for general VSCode usage, Python development, Markdown, and LaTeX.
 
-### 5. GPU-Enabled Codex Containers
+### 5. Disposable Environments for Codex
 
-[The open Codex issue](https://github.com/openai/codex/issues/3141)
-reports that the Linux sandbox prevents access to NVIDIA GPUs. Until sandboxed
-GPU access is supported, Codex must run with full access to use the GPU.
+#### WSL Configuration
 
-This repository offers containers to limit that full-access environment:
+[`WSL/wsl.conf`](./WSL/wsl.conf) enables systemd and GPU support while
+disabling Windows drive automounting and interoperability. This keeps the
+Docker host focused on Linux resources and reduces access to the Windows
+environment.
 
-- **Docker support:** [`common/install/docker.sh`](./common/install/docker.sh)
-  installs Docker Engine and NVIDIA Container Toolkit.
-- **WSL configuration:** [`WSL/wsl.conf`](./WSL/wsl.conf) enables systemd and
-  GPU support while disabling Windows drive automounting and interoperability.
-  This keeps the Docker host focused on Linux resources and reduces access to
-  the Windows environment.
-- **Codex CLI container:** [`common/codex/Dockerfile`](./common/codex/Dockerfile)
-  creates a custom container inherited from `nvidia/cuda:12.8.0-devel-ubuntu24.04`.
-- **Codex IDE Dev Container:**
-  [`VSCode/devcontainer.json`](./VSCode/devcontainer.json) opens any project using the
-  above container from VS Code. Select full access in the
-  Codex IDE extension after entering the container.
+#### Available Templates
+
+- **Ubuntu:** [`common/codex/containers/ubuntu`](./common/codex/containers/ubuntu)
+  provides the default CPU-only environment.
+- **Ubuntu GPU:**
+  [`common/codex/containers/ubuntu-gpu`](./common/codex/containers/ubuntu-gpu)
+  provides an NVIDIA CUDA environment for Linux and WSL hosts.
+- **macOS:** [`common/codex/vms/macos`](./common/codex/vms/macos) provides a
+  Packer template for Tart on an Apple silicon Mac.
 
 ## Installation
 
@@ -233,10 +233,18 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 10. docker.sh\
-   Install Docker Engine, and optionally install NVIDIA Container Toolkit for GPU containers.
+   On Ubuntu or WSL, install Docker Engine and optionally install NVIDIA
+   Container Toolkit for GPU containers.
 
     ```console
     cd common/install
+    source docker.sh
+    ```
+
+    On macOS, install Docker Desktop and optionally install Rosetta 2 on Apple silicon.
+
+    ```console
+    cd Mac/install
     source docker.sh
     ```
 
