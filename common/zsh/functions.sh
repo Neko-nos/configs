@@ -244,3 +244,28 @@ function ruff-fix() {
     "${ruff_cmd[@]}" check "$@" --fix --select I
     "${ruff_cmd[@]}" format "$@"
 }
+
+if (( ${+commands[tree]} )); then
+    #######################################
+    # Print a directory tree, limiting its depth when invoked from home.
+    # Globals:
+    #   HOME
+    #   PWD
+    # Arguments:
+    #   Tree arguments.
+    # Outputs:
+    #   Writes the directory tree to stdout
+    # Returns:
+    #   Tree's exit status.
+    #######################################
+    function tree() {
+        emulate -L zsh
+        setopt err_return
+
+        if [[ "${PWD}" == "${HOME}" ]]; then
+            command tree -L 2 "$@"
+        else
+            command tree "$@"
+        fi
+    }
+fi
