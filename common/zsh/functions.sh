@@ -269,3 +269,87 @@ if (( ${+commands[tree]} )); then
         fi
     }
 fi
+
+if (( ${+commands[docker]} )); then
+    #######################################
+    # Run Docker commands and rebuild an image from a build context.
+    # Arguments:
+    #   Docker arguments, or `rebuild <image> <context>` to replace an image.
+    # Outputs:
+    #   Writes Docker output to stdout and stderr
+    # Returns:
+    #   0 if the command succeeds, non-zero otherwise.
+    #######################################
+    function docker() {
+        emulate -L zsh
+        setopt err_return
+        if [[ "${1:-}" != "rebuild" ]]; then
+            command docker "$@"
+            return
+        fi
+        if (( $# != 3 )); then
+            printf "usage: docker rebuild <image> <context>\n" >&2
+            return 2
+        fi
+
+        local image_name="${2}"
+        local context="${3}"
+        command docker image rm "${image_name}"
+        command docker build --tag "${image_name}" "${context}"
+    }
+fi
+
+if (( ${+commands[packer]} )); then
+    #######################################
+    # Run Packer commands and rebuild a Tart VM from a template.
+    # Arguments:
+    #   Packer arguments, or `rebuild <VM> <template>` to replace a Tart VM.
+    # Outputs:
+    #   Writes Tart and Packer output to stdout and stderr
+    # Returns:
+    #   0 if the command succeeds, non-zero otherwise.
+    #######################################
+    function packer() {
+        emulate -L zsh
+        setopt err_return
+        if [[ "${1:-}" != "rebuild" ]]; then
+            command packer "$@"
+            return
+        fi
+        if (( $# != 3 )); then
+            printf "usage: packer rebuild <VM> <template>\n" >&2
+            return 2
+        fi
+
+        local vm_name="${2}"
+        local template="${3}"
+        command tart delete "${vm_name}"
+        command packer init "${template}"
+        command packer build -var "vm_name=${vm_name}" "${template}"
+    }
+fi
+
+if (( ${+commands[tart]} )); then
+    #######################################
+    # Run Tart commands and share the current directory with VMs.
+    # Globals:
+    #   PWD
+    # Arguments:
+    #   Tart arguments.
+    # Outputs:
+    #   Writes Tart output to stdout and stderr
+    # Returns:
+    #   Tart's exit status.
+    #######################################
+    function tart() {
+        emulate -L zsh
+        setopt err_return
+        if [[ "${1:-}" != "run" ]]; then
+            command tart "$@"
+            return
+        fi
+
+        shift
+        command tart run --dir="${PWD##*/}:${PWD}" "$@"
+    }
+fi
