@@ -88,16 +88,7 @@ Provides setup scripts for your choice of modern Python environment tools:\
 - **Curated `settings.json`**\
   Includes useful settings for general VSCode usage, Python development, Markdown, and LaTeX.
 
-### 5. Dev Containers for Codex
-
-#### Why Full Access Is Required
-
-[The open Codex issue](https://github.com/openai/codex/issues/3141)
-reports that the Linux sandbox prevents access to NVIDIA GPUs. Until sandboxed
-GPU access is supported, Codex must run with full access to use the GPU.
-
-The templates in this repository limit that full-access session to a disposable
-Ubuntu environment.
+### 5. Disposable Environments for Codex
 
 #### WSL Configuration
 
@@ -113,6 +104,8 @@ environment.
 - **Ubuntu GPU:**
   [`common/codex/containers/ubuntu-gpu`](./common/codex/containers/ubuntu-gpu)
   provides an NVIDIA CUDA environment for Linux and WSL hosts.
+- **macOS:** [`common/codex/vms/macos`](./common/codex/vms/macos) provides a
+  Packer template for Tart on an Apple silicon Mac.
 
 ## Installation
 
