@@ -44,7 +44,9 @@ build {
       "sudo xcode-select --switch /Library/Developer/CommandLineTools",
       "sudo rm /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress",
       "git clone \"${var.configs_repository}\" \"$HOME/configs\"",
-      "sed -i '' 's/default_permissions = \"workspace_with_secret_denies\"/default_permissions = \":danger-full-access\"/' \"$HOME/configs/common/codex/config.toml\"",
+      # ref: https://learn.chatgpt.com/docs/sandboxing?surface=cli#cli-configure-defaults
+      "sed -i '' 's/^default_permissions = .*/default_permissions = \":danger-full-access\"/' \"$HOME/configs/common/codex/config.toml\"",
+      "sed -i '' 's/^approval_policy = .*/approval_policy = \"never\"/' \"$HOME/configs/common/codex/config.toml\"",
     ]
   }
 
