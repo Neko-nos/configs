@@ -18,6 +18,11 @@ variable "vm_name" {
   default = "codex-macos"
 }
 
+variable "timezone" {
+  type    = string
+  default = "Asia/Tokyo"
+}
+
 source "tart-cli" "codex" {
   vm_base_name = "ghcr.io/cirruslabs/macos-tahoe-vanilla:latest"
   vm_name      = var.vm_name
@@ -52,6 +57,13 @@ build {
   provisioner "shell" {
     inline = [
       "chmod 0600 \"$HOME/.ssh/authorized_keys\"",
+      "sudo systemsetup -settimezone '${var.timezone}'",
+      "defaults write NSGlobalDomain AppleICUForce24HourTime -bool true",
+      # Password less sudo
+      "sudo mkdir -p /private/etc/sudoers.d",
+      "sudo chmod 0755 /private/etc/sudoers.d",
+      "printf 'admin ALL=(ALL) NOPASSWD: ALL\\n' | sudo tee /private/etc/sudoers.d/admin >/dev/null",
+      "sudo chmod 0440 /private/etc/sudoers.d/admin",
       # This temporary file prompts the 'softwareupdate' utility to list the Command Line Tools
       # ref: https://github.com/Homebrew/install/blob/ca0130bd52235f2fcb2bf23cfdda004bc5d250c1/install.sh#L848
       "sudo touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress",
