@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+# Top-level `set -euo pipefail` would not apply when these functions run later
+# and could change the caller's options if this file is sourced directly.
+# Each function instead combines `emulate -L zsh` with `ERR_RETURN` to localize
+# option changes and stop on command failure without exiting the caller's shell.
+
 script_dir="${${(%):-%N}:A:h}"
 common_install_dir="${script_dir}/../../common/install"
 common_install_dir="${common_install_dir:A}"
@@ -18,6 +23,8 @@ source "${common_install_dir}/utils.sh"
 #   Exit status of the last brew/read command run.
 #######################################
 function __install_formula {
+    emulate -L zsh
+    setopt err_return
     local formula_name="${1}"
 
     # `command -v` would incorrectly match macOS-provided commands like `grep`,
