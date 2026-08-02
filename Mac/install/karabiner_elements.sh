@@ -6,7 +6,6 @@ set -euo pipefail
 script_dir="${${(%):-%N}:A:h}"
 repo_karabiner_dir="${script_dir}/../karabiner_elements"
 repo_karabiner_dir="${repo_karabiner_dir:A}"
-karabiner_config_dir="${KARABINER_CONFIG_DIR:-${HOME}/.config/karabiner}"
 
 source "${script_dir}/utils.sh"
 
@@ -34,12 +33,14 @@ else
     echo 'Skipping Karabiner-Elements installation.'
 fi
 
-mkdir -p "${karabiner_config_dir}"
+mkdir -p "${HOME}/.config/karabiner"
 __install_repo_path \
     "${karabiner_source_file}" \
-    "${karabiner_config_dir}/karabiner.json" \
+    "${HOME}/.config/karabiner/karabiner.json" \
     'Karabiner-Elements karabiner.json' \
     link
+
+__open_application_for_setup Karabiner-Elements '/Applications/Karabiner-Elements.app'
 
 echo 'Finished Karabiner-Elements configuration!'
 echo ''
