@@ -43,6 +43,23 @@ glob_scan_max_depth = 4
 [permissions.workspace_with_secret_denies.network]
 enabled = true
 
+# Tart needs unsandboxed virtualization, but deny-read rules prevent approved escalation.
+# ref: https://github.com/openai/codex/blob/rust-v0.144.4/codex-rs/core/src/tools/sandboxing.rs#L281-L303
+[permissions.vm_automation]
+description = "Operate MacOS VM without granting routine commands broad host access."
+extends = ":workspace"
+
+[permissions.vm_automation.workspace_roots]
+# Codex always struggles with cache.
+"~/.cache/uv" = true
+"~/.cargo" = true
+"~/.cache/huggingface" = true
+"~/.tart/vms/" = true
+
+[permissions.vm_automation.network]
+enabled = true
+allow_local_binding = true
+
 [shell_environment_policy]
 inherit = "all"
 ignore_default_excludes = false
