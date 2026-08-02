@@ -2,6 +2,8 @@ local eventTypes = hs.eventtap.event.types
 local isSelectingTerminalText = false
 local hasTerminalTextSelection = false
 
+hs.autoLaunch(true)
+
 local function handleTerminalMouseEvent(event)
     if hs.application.frontmostApplication():bundleID() ~= "com.apple.Terminal" then
         return false

@@ -25,5 +25,8 @@ __install_repo_path \
     'Hammerspoon init.lua' \
     link
 
+# init.lua calls hs.autoLaunch(true), so Hammerspoon registers itself after this first launch.
+__open_application_for_setup Hammerspoon '/Applications/Hammerspoon.app'
+
 echo 'Finished Hammerspoon configuration!'
 echo ''
