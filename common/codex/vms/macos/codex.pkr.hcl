@@ -32,11 +32,26 @@ source "tart-cli" "codex" {
 build {
   sources = ["source.tart-cli.codex"]
 
+  provisioner "shell-local" {
+    command = "${path.root}/configure_host.zsh ${var.vm_name}"
+  }
+
   provisioner "shell" {
     inline = [
-      # 42 is macOS's keyboard type for JIS.
-      "sudo defaults write /Library/Preferences/com.apple.keyboardtype KeyboardLayout -string JIS",
-      "sudo defaults write /Library/Preferences/com.apple.keyboardtype keyboardtype -dict-add '0-0-0' -int 42",
+      "mkdir -p \"$HOME/.ssh\"",
+      "chmod 0700 \"$HOME/.ssh\"",
+    ]
+  }
+
+  provisioner "file" {
+    source      = pathexpand("~/.ssh/id_ed25519_${var.vm_name}.pub")
+    destination = "/Users/admin/.ssh/authorized_keys"
+    generated   = true
+  }
+
+  provisioner "shell" {
+    inline = [
+      "chmod 0600 \"$HOME/.ssh/authorized_keys\"",
       # This temporary file prompts the 'softwareupdate' utility to list the Command Line Tools
       # ref: https://github.com/Homebrew/install/blob/ca0130bd52235f2fcb2bf23cfdda004bc5d250c1/install.sh#L848
       "sudo touch /tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress",
