@@ -137,15 +137,15 @@ Please refer to the `README.md` file in the Ubuntu directory for the installatio
 ##### Karabiner-Elements
 
 Since `.zshrc` doesn't support command key configuration, I use [Karabiner-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.\
-Run `Mac/install/karabiner_elements.sh` to install Karabiner-Elements with Homebrew and link the selected keyboard configuration to `~/.config/karabiner/karabiner.json`.\
+Run `Mac/install/karabiner_elements.sh` to install Karabiner-Elements with Homebrew, enable its background services at login, and link the selected keyboard configuration to `~/.config/karabiner/karabiner.json`.\
 Choose `jis` for a JIS keyboard or `us` for a US keyboard that should behave like the JIS configuration.\
-After the first installation, open Karabiner-Elements and grant the macOS permissions it requests.
+The installer opens Karabiner-Elements so you can grant Accessibility and Driver Extension approval in its setup window. macOS requires you to approve these protected permissions yourself.
 
 ##### Hammerspoon
 
 I use [Hammerspoon](https://www.hammerspoon.org/) to enable text selection by dragging in Terminal when applications such as nano capture mouse input.\
-Run `Mac/install/hammerspoon.sh` to install Hammerspoon, Luacheck, and StyLua with Homebrew and link the configuration to `~/.hammerspoon/init.lua`.\
-After the first installation, open Hammerspoon and grant the macOS permissions it requests.
+Run `Mac/install/hammerspoon.sh` to install Hammerspoon, enable it at login, and link the configuration to `~/.hammerspoon/init.lua`. It also installs Luacheck and StyLua with Homebrew.\
+The installer opens Hammerspoon so you can grant Accessibility access when macOS asks. macOS requires you to approve this protected permission yourself.
 
 ### Command-Line Environment & Tools
 
@@ -156,6 +156,8 @@ There are install scripts for Mac, Ubuntu and WSL in the `install` directory of 
 chmod +x install.sh
 ./install.sh
 ```
+
+On Mac, the installers open some apps (e.g., Clipy) after configuring them for you to approve their permissions. macOS does not allow an unmanaged installation script to approve these protected permissions on your behalf.
 
 If you want to run a particular script, instead of executing `install.sh`, simply execute the desired script.
 
@@ -168,7 +170,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 2. karabiner_elements.sh\
-   Install Karabiner-Elements with Homebrew on Mac, ask whether the keyboard is JIS or US, and link the corresponding Karabiner configuration file.
+   Install Karabiner-Elements with Homebrew on Mac, enable its background services at login, ask whether the keyboard is JIS or US, and link the corresponding Karabiner configuration file.
 
    ```console
    cd Mac/install
@@ -176,7 +178,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 3. clipy.sh\
-   Install Clipy with Homebrew and print a reminder to import the prepared snippets file.
+   Install Clipy with Homebrew, restore its preferences, and print a reminder to import the prepared snippets file.
 
    ```console
    cd Mac/install
@@ -216,7 +218,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 8. vscode.sh\
-   Set up VSCode user `settings.json` and `keybindings.json` for the current OS.
+   Install VSCode and set up user `settings.json` and `keybindings.json` for the current OS.
 
    ```console
    cd <Mac/Ubuntu/WSL>/install
