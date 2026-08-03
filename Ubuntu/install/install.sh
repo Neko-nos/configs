@@ -14,6 +14,16 @@ source "${install_script_dir}/apt.sh"
 # Zsh
 source "${common_install_dir}/zsh.sh" Ubuntu
 
+# Fonts
+printf 'Do you also want to install MesloLGS NF? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/fonts.sh"
+else
+    echo
+fi
+
 # Git
 printf 'Do you also want to set up git configurations? [y/N]:'
 if read -q; then
