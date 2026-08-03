@@ -14,10 +14,37 @@ from git_snapshot import (
 from terminal_diff import render_terminal_diff
 
 
+def is_cli_session(transcript_path: str | None) -> bool:
+    """
+    Return whether a Codex transcript belongs to a CLI session.
+
+    Args:
+        transcript_path (str | None): Path to the Codex session transcript.
+
+    Returns:
+        bool: Whether the session was started from the CLI.
+    """
+    if transcript_path is None:
+        return False
+
+    with Path(transcript_path).open(encoding="utf-8") as transcript:
+        metadata = json.loads(transcript.readline())
+    # Codex names the TUI client codex-tui and sets codex_exec as the exec originator.
+    # ref: https://github.com/openai/codex/blob/8b8fa7276f3da289108512d673303eeacc5bcff3/codex-rs/tui/src/lib.rs#L562
+    # ref: https://github.com/openai/codex/blob/8b8fa7276f3da289108512d673303eeacc5bcff3/codex-rs/exec/src/lib.rs#L241
+    return metadata["payload"]["originator"] in {
+        "codex-tui",
+        "codex_exec",
+    }
+
+
 def start_turn() -> None:
     """Capture a baseline working-tree snapshot for the current turn."""
     # ref: https://developers.openai.com/codex/hooks#common-input-fields
     payload = json.loads(sys.stdin.read())
+    if not is_cli_session(payload["transcript_path"]):
+        return
+
     root = git_worktree_root(Path(payload["cwd"]))
     if root is None:
         return
@@ -36,6 +63,10 @@ def stop_turn() -> None:
     """Save a diff from the turn baseline to the current working tree."""
     # ref: https://developers.openai.com/codex/hooks#common-input-fields
     payload = json.loads(sys.stdin.read())
+    if not is_cli_session(payload["transcript_path"]):
+        print(json.dumps({"continue": True}))
+        return
+
     root = git_worktree_root(Path(payload["cwd"]))
     if root is None:
         print(json.dumps({"continue": True}))
