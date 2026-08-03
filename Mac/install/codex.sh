@@ -20,3 +20,11 @@ else
 fi
 
 source "${common_install_dir}/codex.sh"
+
+codex_home="${CODEX_HOME:-$HOME/.codex}"
+mkdir -p "${codex_home}/skills"
+__install_repo_path \
+    "${common_install_dir}/../codex/skills/operate-tart-vm" \
+    "${codex_home}/skills/operate-tart-vm" \
+    'operate-tart-vm skill' \
+    link
