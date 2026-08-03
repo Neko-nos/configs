@@ -232,8 +232,8 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 10. docker.sh\
-   On Ubuntu or WSL, install Docker Engine and optionally install NVIDIA
-   Container Toolkit for GPU containers.
+    On Ubuntu or WSL, install Docker Engine and optionally install NVIDIA
+    Container Toolkit for GPU containers.
 
     ```console
     cd common/install
@@ -248,7 +248,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     ```
 
 11. wsl.sh\
-   On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
+    On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
 
     ```console
     cd WSL/install
@@ -256,7 +256,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     ```
 
 12. codex.sh\
-   Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
+    Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
 
     ```console
     cd <Mac/Ubuntu/WSL>/install
@@ -300,9 +300,12 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
 #### Prompt with Icons
 
 1. Font Settings\
-   To display icons using Powerlevel10k, download the [`MesloLGS NF` font files](https://github.com/romkatv/powerlevel10k/blob/master/font.md).\
-   After downloading, set the font in both your terminal and IDE.\
-   On Mac with the default `Terminal.app`, import [`Mac/default_terminal_profile.terminal`](./Mac/default_terminal_profile.terminal) from `Terminal > Settings > Profiles > Action > Import...` and use that profile.
+   Install the [`MesloLGS NF` font files](https://github.com/romkatv/powerlevel10k/blob/master/font.md#manual-font-installation):
+
+   - **macOS:** Run [`Mac/install/fonts.sh`](./Mac/install/fonts.sh). For Apple Terminal, run [`Mac/install/terminal.sh`](./Mac/install/terminal.sh) to import and select the prepared profile.
+   - **Ubuntu:** Run [`Ubuntu/install/fonts.sh`](./Ubuntu/install/fonts.sh), then configure the terminal to use `MesloLGS NF Regular` manually.
+   - **Other systems and terminals:** Follow the Powerlevel10k manual font installation and terminal configuration instructions linked above.
+   - **VSCode:** The repository configuration already sets `terminal.integrated.fontFamily` to `MesloLGS NF`.
 
 2. Configure Powerlevel10k\
    Once the font is set, run `p10k configure` to generate a new configuration file.
