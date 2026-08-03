@@ -45,7 +45,7 @@ else
 fi
 
 # VSCode
-printf 'Do you also want to set up VSCode configurations? [y/N]:'
+printf 'Do you also want to install and configure VSCode? [y/N]:'
 if read -q; then
     # Print a newline using echo because read -q doesn't.
     echo

@@ -58,6 +58,9 @@ do
 done
 exec 3<&-
 
+__open_application_for_setup LinearMouse '/Applications/LinearMouse.app'
+__enable_login_item LinearMouse '/Applications/LinearMouse.app'
+
 # PATH settings
 if brew list --formula --versions nano >/dev/null 2>&1; then
     nano_path="export PATH=\"$(brew --prefix nano)/bin:\$PATH\""

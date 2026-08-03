@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tart macOS VM Tasks"
+  short_description: "Run tasks in a selected Tart macOS VM"
+  default_prompt: "Use $operate-tart-vm to run this task in Tart VM <vm-name> while keeping the host isolated."

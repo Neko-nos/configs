@@ -21,7 +21,11 @@ __install_repo_path "${common_codexdir}/rules/git-index.rules" "${codex_home}/ru
 # Prevent Codex's diagnostic database from causing excessive SSD writes.
 # ref: https://github.com/openai/codex/issues/28224
 # ref: https://gist.github.com/jun76/bf5f8fdde0e3866f537fc9422c65326d#disable-diagnostic-logging
-python3 "${common_codexdir}/disable_sqlite_logging.py" "${codex_home}/logs_2.sqlite"
+if __confirm 'Have you already disabled Codex diagnostic database logging? [y/N]: '; then
+    echo 'Skipped disabling Codex diagnostic database logging.'
+else
+    python3 "${common_codexdir}/disable_sqlite_logging.py" "${codex_home}/logs_2.sqlite"
+fi
 
 echo 'Finished codex configuration!'
 echo ''

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kCPYFolderKeyCombos</key>
+	<data>
+	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
+	AAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGjCwwTVSRudWxs0w0ODxAREldO
+	Uy5rZXlzWk5TLm9iamVjdHNWJGNsYXNzoKCAAtIUFRYXWiRjbGFzc25hbWVYJGNsYXNz
+	ZXNcTlNEaWN0aW9uYXJ5ohYYWE5TT2JqZWN0CBEaJCkyN0lMUVNXXWRsd35/gIKHkpuo
+	qwAAAAAAAAEBAAAAAAAAABkAAAAAAAAAAAAAAAAAAAC0
+	</data>
+	<key>kCPYHotKeyHistoryKeyCombo</key>
+	<data>
+	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
+	AAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGkCwwVFlUkbnVsbNQNDg8QERIT
+	FFYkY2xhc3NTa2V5WW1vZGlmaWVyc18QEGRvdWJsZWRNb2RpZmllcnOAA4ACEREACFF2
+	0hcYGRpaJGNsYXNzbmFtZVgkY2xhc3Nlc18QD01hZ25ldC5LZXlDb21ib6IbHF8QD01h
+	Z25ldC5LZXlDb21ib1hOU09iamVjdAgRGiQpMjdJTFFTWF5nbnJ8j5GTlpeZnqmyxMfZ
+	AAAAAAAAAQEAAAAAAAAAHQAAAAAAAAAAAAAAAAAAAOI=
+	</data>
+	<key>kCPYHotKeyMainKeyCombo</key>
+	<data>
+	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
+	AAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGkCwwVFlUkbnVsbNQNDg8QERIT
+	FFYkY2xhc3NTa2V5WW1vZGlmaWVyc18QEGRvdWJsZWRNb2RpZmllcnOAA4ACEQEACVFh
+	0hcYGRpaJGNsYXNzbmFtZVgkY2xhc3Nlc18QD01hZ25ldC5LZXlDb21ib6IbHF8QD01h
+	Z25ldC5LZXlDb21ib1hOU09iamVjdAgRGiQpMjdJTFFTWF5nbnJ8j5GTlpeZnqmyxMfZ
+	AAAAAAAAAQEAAAAAAAAAHQAAAAAAAAAAAAAAAAAAAOI=
+	</data>
+	<key>kCPYHotKeySnippetKeyCombo</key>
+	<data>
+	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
+	AAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGkCwwVFlUkbnVsbNQNDg8QERIT
+	FFYkY2xhc3NTa2V5WW1vZGlmaWVyc18QEGRvdWJsZWRNb2RpZmllcnOAA4ACEQMACFFi
+	0hcYGRpaJGNsYXNzbmFtZVgkY2xhc3Nlc18QD01hZ25ldC5LZXlDb21ib6IbHF8QD01h
+	Z25ldC5LZXlDb21ib1hOU09iamVjdAgRGiQpMjdJTFFTWF5nbnJ8j5GTlpeZnqmyxMfZ
+	AAAAAAAAAQEAAAAAAAAAHQAAAAAAAAAAAAAAAAAAAOI=
+	</data>
+	<key>kCPYMigrateNewKeyCombo</key>
+	<true/>
+	<key>kCPYPrefMaxHistorySizeKey</key>
+	<integer>100</integer>
+	<key>kCPYPrefStoreTypesKey</key>
+	<dict>
+		<key>Filenames</key>
+		<true/>
+		<key>PDF</key>
+		<true/>
+		<key>RTF</key>
+		<true/>
+		<key>RTFD</key>
+		<true/>
+		<key>String</key>
+		<true/>
+		<key>TIFF</key>
+		<true/>
+		<key>URL</key>
+		<true/>
+	</dict>
+	<key>loginItem</key>
+	<true/>
+</dict>
+</plist>

@@ -35,10 +35,11 @@ USER ${USERNAME}
 WORKDIR /home/${USERNAME}
 
 # Codex may still apply its sandbox unless full access is also the configured default.
+# ref: https://learn.chatgpt.com/docs/sandboxing?surface=cli#cli-configure-defaults
 RUN mkdir -p "${CODEX_HOME}" "${NPM_CONFIG_PREFIX}/bin" \
     && git clone "${CONFIGS_REPOSITORY}" "${HOME}/configs" \
-    && sed -i 's/default_permissions = "workspace_with_secret_denies"/default_permissions = ":danger-full-access"/' "${HOME}/configs/common/codex/config.toml" \
-    && grep -q 'default_permissions = ":danger-full-access"' "${HOME}/configs/common/codex/config.toml"
+    && sed -i 's/^default_permissions = .*/default_permissions = ":danger-full-access"/' "${HOME}/configs/common/codex/config.toml" \
+    && sed -i 's/^approval_policy = .*/approval_policy = "never"/' "${HOME}/configs/common/codex/config.toml"
 
 WORKDIR /workspace
 

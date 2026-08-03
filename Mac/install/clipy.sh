@@ -16,6 +16,11 @@ if ! command -v brew >/dev/null 2>&1; then
 else
     __install_formula clipy
 
+    if [[ -d '/Applications/Clipy.app' ]]; then
+        defaults import com.clipy-app.Clipy "${script_dir}/../clipy/preferences.plist"
+        __open_application_for_setup Clipy '/Applications/Clipy.app'
+    fi
+
     echo "Import ${snippets_file} from Clipy's Manage Snippets window."
     echo
 

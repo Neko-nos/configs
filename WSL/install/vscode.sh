@@ -9,6 +9,16 @@ repo_vscodedir="${repo_vscodedir:A}"
 
 source "${script_dir}/utils.sh"
 
+# ref: https://microsoft.github.io/vscode-essentials/en/01-getting-started.html
+if command -v winget.exe >/dev/null 2>&1; then
+    # WSL interoperability runs this Windows executable as the active Windows user.
+    __install_winget_package Microsoft.VisualStudioCode 'Visual Studio Code'
+else
+    echo 'WinGet is required to install Visual Studio Code on Windows.'
+    echo 'Skipping Visual Studio Code installation.'
+    echo
+fi
+
 # ref: https://code.visualstudio.com/docs/configure/settings#_settings-file-locations
 vscode_user_dir="${VSCODE_USER_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/Code/User}"
 vscode_install_mode='link'

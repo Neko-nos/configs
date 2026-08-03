@@ -64,6 +64,26 @@ fi
 # Zsh
 source "${common_install_dir}/zsh.sh" Mac
 
+# Fonts
+printf 'Do you also want to install MesloLGS NF? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/fonts.sh"
+else
+    echo
+fi
+
+# Terminal
+printf 'Do you also want to configure Terminal.app? [y/N]:'
+if read -q; then
+    # Print a newline using echo because read -q doesn't.
+    echo
+    source "${install_script_dir}/terminal.sh"
+else
+    echo
+fi
+
 # Git
 printf 'Do you also want to set up git configurations? [y/N]:'
 if read -q; then
@@ -85,7 +105,7 @@ else
 fi
 
 # VSCode
-printf 'Do you also want to set up VSCode configurations? [y/N]:'
+printf 'Do you also want to install and configure VSCode? [y/N]:'
 if read -q; then
     # Print a newline using echo because read -q doesn't.
     echo

@@ -76,7 +76,7 @@ You can install simply with `apt` instead of the official method.
 sudo apt -y install autokey-gtk
 ```
 
-- **This will install various packages to the system's Python without making a virtual envrionemt**. So, instead of using the system's Python, use `pyenv` or `uv` to install some Python version later.
+- **This will install various packages to the system's Python without making a virtual envrionemt**. So, instead of using the system's Python, use `uv` to install some Python version later.
 - You can safely delete the sample scripts.
 
 ##### Usage

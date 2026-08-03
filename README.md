@@ -73,10 +73,7 @@ For more details, please refer to the files in `common/zsh`.
 
 #### Python Environment Management
 
-Provides setup scripts for your choice of modern Python environment tools:\
-
-- **[uv](https://github.com/astral-sh/uv):** An extremely fast Python package and project manager.
-- **[pyenv](https://github.com/pyenv/pyenv) + [Poetry](https://github.com/python-poetry/poetry):** Classic combination for managing Python versions (pyenv) and project dependencies/packaging (Poetry).
+Provides a setup script for modern Python environment management: **[uv](https://github.com/astral-sh/uv):**
 
 ### 4. VSCode Settings & Customizations
 
@@ -137,15 +134,15 @@ Please refer to the `README.md` file in the Ubuntu directory for the installatio
 ##### Karabiner-Elements
 
 Since `.zshrc` doesn't support command key configuration, I use [Karabiner-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.\
-Run `Mac/install/karabiner_elements.sh` to install Karabiner-Elements with Homebrew and link the selected keyboard configuration to `~/.config/karabiner/karabiner.json`.\
+Run `Mac/install/karabiner_elements.sh` to install Karabiner-Elements with Homebrew, enable its background services at login, and link the selected keyboard configuration to `~/.config/karabiner/karabiner.json`.\
 Choose `jis` for a JIS keyboard or `us` for a US keyboard that should behave like the JIS configuration.\
-After the first installation, open Karabiner-Elements and grant the macOS permissions it requests.
+The installer opens Karabiner-Elements so you can grant Accessibility and Driver Extension approval in its setup window. macOS requires you to approve these protected permissions yourself.
 
 ##### Hammerspoon
 
 I use [Hammerspoon](https://www.hammerspoon.org/) to enable text selection by dragging in Terminal when applications such as nano capture mouse input.\
-Run `Mac/install/hammerspoon.sh` to install Hammerspoon, Luacheck, and StyLua with Homebrew and link the configuration to `~/.hammerspoon/init.lua`.\
-After the first installation, open Hammerspoon and grant the macOS permissions it requests.
+Run `Mac/install/hammerspoon.sh` to install Hammerspoon, enable it at login, and link the configuration to `~/.hammerspoon/init.lua`. It also installs Luacheck and StyLua with Homebrew.\
+The installer opens Hammerspoon so you can grant Accessibility access when macOS asks. macOS requires you to approve this protected permission yourself.
 
 ### Command-Line Environment & Tools
 
@@ -156,6 +153,8 @@ There are install scripts for Mac, Ubuntu and WSL in the `install` directory of 
 chmod +x install.sh
 ./install.sh
 ```
+
+On Mac, the installers open some apps (e.g., Clipy) after configuring them for you to approve their permissions. macOS does not allow an unmanaged installation script to approve these protected permissions on your behalf.
 
 If you want to run a particular script, instead of executing `install.sh`, simply execute the desired script.
 
@@ -168,7 +167,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 2. karabiner_elements.sh\
-   Install Karabiner-Elements with Homebrew on Mac, ask whether the keyboard is JIS or US, and link the corresponding Karabiner configuration file.
+   Install Karabiner-Elements with Homebrew on Mac, enable its background services at login, ask whether the keyboard is JIS or US, and link the corresponding Karabiner configuration file.
 
    ```console
    cd Mac/install
@@ -176,7 +175,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 3. clipy.sh\
-   Install Clipy with Homebrew and print a reminder to import the prepared snippets file.
+   Install Clipy with Homebrew, restore its preferences, and print a reminder to import the prepared snippets file.
 
    ```console
    cd Mac/install
@@ -216,7 +215,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 8. vscode.sh\
-   Set up VSCode user `settings.json` and `keybindings.json` for the current OS.
+   Install VSCode and set up user `settings.json` and `keybindings.json` for the current OS.
 
    ```console
    cd <Mac/Ubuntu/WSL>/install
@@ -233,8 +232,8 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    ```
 
 10. docker.sh\
-   On Ubuntu or WSL, install Docker Engine and optionally install NVIDIA
-   Container Toolkit for GPU containers.
+    On Ubuntu or WSL, install Docker Engine and optionally install NVIDIA
+    Container Toolkit for GPU containers.
 
     ```console
     cd common/install
@@ -249,7 +248,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     ```
 
 11. wsl.sh\
-   On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
+    On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
 
     ```console
     cd WSL/install
@@ -257,7 +256,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     ```
 
 12. codex.sh\
-   Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
+    Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
 
     ```console
     cd <Mac/Ubuntu/WSL>/install
@@ -273,7 +272,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     ```
 
 14. python.sh\
-    Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
+    Install or update [uv](https://github.com/astral-sh/uv).
 
     ```console
     cd common/install
@@ -301,9 +300,12 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
 #### Prompt with Icons
 
 1. Font Settings\
-   To display icons using Powerlevel10k, download the [`MesloLGS NF` font files](https://github.com/romkatv/powerlevel10k/blob/master/font.md).\
-   After downloading, set the font in both your terminal and IDE.\
-   On Mac with the default `Terminal.app`, import [`Mac/default_terminal_profile.terminal`](./Mac/default_terminal_profile.terminal) from `Terminal > Settings > Profiles > Action > Import...` and use that profile.
+   Install the [`MesloLGS NF` font files](https://github.com/romkatv/powerlevel10k/blob/master/font.md#manual-font-installation):
+
+   - **macOS:** Run [`Mac/install/fonts.sh`](./Mac/install/fonts.sh). For Apple Terminal, run [`Mac/install/terminal.sh`](./Mac/install/terminal.sh) to import and select the prepared profile.
+   - **Ubuntu:** Run [`Ubuntu/install/fonts.sh`](./Ubuntu/install/fonts.sh), then configure the terminal to use `MesloLGS NF Regular` manually.
+   - **Other systems and terminals:** Follow the Powerlevel10k manual font installation and terminal configuration instructions linked above.
+   - **VSCode:** The repository configuration already sets `terminal.integrated.fontFamily` to `MesloLGS NF`.
 
 2. Configure Powerlevel10k\
    Once the font is set, run `p10k configure` to generate a new configuration file.

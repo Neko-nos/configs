@@ -11,6 +11,14 @@ vscode_user_dir="${VSCODE_USER_DIR:-$HOME/Library/Application Support/Code/User}
 
 source "${script_dir}/utils.sh"
 
+if command -v brew >/dev/null 2>&1; then
+    __install_formula visual-studio-code
+else
+    echo 'Homebrew is required to install Visual Studio Code on Mac.'
+    echo 'Skipping Visual Studio Code installation.'
+    echo
+fi
+
 mkdir -p "${vscode_user_dir}"
 
 __install_repo_path "${repo_vscodedir}/settings.json" "${vscode_user_dir}/settings.json" 'VSCode settings.json' link
