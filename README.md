@@ -73,10 +73,7 @@ For more details, please refer to the files in `common/zsh`.
 
 #### Python Environment Management
 
-Provides setup scripts for your choice of modern Python environment tools:\
-
-- **[uv](https://github.com/astral-sh/uv):** An extremely fast Python package and project manager.
-- **[pyenv](https://github.com/pyenv/pyenv) + [Poetry](https://github.com/python-poetry/poetry):** Classic combination for managing Python versions (pyenv) and project dependencies/packaging (Poetry).
+Provides a setup script for modern Python environment management: **[uv](https://github.com/astral-sh/uv):**
 
 ### 4. VSCode Settings & Customizations
 
@@ -275,7 +272,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     ```
 
 14. python.sh\
-    Install and set up [uv](https://github.com/astral-sh/uv) or [pyenv](https://github.com/pyenv/pyenv) & [Poetry](https://github.com/python-poetry/poetry)
+    Install or update [uv](https://github.com/astral-sh/uv).
 
     ```console
     cd common/install
