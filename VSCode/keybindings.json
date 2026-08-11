@@ -6,6 +6,19 @@
         "args": { "text": "\u001b[13;2u" },
         "when": "terminalFocus"
     },
+    {
+        // Route text and images through the same paste shortcut in terminal prompts.
+        "key": "cmd+v",
+        "command": "smartTerminalPaste.paste",
+        "when": "terminalFocus"
+    },
+    {
+        // Preserve the shell's ctrl+u while the bundle-wide Codex prompt mapping is active.
+        "key": "cmd+shift+left",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": { "text": "\u0015" },
+        "when": "terminalFocus"
+    },
 
     {
         "key": "shift+alt+m",
