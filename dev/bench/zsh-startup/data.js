@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1785768440286,
+  "lastUpdate": 1786459689183,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1691,6 +1691,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 76.376641,
             "range": "± 0.319982",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "50074073d94957c00a85748ece7d97511f22a0ce",
+          "message": "Merge pull request #92 from Neko-nos/fix/vscode-keybinding\n\nFix/vscode keybinding",
+          "timestamp": "2026-08-11T23:47:24+09:00",
+          "tree_id": "2acdff2894d24fce5c1196f7a2345450997572b5",
+          "url": "https://github.com/Neko-nos/configs/commit/50074073d94957c00a85748ece7d97511f22a0ce"
+        },
+        "date": 1786459688795,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 157.362003,
+            "range": "± 313.211413",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 87.507997,
+            "range": "± 0.553028",
             "unit": "ms"
           }
         ]
