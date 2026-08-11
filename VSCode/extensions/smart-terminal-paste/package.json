@@ -1,0 +1,27 @@
+{
+    "name": "smart-terminal-paste",
+    "displayName": "Smart Terminal Paste",
+    "description": "Routes terminal paste to text or image input based on the macOS clipboard.",
+    "version": "0.1.0",
+    "publisher": "neko-nos-local",
+    "engines": {
+        "vscode": "^1.132.0"
+    },
+    "categories": ["Other"],
+    "extensionKind": ["ui"],
+    "activationEvents": ["onCommand:smartTerminalPaste.paste"],
+    "main": "./extension.js",
+    "capabilities": {
+        "untrustedWorkspaces": {
+            "supported": true
+        }
+    },
+    "contributes": {
+        "commands": [
+            {
+                "command": "smartTerminalPaste.paste",
+                "title": "Smart Terminal Paste"
+            }
+        ]
+    }
+}
