@@ -27,31 +27,6 @@ function install_uv() {
 }
 
 #######################################
-# Resolve the ShellCheck release asset platform for this machine.
-# Arguments:
-#   None
-# Outputs:
-#   Writes the ShellCheck asset platform to stdout.
-# Returns:
-#   0 if the platform is supported, non-zero otherwise.
-#######################################
-function __shellcheck_platform() {
-    case "$(uname -m)" in
-        x86_64 | amd64)
-            printf "linux.x86_64\n"
-            ;;
-        aarch64 | arm64)
-            printf "linux.aarch64\n"
-            ;;
-        *)
-            printf "Unsupported ShellCheck platform: %s\n" "$(uname -m)" >&2
-            return 1
-            ;;
-    esac
-    return 0
-}
-
-#######################################
 # Install or update ShellCheck without root privileges.
 # Arguments:
 #   None
@@ -75,7 +50,7 @@ function install_shellcheck() {
         echo "Installing shellcheck."
     fi
 
-    platform="$(__shellcheck_platform)"
+    platform="linux.$(__linux_architecture)"
     package_name="shellcheck-latest.${platform}"
     archive_path="${cache_dir}/${package_name}.tar.xz"
     extract_dir="${cache_dir}/${package_name}"
