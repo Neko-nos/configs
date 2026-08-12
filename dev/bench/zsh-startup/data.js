@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1786525269291,
+  "lastUpdate": 1786531440533,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1763,6 +1763,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 52.109958,
             "range": "± 0.296948",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4fb57226aa6f52e8211e04ef1130360bd2d5eedb",
+          "message": "Merge pull request #94 from Neko-nos/fix/brew_install_apps\n\nfix(mac): recognize apps installed outside Homebrew",
+          "timestamp": "2026-08-12T19:43:14+09:00",
+          "tree_id": "335247c785bf9e92570bb1bcfe9839a906f0b533",
+          "url": "https://github.com/Neko-nos/configs/commit/4fb57226aa6f52e8211e04ef1130360bd2d5eedb"
+        },
+        "date": 1786531439750,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 134.175666,
+            "range": "± 332.257929",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 60.756124,
+            "range": "± 1.70248",
             "unit": "ms"
           }
         ]
