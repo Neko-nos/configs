@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1786459689183,
+  "lastUpdate": 1786525269291,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1727,6 +1727,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 87.507997,
             "range": "± 0.553028",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "72ce161c7f9288c7caf2e4b8b99199f1bb591549",
+          "message": "Merge pull request #93 from Neko-nos/fix/ssh-codex-hook\n\nFix/ssh codex hook",
+          "timestamp": "2026-08-12T18:00:22+09:00",
+          "tree_id": "1858e55fc44a67d0b69dbc6eadc51b6fe717a087",
+          "url": "https://github.com/Neko-nos/configs/commit/72ce161c7f9288c7caf2e4b8b99199f1bb591549"
+        },
+        "date": 1786525268820,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 90.210434,
+            "range": "± 170.432932",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 52.109958,
+            "range": "± 0.296948",
             "unit": "ms"
           }
         ]
