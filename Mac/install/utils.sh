@@ -17,6 +17,7 @@ source "${common_install_dir}/utils.sh"
 #   None
 # Arguments:
 #   Formula name to check, install, or upgrade.
+#   Optional application bundle path for detecting a cask installed outside Homebrew.
 # Outputs:
 #   Writes status messages and prompts to stdout.
 # Returns:
@@ -26,9 +27,10 @@ function __install_formula {
     emulate -L zsh
     setopt err_return
     local formula_name="${1}"
+    local application_path="${2:-}"
 
     # `command -v` would incorrectly match macOS-provided commands like `grep`,
-    # so only use Homebrew metadata to decide whether this package is installed.
+    # so check Homebrew metadata before considering an explicitly supplied app bundle.
     if brew list --formula --versions "${formula_name}" >/dev/null 2>&1; then
         echo "You have already installed ${formula_name}."
         if __confirm "Update ${formula_name}? [y/N]: "; then
@@ -41,6 +43,9 @@ function __install_formula {
             # Keep brew from consuming the formula list that the outer loop reads.
             brew upgrade --cask "${formula_name}" </dev/null
         fi
+    # some software like vscode offers download via their official webpages.
+    elif [[ -n "${application_path}" && -d "${application_path}" ]]; then
+        echo "You have already installed ${formula_name}."
     else
         if __confirm "Install ${formula_name}? [y/N]: "; then
             # Keep brew from consuming the formula list that the outer loop reads.

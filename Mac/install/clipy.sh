@@ -14,7 +14,7 @@ if ! command -v brew >/dev/null 2>&1; then
     echo 'Skipping Clipy installation.'
     echo
 else
-    __install_formula clipy
+    __install_formula clipy '/Applications/Clipy.app'
 
     if [[ -d '/Applications/Clipy.app' ]]; then
         defaults import com.clipy-app.Clipy "${script_dir}/../clipy/preferences.plist"

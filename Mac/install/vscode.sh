@@ -13,7 +13,7 @@ vscode_extensions_dir="${VSCODE_EXTENSIONS_DIR:-$HOME/.vscode/extensions}"
 source "${script_dir}/utils.sh"
 
 if command -v brew >/dev/null 2>&1; then
-    __install_formula visual-studio-code
+    __install_formula visual-studio-code '/Applications/Visual Studio Code.app'
 else
     echo 'Homebrew is required to install Visual Studio Code on Mac.'
     echo 'Skipping Visual Studio Code installation.'

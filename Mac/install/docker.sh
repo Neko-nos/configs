@@ -8,9 +8,9 @@ docker_script_dir="${${(%):-%N}:A:h}"
 source "${docker_script_dir}/utils.sh"
 
 if command -v brew >/dev/null 2>&1; then
-    __install_formula docker-desktop
+    __install_formula docker-desktop '/Applications/Docker.app'
 
-    if brew list --cask --versions docker-desktop >/dev/null 2>&1; then
+    if brew list --cask --versions docker-desktop >/dev/null 2>&1 || [[ -d '/Applications/Docker.app' ]]; then
         if [[ "$(uname -m)" == 'arm64' ]]; then
             if pkgutil --pkg-info com.apple.pkg.RosettaUpdateAuto >/dev/null 2>&1; then
                 echo 'You have already installed Rosetta 2.'
