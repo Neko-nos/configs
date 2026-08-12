@@ -10,7 +10,7 @@ hammerspoon_config_dir="${HAMMERSPOON_CONFIG_DIR:-${HOME}/.hammerspoon}"
 source "${script_dir}/utils.sh"
 
 if command -v brew >/dev/null 2>&1; then
-    __install_formula hammerspoon
+    __install_formula hammerspoon '/Applications/Hammerspoon.app'
     __install_formula luacheck
     __install_formula stylua
 else

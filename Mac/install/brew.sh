@@ -58,6 +58,7 @@ do
 done
 exec 3<&-
 
+__install_formula linearmouse '/Applications/LinearMouse.app'
 __open_application_for_setup LinearMouse '/Applications/LinearMouse.app'
 __enable_login_item LinearMouse '/Applications/LinearMouse.app'
 

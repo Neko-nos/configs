@@ -27,7 +27,7 @@ while [[ -z "${karabiner_source_file}" ]]; do
 done
 
 if command -v brew >/dev/null 2>&1; then
-    __install_formula karabiner-elements
+    __install_formula karabiner-elements '/Applications/Karabiner-Elements.app'
 else
     echo 'Homebrew is required to install Karabiner-Elements from this script.'
     echo 'Skipping Karabiner-Elements installation.'
