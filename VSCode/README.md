@@ -31,3 +31,5 @@ The `keybindings.json` for VSCode. In the integrated terminal, Shift+Enter
 sends `\u001b[13;2u`. This lets Codex CLI insert a newline without submitting the prompt.
 Cmd+V uses the local Smart Terminal Paste extension to paste text normally or send
 Ctrl+V when the macOS clipboard contains an image, allowing Codex CLI to attach it.
+In a Remote SSH workspace, the extension instead writes the clipboard image to the
+remote `/tmp` directory and pastes its server-side path into Codex.

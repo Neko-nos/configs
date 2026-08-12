@@ -27,31 +27,6 @@ function install_uv() {
 }
 
 #######################################
-# Resolve the ShellCheck release asset platform for this machine.
-# Arguments:
-#   None
-# Outputs:
-#   Writes the ShellCheck asset platform to stdout.
-# Returns:
-#   0 if the platform is supported, non-zero otherwise.
-#######################################
-function __shellcheck_platform() {
-    case "$(uname -m)" in
-        x86_64 | amd64)
-            printf "linux.x86_64\n"
-            ;;
-        aarch64 | arm64)
-            printf "linux.aarch64\n"
-            ;;
-        *)
-            printf "Unsupported ShellCheck platform: %s\n" "$(uname -m)" >&2
-            return 1
-            ;;
-    esac
-    return 0
-}
-
-#######################################
 # Install or update ShellCheck without root privileges.
 # Arguments:
 #   None
@@ -75,7 +50,7 @@ function install_shellcheck() {
         echo "Installing shellcheck."
     fi
 
-    platform="$(__shellcheck_platform)"
+    platform="linux.$(__linux_architecture)"
     package_name="shellcheck-latest.${platform}"
     archive_path="${cache_dir}/${package_name}.tar.xz"
     extract_dir="${cache_dir}/${package_name}"
@@ -162,6 +137,47 @@ function install_colordiff() {
 }
 
 #######################################
+# Install hyperfine without root privileges.
+# Arguments:
+#   None
+# Outputs:
+#   Writes download and installation status to stdout and stderr.
+# Returns:
+#   0 if hyperfine is available, non-zero otherwise.
+#######################################
+function install_hyperfine() {
+    local cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/server-install"
+    local architecture
+    local version
+    local package_name
+    local archive_path
+    local extract_dir
+
+    if command -v hyperfine >/dev/null 2>&1; then
+        echo "You have already installed hyperfine."
+        return 0
+    fi
+
+    echo "Installing hyperfine."
+    architecture="$(__linux_architecture)"
+    version="$(
+        wget -qO - "https://api.github.com/repos/sharkdp/hyperfine/releases/latest" |
+            sed -n 's/^[[:space:]]*"tag_name": "v\([^"]*\)",$/\1/p' |
+            head -n 1
+    )"
+    package_name="hyperfine-v${version}-${architecture}-unknown-linux-gnu"
+    archive_path="${cache_dir}/${package_name}.tar.gz"
+
+    mkdir -p "${cache_dir}" "${HOME}/.local/bin"
+    extract_dir="$(mktemp -d "${cache_dir}/hyperfine.XXXXXX")"
+    wget "https://github.com/sharkdp/hyperfine/releases/download/v${version}/${package_name}.tar.gz" -O "${archive_path}"
+    tar -xzf "${archive_path}" -C "${extract_dir}" --strip-components 1
+    cp "${extract_dir}/hyperfine" "${HOME}/.local/bin/hyperfine"
+    chmod 755 "${HOME}/.local/bin/hyperfine"
+    return 0
+}
+
+#######################################
 # Install gitstatus for fast Git information in the Bash prompt.
 # Arguments:
 #   None
@@ -202,6 +218,7 @@ uv tool install hf
 uv tool install icdiff
 install_fzf
 install_colordiff
+install_hyperfine
 if [[ "${1:-bash}" == "bash" ]]; then
     install_gitstatus
 elif [[ "${1:-bash}" != "zsh" ]]; then

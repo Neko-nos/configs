@@ -1,10 +1,14 @@
 import argparse
+import base64
 import json
+import os
 import shlex
 import sys
+from contextlib import suppress
 from pathlib import Path
 
 import pyperclip
+
 from git_snapshot import (
     git_cache_dir,
     git_worktree_root,
@@ -36,6 +40,28 @@ def is_cli_session(transcript_path: str | None) -> bool:
         "codex-tui",
         "codex_exec",
     }
+
+
+def copy_view_command(view_command: str) -> None:
+    """Copy a terminal diff command when a clipboard provider is available."""
+    if "SSH_TTY" in os.environ or "SSH_CONNECTION" in os.environ:
+        raw_command = view_command.encode()
+        # The expected command is short; the limit avoids flooding the terminal.
+        if len(raw_command) > 10_000:
+            return
+
+        # Base64 prevents the copied text from injecting another control sequence.
+        sequence = b"\x1b]52;c;" + base64.b64encode(raw_command) + b"\x07"
+        # Stop-hook stdout is reserved for JSON, so the sequence must bypass it.
+        with (
+            suppress(OSError),
+            Path("/dev/tty").open("wb", buffering=0) as terminal,
+        ):
+            terminal.write(sequence)
+        return
+
+    with suppress(pyperclip.PyperclipException):
+        pyperclip.copy(view_command)
 
 
 def start_turn() -> None:
@@ -95,7 +121,7 @@ def stop_turn() -> None:
         encoding="utf-8",
     )
     view_command = shlex.join(["less", "-R", str(terminal_diff_path)])
-    pyperclip.copy(view_command)
+    copy_view_command(view_command)
 
     if diff.stdout == "":
         print(

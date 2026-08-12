@@ -1,5 +1,6 @@
 import re
 import subprocess
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 ANSI_SGR_RE = re.compile(r"\x1b\[([0-9;]*)m")
@@ -96,8 +97,8 @@ def syntect_highlight_content_lines(
         ],
         input="\n".join(lines) + "\n",
         text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
+        check=False,
     )
     if result.returncode != 0:
         return None
@@ -410,9 +411,9 @@ def render_terminal_diff(diff_text: str) -> str:
     """
     if diff_text == "":
         return ""
-    rendered = []
-    for section in split_diff_sections(diff_text):
-        if rendered:
-            rendered.append("")
-        rendered.extend(render_terminal_diff_section(section))
-    return "\n".join(rendered) + "\n"
+
+    sections = split_diff_sections(diff_text)
+    # Syntax setup dominates large diffs, while a small pool avoids excessive processes.
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        rendered_sections = executor.map(render_terminal_diff_section, sections)
+        return "\n\n".join("\n".join(section) for section in rendered_sections) + "\n"

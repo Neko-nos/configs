@@ -48,6 +48,32 @@ function __select_server_shell() {
 }
 
 #######################################
+# Resolve the normalized architecture used by Linux release assets.
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   Writes "x86_64" or "aarch64" to stdout.
+# Returns:
+#   0 if the architecture is supported, non-zero otherwise.
+#######################################
+function __linux_architecture() {
+    case "$(uname -m)" in
+        x86_64 | amd64)
+            printf "x86_64\n"
+            ;;
+        aarch64 | arm64)
+            printf "aarch64\n"
+            ;;
+        *)
+            printf "Unsupported Linux architecture: %s\n" "$(uname -m)" >&2
+            return 1
+            ;;
+    esac
+}
+
+#######################################
 # Resolve the latest stable version published in an archive directory.
 # Arguments:
 #   Archive directory URL.
