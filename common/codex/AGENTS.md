@@ -21,22 +21,18 @@
 ### Coding
 
 - Do not unnecessarily modify existing comments unless they are within the specified scope.
-- Use modern syntax and libraries.
 - Do not include tests or redundant code solely to clarify intent explicitly.
-- Write simple, readable code; follow the principles in "The Art of Readable Code".
-  - Keep the implementation as simple as possible within the specified scope, avoiding over-engineering.
-  - Avoid thin wrapper/functions
+- Keep the implementation as simple as possible within the specified scope, avoiding over-engineering.
 - Avoid global variables, except for compiled regex patterns.
   - Regarding magic numbers, do not replace them with variables or global constants. Write a comment to tell readers the intent, not a variable name.
 - when writing a comment, focus on explaining "why", not "what".
   - If there is something (e.g., "why") you cannot infer from the code, you should write it as a comment.
 - Don't worry about backward compatibility.
-- Create and use dummy data for test cases instead of real data. Never include real data, even partially.
+- Create and use dummy data/placeholders for test cases instead of real data. Never include real data, even partially.
 
 ### Tests
 
 - Write and run tests to verify your code before finishing the conversation turn.
-  - Test execution is not required if the changes are limited to docs or comments.
 - Use actual modules instead of fakes or mocks. If a GPU is required, configure it to run exclusively in a GPU environment. Should an unavoidable situation arise where the use of fakes or mocks is strictly necessary, you must explicitly state this and its reason at the end of the turn.
   - Avoid smoke tests as well
 - Do not add tests intended to verify that old behaviors no longer occur.
@@ -68,12 +64,9 @@
 
 - The script must not start with a shebang.
 - Keep `try`/`except` blocks to the minimum necessary
-  - Do not use bare except or try to hide them with `noqa: BLE001`; Always specify errors. If you can't specify the exception type, the `try`/`except` block is unnecessary.
-  - Do not use `try` blocks for imports.
-  - Do not use unncessary `get*` (do not use it when you know the return value/type)
+- Do not use unncessary `get*` (do not use it when you know the return value/type)
 - Do not write guards for args or file contents.
 - Avoid lazy imports; place all imports at the top of the file.
-- Do not add excessive functions/modules, logging, or print statements.
 - When using `typing` module, do not use the deprecated classes/methods (e.g. `typing.List` -> `list`)
   - Do not append `from __future__ import annotations` when unnecessary.
 - Write docstring with the following style (Google Style):
@@ -136,11 +129,11 @@ Use `jaxtyping` for array/tensor type annotations. See <https://docs.kidger.site
 
 ### Environment
 
-- You can load `~/.zprofile` and `common/zsh/.zshrc` for a test environment, but do not modify them.
+- You are allowed to load `~/.zprofile` and `common/zsh/.zshrc` for a test environment, but do not modify them.
 
 ### Coding style
 
-- Executables (excluding dotfiles) must start with a shebang (`#!/bin/bash` or `#!/usr/bin/env zsh`)
+- Executables (excluding dotfiles) must start with a shebang (e.g.,  `#!/usr/bin/env zsh`)
 - Use `set` with useful options (e.g., `set -euo pipefail`) at the beginning of a script
 - Indent: 4 spaces, no tabs
 - Declare function-specific variables with `local`
@@ -195,3 +188,10 @@ Use `jaxtyping` for array/tensor type annotations. See <https://docs.kidger.site
 
 - use `shellcheck` as a linter for non-zsh scripts
 - No tests are required for shell scripts.
+
+## Machine learning Instructions
+
+### Rules
+
+- Never enable memory optimizations that may change quality or numerical behavior without explicit permission; exact quality-neutral optimizations such as FlashAttention are allowed.
+- do not touch other users' jobs
