@@ -17,6 +17,9 @@ __install_repo_path "${common_codexdir}/config.toml" "${codex_home}/config.toml"
 __install_repo_path "${common_codexdir}/hooks.json" "${codex_home}/hooks.json" 'hooks.json' link
 # Codex ignores symlinked rule files because its rule discovery accepts only regular files.
 __install_repo_path "${common_codexdir}/rules/git-index.rules" "${codex_home}/rules/git-index.rules" 'Git index rules' copy
+__install_repo_path "${common_codexdir}/rules/tart-vm.rules" "${codex_home}/rules/tart-vm.rules" 'Tart VM rules' copy
+__install_repo_path =(sed "s|{{HOME}}|${HOME}|g" "${common_codexdir}/rules/openai-docs.rules") "${codex_home}/rules/openai-docs.rules" 'OpenAI documentation rules' copy
+__install_repo_path "${common_codexdir}/rules/lua-formatting.rules" "${codex_home}/rules/lua-formatting.rules" 'Lua formatting rules' copy
 
 # Prevent Codex's diagnostic database from causing excessive SSD writes.
 # ref: https://github.com/openai/codex/issues/28224

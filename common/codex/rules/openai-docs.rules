@@ -1,0 +1,2 @@
+# Keep the tracked rule free of user-specific paths; the installer replaces this placeholder with $HOME.
+prefix_rule(pattern=["node", "{{HOME}}/.codex/skills/.system/openai-docs/scripts/fetch-codex-manual.mjs"], decision="allow")
