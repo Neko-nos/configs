@@ -54,7 +54,7 @@
 
 ### Environment
 
-- Run commands that use the uv cache outside the sandbox because the sandbox places the workspace and cache on different filesystems, causing uv to copy files instead of hard-linking them.
+- Run `uv sync` and `uv add` outside the sandbox because they may need to update the uv cache and project environment across filesystems.
 - Use `uv` as the package manager instead of `pip`
 - Use `uv add` instead of `uv pip install`
 - Use `uv run <hoge.py>` instead of `python <hoge.py>` or `uv run python <hoge.py>`
