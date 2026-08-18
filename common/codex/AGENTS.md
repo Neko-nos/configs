@@ -32,7 +32,6 @@
 
 ### Tests
 
-- Write and run tests to verify your code before finishing the conversation turn.
 - Use actual modules instead of fakes or mocks. If a GPU is required, configure it to run exclusively in a GPU environment. Should an unavoidable situation arise where the use of fakes or mocks is strictly necessary, you must explicitly state this and its reason at the end of the turn.
   - Avoid smoke tests as well
 - Do not add tests intended to verify that old behaviors no longer occur.
@@ -193,5 +192,6 @@ Use `jaxtyping` for array/tensor type annotations. See <https://docs.kidger.site
 
 ### Rules
 
+- use GPUs when they are available. you can use them outside of a sandbox, so do not use cpus to train/evaluate models.
 - Never enable memory optimizations that may change quality or numerical behavior without explicit permission; exact quality-neutral optimizations such as FlashAttention are allowed.
 - do not touch other users' jobs

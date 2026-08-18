@@ -79,3 +79,10 @@ exclude = [
 
 [notice]
 hide_rate_limit_model_nudge = true
+
+# codex mcp add kaggle --url https://www.kaggle.com/mcp --bearer-token-env-var KAGGLE_API_TOKEN
+[mcp_servers.kaggle]
+url = "https://www.kaggle.com/mcp"
+bearer_token_env_var = "KAGGLE_API_TOKEN"
+# Trust Kaggle MCP tools to avoid spending tokens on routine auto-review assessments.
+default_tools_approval_mode = "approve"
