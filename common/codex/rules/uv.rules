@@ -1,0 +1,3 @@
+prefix_rule(pattern=["uv", "lock"], decision="allow")
+prefix_rule(pattern=["uv", "sync"], decision="allow")
+prefix_rule(pattern=["uv", "add"], decision="allow")
