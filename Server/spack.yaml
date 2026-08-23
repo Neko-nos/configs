@@ -1,0 +1,19 @@
+spack:
+  repos:
+    server: spack_repo/server
+  specs:
+  - bubblewrap
+  - colordiff
+  - fzf
+  - hyperfine
+  - jq
+  - 'nano@9:'
+  - quota
+  - ruby
+  - 'screen@5:'
+  - shellcheck
+  - tree
+  view:
+    default:
+      root: .spack-env/view
+      link: roots
