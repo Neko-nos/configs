@@ -12,8 +12,8 @@ source "${script_dir}/utils.sh"
 server_shell="$(__select_server_shell)"
 printf "Selected %s for this server.\n" "${server_shell}"
 
+bash "${script_dir}/spack.sh"
 bash "${script_dir}/commands.sh" "${server_shell}"
-bash "${script_dir}/build_cmds.sh"
 bash "${script_dir}/${server_shell}.sh"
 
 if __confirm "Do you also want to set up git configurations? [y/N]: "; then
