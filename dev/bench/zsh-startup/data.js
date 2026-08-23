@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1787045690329,
+  "lastUpdate": 1787498591117,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1907,6 +1907,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 70.225456,
             "range": "± 0.248146",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f3987da9aac48de1469427ab7f6220c6ad00736a",
+          "message": "Merge pull request #98 from Neko-nos/refactor/migrate_spack\n\nrefactor(server): replace custom installers with Spack",
+          "timestamp": "2026-08-24T00:22:28+09:00",
+          "tree_id": "fffbe7736844a1322ca1f217bd16a73ef570d884",
+          "url": "https://github.com/Neko-nos/configs/commit/f3987da9aac48de1469427ab7f6220c6ad00736a"
+        },
+        "date": 1787498590525,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 141.393898,
+            "range": "± 375.281296",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 59.767864,
+            "range": "± 9.809803",
             "unit": "ms"
           }
         ]
