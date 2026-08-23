@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1787498591117,
+  "lastUpdate": 1787500710665,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1943,6 +1943,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 59.767864,
             "range": "± 9.809803",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7f0765bb6e4f6bdd38068db299bc7a19d4d5af6b",
+          "message": "Merge pull request #99 from Neko-nos/fix\n\nfix(server): fix .bash_profile",
+          "timestamp": "2026-08-24T00:57:50+09:00",
+          "tree_id": "cb98b6c017de7830b0da7e0deaacd58ac469f081",
+          "url": "https://github.com/Neko-nos/configs/commit/7f0765bb6e4f6bdd38068db299bc7a19d4d5af6b"
+        },
+        "date": 1787500710152,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 149.646761,
+            "range": "± 308.624261",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 80.109618,
+            "range": "± 0.685922",
             "unit": "ms"
           }
         ]
