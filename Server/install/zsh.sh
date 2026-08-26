@@ -8,8 +8,8 @@ repo_root="$(readlink -f "${script_dir}/../..")"
 # shellcheck source=/dev/null
 source "${script_dir}/utils.sh"
 
-__install_symlink "${script_dir}/../bash/.bash_profile" "${HOME}/.bash_profile" ".bash_profile"
-__install_symlink "${script_dir}/../bash/.bashrc" "${HOME}/.bashrc" ".bashrc"
+__install_repo_path "${script_dir}/../bash/.bash_profile" "${HOME}/.bash_profile" ".bash_profile" copy
+__install_repo_path "${script_dir}/../bash/.bashrc" "${HOME}/.bashrc" ".bashrc" link
 zsh "${repo_root}/common/install/zsh.sh" Server
 
 echo "Finished zsh configuration!"

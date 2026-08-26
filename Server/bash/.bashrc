@@ -29,6 +29,41 @@ fi
 
 unset -v slurm_managed slurm_command
 
+script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+# shellcheck source=/dev/null
+source "${script_dir}/utils.sh"
+
+# Spack
+function __load_spack() {
+    local spack_root="${HOME}/spack"
+    if [[ ! -r "${spack_root}/share/spack/setup-env.sh" ]]; then
+        return
+    fi
+    # shellcheck source=/dev/null
+    source "${spack_root}/share/spack/setup-env.sh"
+    # setup-env.sh defines spack as a function, so `hash spack` does not record
+    # the executable path needed to detect cache invalidation.
+    hash -p "${spack_root}/bin/spack" spack
+
+    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/spack"
+    local architecture_cache="${cache_dir}/architecture-${HOSTNAME}"
+    __update_cache "spack" "${architecture_cache}" -- arch || return
+
+    local architecture
+    architecture="$(<"${architecture_cache}")"
+    local environment_dir="${spack_root}/var/spack/environments/${architecture}/server"
+    local activation_cache="${cache_dir}/server-${HOSTNAME}.bash"
+    __update_cache "spack" "${activation_cache}" \
+        "${environment_dir}/spack.yaml" \
+        "${environment_dir}/spack.lock" \
+        "${environment_dir}/.spack-env/view/.spack-view" \
+        -- env activate --sh "${environment_dir}" || return
+    # shellcheck source=/dev/null
+    source "${activation_cache}"
+}
+__load_spack
+unset -f __load_spack
+
 # Match the zsh setup's no_beep and case-insensitive completion behavior.
 set -o emacs
 bind 'set bell-style none'
@@ -63,8 +98,27 @@ HISTIGNORE="cd:cd *:pushd:pushd *:popd:popd *:mkdir:mkdir *:pwd:exit:clear:man:m
 PROMPT_COMMAND="history -a; history -n; _record_cdr"
 
 # Completions
-eval "$(uv generate-shell-completion bash)"
-eval "$(uvx --generate-shell-completion bash)"
+function __load_completion_cache() {
+    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/bashrc"
+
+    # uv
+    # ref: https://docs.astral.sh/uv/getting-started/installation/
+    local uv_cache="${cache_dir}/uv-completion.bash"
+    if __update_cache "uv" "${uv_cache}" -- generate-shell-completion bash; then
+        # shellcheck source=/dev/null
+        source "${uv_cache}"
+    fi
+
+    local uvx_cache="${cache_dir}/uvx-completion.bash"
+    if __update_cache "uvx" "${uvx_cache}" -- --generate-shell-completion bash; then
+        # shellcheck source=/dev/null
+        source "${uvx_cache}"
+    fi
+}
+__load_completion_cache
+unset -f __load_completion_cache
+unset -f __update_cache
+unset -f __warn
 
 git_completion_path="${HOME}/git-completion.bash"
 if [[ ! -f "${git_completion_path}" ]]; then
@@ -75,7 +129,6 @@ source "${git_completion_path}"
 
 unset -v git_completion_path
 
-script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 # shellcheck source=/dev/null
 source "${script_dir}/aliases.sh"
 # shellcheck source=/dev/null

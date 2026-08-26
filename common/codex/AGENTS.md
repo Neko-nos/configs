@@ -129,6 +129,7 @@ Use `jaxtyping` for array/tensor type annotations. See <https://docs.kidger.site
 ### Environment
 
 - You are allowed to load `~/.zprofile` and `common/zsh/.zshrc` for a test environment, but do not modify them.
+- Do not inspect profile files in `$HOME`; use the corresponding templates in `~/configs` instead.
 
 ### Coding style
 

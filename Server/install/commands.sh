@@ -53,7 +53,8 @@ function install_gitstatus() {
 }
 
 mkdir -p "${HOME}/.local/bin"
-export PATH="${HOME}/spack/var/spack/environments/server/.spack-env/view/bin:${HOME}/.local/bin:${PATH}"
+# Activation prints shell assignments that must run here to update PATH.
+eval "$(spack env activate --sh "${HOME}/spack/var/spack/environments/$(spack arch)/server")"
 
 install_uv
 # Use uv tool instead of apt so the commands can be installed without sudo.

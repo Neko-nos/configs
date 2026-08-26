@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-export PATH="${HOME}/spack/var/spack/environments/server/.spack-env/view/bin:${HOME}/spack/bin:${HOME}/.local/bin:${PATH}"
+export PATH="${HOME}/.local/bin:${PATH}"
 
 # Bash reads .bash_profile for login shells and .bashrc for interactive
 # non-login shells. Source .bashrc here so SSH login shells get the same setup.

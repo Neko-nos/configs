@@ -1,13 +1,15 @@
 autoload -Uz __safe_alias __warn __update_cache
 
-typeset -ga SAFE_ALIAS_MANAGER_CMD SAFE_ALIAS_UPDATE_CMD
+typeset -ga SAFE_ALIAS_INSTALL_CMD SAFE_ALIAS_UPDATE_CMD
 # Use arrays for commands to avoid word-splitting and quoting pitfalls.
-if [[ "${OSTYPE}" == "darwin"* ]]; then
-    SAFE_ALIAS_MANAGER_CMD=(brew)
-    SAFE_ALIAS_UPDATE_CMD=()
-else
-    SAFE_ALIAS_MANAGER_CMD=(sudo apt-get)
-    SAFE_ALIAS_UPDATE_CMD=(sudo apt-get update)
+if (( ${#SAFE_ALIAS_INSTALL_CMD[@]} == 0 )); then
+    if [[ "${OSTYPE}" == "darwin"* ]]; then
+        SAFE_ALIAS_INSTALL_CMD=(brew install)
+        SAFE_ALIAS_UPDATE_CMD=()
+    else
+        SAFE_ALIAS_INSTALL_CMD=(sudo apt-get install)
+        SAFE_ALIAS_UPDATE_CMD=(sudo apt-get update)
+    fi
 fi
 
 # ref: https://atmarkit.itmedia.co.jp/ait/articles/1606/28/news021.html
@@ -37,4 +39,4 @@ __safe_alias icdiff 'icdiff -U 1 --line-numbers'
 # `__update_cache` is cleaned up by `.zshrc` after startup. `__warn` stays
 # available for interactive functions that may warn after startup.
 unset -f __safe_alias
-unset -v SAFE_ALIAS_MANAGER_CMD SAFE_ALIAS_UPDATE_CMD
+unset -v SAFE_ALIAS_INSTALL_CMD SAFE_ALIAS_UPDATE_CMD

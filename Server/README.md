@@ -3,8 +3,10 @@
 This setup is for Linux servers where you cannot get root privileges. It uses
 Zsh on ordinary servers and Bash on Slurm-managed login or head nodes.
 Tools that are not provided by the server are installed without root access.
-Spack manages command-line packages and their dependencies in an isolated
-environment under `~/spack/var/spack/environments/server`.
+Spack manages command-line packages and their dependencies in isolated
+environments under `~/spack/var/spack/environments/<architecture>/server`.
+Separate environments prevent a shared home directory from exposing binaries
+built against another server's CPU instruction set.
 
 ## Installation
 
@@ -24,18 +26,19 @@ remain isolated. A system C/C++ compiler and Spack's other
 [prerequisites](https://spack.readthedocs.io/en/latest/installing_prerequisites.html)
 must already be available because this setup does not have administrator access.
 
-The committed `spack.lock` records the concrete dependency graph. To install
-changes made to the manifest, run:
+The installer creates the current architecture's environment from the manifest,
+then lets Spack concretize and install it for that host. Existing environments
+can be managed with the standard Spack commands.
 
 ```bash
-spack -e server install
+spack -D ~/spack/var/spack/environments/$(spack arch)/server install
 ```
 
 ## Bash Features
 
 [.bashrc](./bash/.bashrc) configures the interactive shell.
 
-- Recreates as much of the [.zshrc](../common/zsh/.zshrc) option behavior as
+- Recreates as much of the [.zshrc](./.zshrc) option behavior as
   Bash can support directly.
 - Shares command history across SSH sessions.
 - `Ctrl-P` works like Zsh's recent-directory search and changes to the selected
