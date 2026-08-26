@@ -38,7 +38,7 @@ spack -D ~/spack/var/spack/environments/$(spack arch)/server install
 
 [.bashrc](./bash/.bashrc) configures the interactive shell.
 
-- Recreates as much of the [.zshrc](../common/zsh/.zshrc) option behavior as
+- Recreates as much of the [.zshrc](./.zshrc) option behavior as
   Bash can support directly.
 - Shares command history across SSH sessions.
 - `Ctrl-P` works like Zsh's recent-directory search and changes to the selected
