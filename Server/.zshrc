@@ -52,6 +52,10 @@ function __load_spack() {
 
     local architecture="$(<"${architecture_cache}")"
     local environment_dir="${spack_root}/var/spack/environments/${architecture}/server"
+    typeset -ga SAFE_ALIAS_INSTALL_CMD SAFE_ALIAS_UPDATE_CMD
+    SAFE_ALIAS_INSTALL_CMD=(spack --env-dir "${environment_dir}" install --add)
+    SAFE_ALIAS_UPDATE_CMD=()
+
     local activation_cache="${cache_dir}/server-${HOST}.zsh"
     __update_cache "spack" "${activation_cache}" \
         "${environment_dir}/spack.yaml" \

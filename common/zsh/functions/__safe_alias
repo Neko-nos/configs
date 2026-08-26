@@ -1,7 +1,7 @@
 #######################################
 # Create alias if the target command exists, or offer to install it.
 # Globals:
-#   SAFE_ALIAS_MANAGER_CMD (array)
+#   SAFE_ALIAS_INSTALL_CMD (array)
 #   SAFE_ALIAS_UPDATE_CMD (array)
 # Arguments:
 #   1: Alias name
@@ -24,12 +24,12 @@ function __safe_alias() {
 
     local target_package="${3:-$cmd_name}"
     # Use arrays for commands to avoid word-splitting and quoting pitfalls.
-    local -a manager_cmd=()
-    if (( ${#SAFE_ALIAS_MANAGER_CMD[@]} > 0 )); then
-        manager_cmd=("${SAFE_ALIAS_MANAGER_CMD[@]}")
+    local -a install_cmd=()
+    if (( ${#SAFE_ALIAS_INSTALL_CMD[@]} > 0 )); then
+        install_cmd=("${SAFE_ALIAS_INSTALL_CMD[@]}")
     fi
 
-    if (( ${#manager_cmd[@]} == 0 )); then
+    if (( ${#install_cmd[@]} == 0 )); then
         __warn "Package manager is not configured for ${target_package}; skipping alias '${alias_name}'."
         return 0
     fi
@@ -41,7 +41,7 @@ function __safe_alias() {
         if (( ${#SAFE_ALIAS_UPDATE_CMD[@]} > 0 )); then
             "${SAFE_ALIAS_UPDATE_CMD[@]}" || return 0
         fi
-        "${manager_cmd[@]}" install "${target_package}"
+        "${install_cmd[@]}" "${target_package}"
         alias "${alias_name}"="${alias_cmd}"
     fi
 }
