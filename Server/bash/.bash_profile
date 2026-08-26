@@ -8,5 +8,3 @@ if [[ -f "${HOME}/.bashrc" ]]; then
     # shellcheck source=/dev/null
     source "${HOME}/.bashrc"
 fi
-
-export HF_HOME='/data/umihebi0/users/yoshihira/.cache/huggingface/'

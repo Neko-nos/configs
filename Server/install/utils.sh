@@ -48,22 +48,30 @@ function __select_server_shell() {
 }
 
 #######################################
-# Install a symlink, backing up an existing destination after confirmation.
+# Install a repository-managed file with an optional replacement prompt.
 # Arguments:
 #   Source path.
 #   Destination path.
 #   Display name for logs and prompts.
+#   Install mode: link or copy.
 # Outputs:
 #   Writes status messages and prompts to stdout.
 # Returns:
-#   0 if installed, already linked, or intentionally skipped.
+#   0 if installed, already matching, or intentionally skipped.
+#   1 if the source does not exist or the install mode is invalid.
 #######################################
-function __install_symlink() {
+function __install_repo_path() {
     local source_path="${1}"
     local destination_path="${2}"
     local display_name="${3}"
+    local install_mode="${4}"
     local backup_path
     local source_resolved_path
+
+    if [[ "${install_mode}" != "link" && "${install_mode}" != "copy" ]]; then
+        printf "Invalid install mode for %s: %s\n" "${display_name}" "${install_mode}" >&2
+        return 1
+    fi
 
     if [[ ! -e "${source_path}" && ! -L "${source_path}" ]]; then
         printf "Source not found for %s: %s\n" "${display_name}" "${source_path}" >&2
@@ -72,8 +80,15 @@ function __install_symlink() {
 
     source_resolved_path="$(readlink -f "${source_path}")"
 
-    if [[ -L "${destination_path}" && "$(readlink -f "${destination_path}")" == "${source_resolved_path}" ]]; then
+    if [[ "${install_mode}" == "link" && -L "${destination_path}" \
+        && "$(readlink -f "${destination_path}")" == "${source_resolved_path}" ]]; then
         printf "You have already linked %s to the repository copy.\n" "${display_name}"
+        return 0
+    fi
+
+    if [[ "${install_mode}" == "copy" && -f "${destination_path}" && ! -L "${destination_path}" ]] \
+        && cmp -s "${source_path}" "${destination_path}"; then
+        printf "You have already copied %s from the repository.\n" "${display_name}"
         return 0
     fi
 
@@ -87,6 +102,11 @@ function __install_symlink() {
         printf "Renamed existing %s to %s as a backup.\n" "${display_name}" "${backup_path}"
     fi
 
-    ln -s "${source_resolved_path}" "${destination_path}"
-    printf "Created symlink: %s -> %s\n" "${destination_path}" "${source_resolved_path}"
+    if [[ "${install_mode}" == "link" ]]; then
+        ln -s "${source_resolved_path}" "${destination_path}"
+        printf "Created symlink: %s -> %s\n" "${destination_path}" "${source_resolved_path}"
+    else
+        cp "${source_path}" "${destination_path}"
+        printf "Copied %s to %s\n" "${source_path}" "${destination_path}"
+    fi
 }
