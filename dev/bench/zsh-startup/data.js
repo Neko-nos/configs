@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1787500710665,
+  "lastUpdate": 1787765913778,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -1979,6 +1979,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 80.109618,
             "range": "± 0.685922",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8a7afe1a0ada16158b4f00abece5261f4b1485c9",
+          "message": "Merge pull request #100 from Neko-nos/fix/spack_commands\n\nFix/spack commands",
+          "timestamp": "2026-08-27T02:37:05+09:00",
+          "tree_id": "193d2cf6f04ac59735390b3249741011e5e6cd7c",
+          "url": "https://github.com/Neko-nos/configs/commit/8a7afe1a0ada16158b4f00abece5261f4b1485c9"
+        },
+        "date": 1787765913117,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 115.869045,
+            "range": "± 227.560564",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 65.094153,
+            "range": "± 0.35945",
             "unit": "ms"
           }
         ]
