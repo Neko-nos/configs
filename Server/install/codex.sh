@@ -40,17 +40,20 @@ function install_codex_cli() {
 #   Writes installation output to stdout and stderr.
 #######################################
 function main() {
-    local repo_root cache_dir user_bin_dir codex_home
+    local repo_root cache_dir user_bin_dir codex_home codex_sqlite_home
 
     repo_root="$(readlink -f "${script_dir}/../..")"
     cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/server-install"
     user_bin_dir="${HOME}/.local/bin"
     codex_home="${HOME}/.codex"
+    codex_sqlite_home="/var/tmp/${USER}/codex"
 
     export PATH="${user_bin_dir}:${PATH}"
 
     install_codex_cli "${cache_dir}" "${user_bin_dir}" "${codex_home}"
-    CODEX_HOME="${codex_home}" zsh "${repo_root}/common/install/codex.sh"
+    CODEX_HOME="${codex_home}" \
+    CODEX_SQLITE_HOME="${codex_sqlite_home}" \
+    zsh "${repo_root}/common/install/codex.sh"
 }
 
 main
