@@ -6,11 +6,12 @@ set -e
 script_dir="${${(%):-%N}:A:h}"
 common_codexdir="${script_dir}/../codex"
 codex_home="${CODEX_HOME:-$HOME/.codex}"
+codex_sqlite_home="${CODEX_SQLITE_HOME:-${CODEX_HOME:-$HOME/.codex}}"
 
 source "${script_dir}/utils.sh"
 source "${script_dir}/rust.sh"
 
-mkdir -p "${codex_home}" "${codex_home}/rules"
+mkdir -p "${codex_home}" "${codex_home}/rules" "${codex_sqlite_home}"
 
 __install_repo_path "${common_codexdir}/AGENTS.md" "${codex_home}/AGENTS.md" 'AGENTS.md' link
 __install_repo_path "${common_codexdir}/config.toml" "${codex_home}/config.toml" 'config.toml' link
@@ -31,7 +32,7 @@ __install_repo_path "${common_codexdir}/rules/uv.rules" "${codex_home}/rules/uv.
 if __confirm 'Have you already disabled Codex diagnostic database logging? [y/N]: '; then
     echo 'Skipped disabling Codex diagnostic database logging.'
 else
-    python3 "${common_codexdir}/disable_sqlite_logging.py" "${codex_home}/logs_2.sqlite"
+    python3 "${common_codexdir}/disable_sqlite_logging.py" "${codex_sqlite_home}/logs_2.sqlite"
 fi
 
 echo 'Finished codex configuration!'
