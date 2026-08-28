@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1787765913778,
+  "lastUpdate": 1787916326796,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2015,6 +2015,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 65.094153,
             "range": "± 0.35945",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "27d178b0956e99f4f2a06f9386b4c33045156b33",
+          "message": "Merge pull request #101 from Neko-nos/feat/support_shared_home\n\nFeat/support shared home",
+          "timestamp": "2026-08-28T20:24:49+09:00",
+          "tree_id": "bfa0a031f26fa49042d3b172cba4a340c7dd43eb",
+          "url": "https://github.com/Neko-nos/configs/commit/27d178b0956e99f4f2a06f9386b4c33045156b33"
+        },
+        "date": 1787916326463,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 160.610323,
+            "range": "± 326.682715",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 85.476851,
+            "range": "± 1.780132",
             "unit": "ms"
           }
         ]
