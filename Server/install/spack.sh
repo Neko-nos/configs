@@ -18,10 +18,12 @@ function main() {
     local architecture
     local environment_dir
     local -a external_find_args
+    local manifest_path
     local script_dir
     local spack_root="${HOME}/spack"
 
     script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+    manifest_path="${script_dir}/../spack.yaml"
 
     # ref: https://github.com/spack/spack#installation
     if [[ ! -x "${spack_root}/bin/spack" ]]; then
@@ -36,7 +38,15 @@ function main() {
     export SPACK_DISABLE_LOCAL_CONFIG=true
     if [[ ! -d "${environment_dir}" ]]; then
         "${spack_root}/bin/spack" env create --dir "${environment_dir}" \
-            "${script_dir}/../spack.yaml"
+            "${manifest_path}"
+    else
+        # Existing environments keep a separate manifest, so refresh it with
+        # user changes before installing.
+        cp "${manifest_path}" "${environment_dir}/spack.yaml"
+        # The copied relative repository path would resolve from the environment
+        # directory instead of the source manifest directory.
+        "${spack_root}/bin/spack" -D "${environment_dir}" config add \
+            "repos:server:$(readlink -f "${script_dir}/../spack_repo/server")"
     fi
 
     external_find_args=(

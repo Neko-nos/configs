@@ -14,6 +14,9 @@ source "${install_script_dir}/apt.sh"
 # Zsh
 source "${common_install_dir}/zsh.sh" WSL
 
+# Terminal multiplexers
+source "${common_install_dir}/mux.sh"
+
 # Git
 printf 'Do you also want to set up git configurations? [y/N]:'
 if read -q; then

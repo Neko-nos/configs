@@ -190,7 +190,15 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source zsh.sh <Mac/Ubuntu/WSL>
    ```
 
-5. git.sh\
+5. mux.sh\
+   Set up the shared Screen and tmux configurations.
+
+   ```console
+   cd common/install
+   source mux.sh
+   ```
+
+6. git.sh\
    Set up `.gitconfig`.
 
    ```console
@@ -198,7 +206,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source git.sh
    ```
 
-6. gh.sh\
+7. gh.sh\
    Install [GitHub CLI](https://cli.github.com/) on Ubuntu or WSL from the official GitHub CLI apt repository. On Mac, `gh` is installed by `brew.sh` from `brew_formulae.txt`.
 
    ```console
@@ -206,7 +214,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source gh.sh
    ```
 
-7. github_ssh.sh\
+8. github_ssh.sh\
    Set up SSH authentication for GitHub. The script generates or reuses an Ed25519 SSH key, adds it to the ssh-agent, uploads the public key with `gh` when available, and tests `ssh -T git@github.com`.
 
    ```console
@@ -214,7 +222,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source github_ssh.sh
    ```
 
-8. vscode.sh\
+9. vscode.sh\
    Install VSCode and set up user `settings.json` and `keybindings.json` for the current OS.
 
    ```console
@@ -222,16 +230,16 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
    source vscode.sh
    ```
 
-9. nano.sh\
-   Set up nano with system syntax definitions and optional custom settings from `~/nanorc`.
-   On Mac, install the Homebrew `nano` formula first so the `nano` command resolves to the Homebrew version instead of the system Pico-compatible editor.
+10. nano.sh\
+    Set up nano with system syntax definitions and optional custom settings from `~/nanorc`.
+    On Mac, install the Homebrew `nano` formula first so the `nano` command resolves to the Homebrew version instead of the system Pico-compatible editor.
 
-   ```console
-   cd common/install
-   source nano.sh
-   ```
+    ```console
+    cd common/install
+    source nano.sh
+    ```
 
-10. docker.sh\
+11. docker.sh\
     On Ubuntu or WSL, install Docker Engine and optionally install NVIDIA
     Container Toolkit for GPU containers.
 
@@ -247,7 +255,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source docker.sh
     ```
 
-11. wsl.sh\
+12. wsl.sh\
     On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
 
     ```console
@@ -255,7 +263,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source wsl.sh
     ```
 
-12. codex.sh\
+13. codex.sh\
     Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
 
     ```console
@@ -263,7 +271,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source codex.sh
     ```
 
-13. claude.sh\
+14. claude.sh\
     Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
 
     ```console
@@ -271,7 +279,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source claude.sh
     ```
 
-14. python.sh\
+15. python.sh\
     Install or update [uv](https://github.com/astral-sh/uv).
 
     ```console
@@ -279,7 +287,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source python.sh
     ```
 
-15. markdownlint.sh\
+16. markdownlint.sh\
     Install [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) with Homebrew on Mac or npm on Ubuntu and WSL.
 
     ```console
@@ -287,7 +295,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source markdownlint.sh
     ```
 
-16. actionlint.sh\
+17. actionlint.sh\
     Install [actionlint](https://github.com/rhysd/actionlint) with Homebrew on Mac or the official prebuilt binary installer on Ubuntu and WSL.
 
     ```console

@@ -7,6 +7,7 @@ colordiff
 icdiff
 # macOS bundles a Screen build too old to preserve Powerlevel10k's 256-color palette.
 screen
+tmux
 shellcheck
 hyperfine
 jq

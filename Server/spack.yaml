@@ -12,6 +12,7 @@ spack:
   - ruby
   - 'screen@5:'
   - shellcheck
+  - tmux
   - tree
   view:
     default:

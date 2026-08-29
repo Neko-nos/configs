@@ -15,6 +15,7 @@ printf "Selected %s for this server.\n" "${server_shell}"
 bash "${script_dir}/spack.sh"
 bash "${script_dir}/commands.sh" "${server_shell}"
 bash "${script_dir}/${server_shell}.sh"
+zsh "${common_install_dir}/mux.sh"
 
 if __confirm "Do you also want to set up git configurations? [y/N]: "; then
     zsh "${common_install_dir}/git.sh"
