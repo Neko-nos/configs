@@ -14,6 +14,9 @@ source "${install_script_dir}/apt.sh"
 # Zsh
 source "${common_install_dir}/zsh.sh" Ubuntu
 
+# Terminal multiplexers
+source "${common_install_dir}/mux.sh"
+
 # Fonts
 printf 'Do you also want to install MesloLGS NF? [y/N]:'
 if read -q; then

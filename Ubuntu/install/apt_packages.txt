@@ -4,6 +4,7 @@ tree
 colordiff
 icdiff
 screen
+tmux
 shellcheck
 hyperfine
 jq
