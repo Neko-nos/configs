@@ -155,6 +155,9 @@
     "workbench.editor.enablePreview": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
     "workbench.editor.limit.enabled": false,
+    "workbench.editorAssociations": {
+        "*.md": "vscode.markdown.preview.editor"
+    },
 
     // ---------- Editor ----------
     "editor.minimap.enabled": false,
