@@ -19,6 +19,13 @@
         "args": { "text": "\u0015" },
         "when": "terminalFocus"
     },
+    {
+        // Forward tmux's prefix instead of letting VSCode handle it.
+        "key": "ctrl+a",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": { "text": "\u0001" },
+        "when": "terminalFocus"
+    },
 
     {
         "key": "shift+alt+m",
