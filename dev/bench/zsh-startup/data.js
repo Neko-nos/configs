@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1787916326796,
+  "lastUpdate": 1788021178311,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2051,6 +2051,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 85.476851,
             "range": "± 1.780132",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a1ab89f7fda46612960691683079ed7aa48938d8",
+          "message": "Merge pull request #102 from Neko-nos/feat/migrate_tmux\n\nFeat/migrate tmux",
+          "timestamp": "2026-08-30T01:32:16+09:00",
+          "tree_id": "4097221fb79fbd62c45453b102bd0165f6797af6",
+          "url": "https://github.com/Neko-nos/configs/commit/a1ab89f7fda46612960691683079ed7aa48938d8"
+        },
+        "date": 1788021177697,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 146.975093,
+            "range": "± 317.141378",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 76.119333,
+            "range": "± 0.286808",
             "unit": "ms"
           }
         ]
