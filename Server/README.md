@@ -27,11 +27,12 @@ remain isolated. A system C/C++ compiler and Spack's other
 must already be available because this setup does not have administrator access.
 
 The installer creates the current architecture's environment from the manifest,
-then lets Spack concretize and install it for that host. Existing environments
-can be managed with the standard Spack commands.
+then lets Spack concretize and install it for that host. Run the Spack installer
+again after editing [spack.yaml](./spack.yaml); it refreshes the environment's
+manifest before applying the changes.
 
 ```bash
-spack -D ~/spack/var/spack/environments/$(spack arch)/server install
+bash Server/install/spack.sh
 ```
 
 ## Bash Features
