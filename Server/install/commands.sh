@@ -61,6 +61,7 @@ install_uv
 uv tool install gdown
 uv tool install hf
 uv tool install icdiff
+uv tool install ruff
 if [[ "${1:-bash}" == "bash" ]]; then
     install_gitstatus
 elif [[ "${1:-bash}" != "zsh" ]]; then
