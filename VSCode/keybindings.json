@@ -2,8 +2,8 @@
     {
         "key": "shift+enter",
         "command": "workbench.action.terminal.sendSequence",
-        // ref: https://zenn.dev/tanadeyu/articles/b1ac52a262ea4a
-        "args": { "text": "\u001b[13;2u" },
+        // Bracketed paste keeps the newline literal across local and SSH tmux sessions.
+        "args": { "text": "\u001b[200~\n\u001b[201~" },
         "when": "terminalFocus"
     },
     {
