@@ -1,33 +1,24 @@
 # shellcheck shell=bash
 
-# Some tools source .bashrc from non-interactive shells; avoid changing their
-# shell or configuring interactive behavior.
-case $- in
-    *i*) ;;
-    *) return 0 ;;
-esac
-
-if [[ ":${PATH}:" != *":${HOME}/.local/bin:"* ]]; then
-    export PATH="${HOME}/.local/bin:${PATH}"
-fi
-
 # VS Code opens interactive non-login shells, so select zsh here rather than in
 # .bash_profile, which is read only by login shells.
-slurm_managed=false
-for slurm_command in sbatch scontrol sinfo squeue srun; do
-    if command -v "${slurm_command}" >/dev/null 2>&1; then
-        slurm_managed=true
-        break
+if [[ $- == *i* ]]; then
+    slurm_managed=false
+    for slurm_command in sbatch scontrol sinfo squeue srun; do
+        if command -v "${slurm_command}" >/dev/null 2>&1; then
+            slurm_managed=true
+            break
+        fi
+    done
+
+    if [[ "${slurm_managed}" == false ]] && command -v zsh >/dev/null 2>&1; then
+        SHELL="$(command -v zsh)"
+        export SHELL
+        exec "${SHELL}" -l
     fi
-done
 
-if [[ "${slurm_managed}" == false ]] && command -v zsh >/dev/null 2>&1; then
-    SHELL="$(command -v zsh)"
-    export SHELL
-    exec "${SHELL}" -l
+    unset -v slurm_managed slurm_command
 fi
-
-unset -v slurm_managed slurm_command
 
 script_dir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
 # shellcheck source=/dev/null
@@ -63,6 +54,17 @@ function __load_spack() {
 }
 __load_spack
 unset -f __load_spack
+
+# Some tools source .bashrc from non-interactive shells; load Spack for them,
+# but avoid changing their shell or configuring interactive behavior.
+case $- in
+    *i*) ;;
+    *) return 0 ;;
+esac
+
+if [[ ":${PATH}:" != *":${HOME}/.local/bin:"* ]]; then
+    export PATH="${HOME}/.local/bin:${PATH}"
+fi
 
 # Match the zsh setup's no_beep and case-insensitive completion behavior.
 set -o emacs
