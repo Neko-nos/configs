@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788164110376,
+  "lastUpdate": 1788306629222,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2123,6 +2123,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 77.334717,
             "range": "± 0.713778",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "15b9083b1a6c08a7c2f547c8a051dd3db2f672e9",
+          "message": "Merge pull request #104 from Neko-nos/dependabot/github_actions/astral-sh/setup-uv-10.0.1\n\nchore(deps): bump astral-sh/setup-uv from 9.0.0 to 10.0.1",
+          "timestamp": "2026-09-02T08:49:45+09:00",
+          "tree_id": "df5b55fc2da77d6ad8739ebb17f8af345d35d27d",
+          "url": "https://github.com/Neko-nos/configs/commit/15b9083b1a6c08a7c2f547c8a051dd3db2f672e9"
+        },
+        "date": 1788306628527,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 146.020777,
+            "range": "± 306.858227",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 77.674352,
+            "range": "± 1.466802",
             "unit": "ms"
           }
         ]
