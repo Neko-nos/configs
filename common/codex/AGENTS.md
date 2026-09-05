@@ -7,12 +7,6 @@
 - Do not stick to your one-sided belief and prejudice.
 - Do not act on your own assumptions; investigate the actual behavior and knowledge.
 
-### Conversation
-
-- When I ask a question, it is not a rejection or a request for changes. Answer the question appropriately without modifying the code.
-- When citing code, make sure to indicate the line numbers.
-  - For GitHub links, you can indicate the line by adding `#L<int>` to the end of the URL.
-
 ### Documents
 
 - Answer my questions in the chat space, not in documents of code comments.
@@ -55,19 +49,13 @@
 ### Environment
 
 - Run `uv sync` and `uv add` outside the sandbox because they may need to update the uv cache and project environment across filesystems.
-- Use `uv` as the package manager instead of `pip`
-- Use `uv add` instead of `uv pip install`
-- Use `uv run <hoge.py>` instead of `python <hoge.py>` or `uv run python <hoge.py>`
 
 ### Coding style
 
-- The script must not start with a shebang.
 - Keep `try`/`except` blocks to the minimum necessary
 - Do not use unncessary `get*` (do not use it when you know the return value/type)
 - Do not write guards for args or file contents.
 - Avoid lazy imports; place all imports at the top of the file.
-- When using `typing` module, do not use the deprecated classes/methods (e.g. `typing.List` -> `list`)
-  - Do not append `from __future__ import annotations` when unnecessary.
 - Write docstring with the following style (Google Style):
 
   ```py
@@ -114,15 +102,6 @@ Use `jaxtyping` for array/tensor type annotations. See <https://docs.kidger.site
     ) -> Float[np.ndarray, "*batch num_classes-1"]:        # symbolic expression in the return shape
         ...
     ```
-
-### Coding Rules
-
-- After writing code, always use `Ruff` as both linter and formatter
-  - run `ruff check <hoge.py> --fix && ruff check <hoge.py> --fix --select I && ruff format <hoge.py>`
-  - If the environment does not have `pyproject.toml`, use `uvx ruff` instead of `ruff`. Do not install `ruff` using `uv add`.
-- After writing code, use `pytest` (not `unittest`) for test code
-  - If the environment does not have `pyproject.toml`, use `uvx pytest` instead of `pytest`. Do not install `pytest` using `uv add`
-  - If the environment has `pyproject.toml` but `pytest` is not installed, you may install `pytest` via `uv add` after asking me.
 
 ## Shell Script Instructions
 
