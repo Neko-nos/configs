@@ -30,6 +30,7 @@ The shared `settings.json` for VSCode.
 The `keybindings.json` for VSCode. In the integrated terminal, Shift+Enter
 sends a bracketed-paste newline (`\u001b[200~\n\u001b[201~`). This lets Codex CLI
 insert a newline without submitting the prompt through local or Remote SSH tmux sessions.
+Cmd+C copies a tmux mouse selection without making mouse release copy it automatically.
 Cmd+V uses the local Smart Terminal Paste extension to paste text normally or send
 Ctrl+V when the macOS clipboard contains an image, allowing Codex CLI to attach it.
 In a Remote SSH workspace, the extension instead writes the clipboard image to the

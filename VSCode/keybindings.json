@@ -13,6 +13,13 @@
         "when": "terminalFocus"
     },
     {
+        // tmux owns its mouse selection, so forward Ctrl+C when VSCode has no selection of its own.
+        "key": "cmd+c",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": { "text": "\u0003" },
+        "when": "terminalFocus && !terminalTextSelected && !terminalTextSelectedInFocused"
+    },
+    {
         // Preserve the shell's ctrl+u while the bundle-wide Codex prompt mapping is active.
         "key": "cmd+shift+left",
         "command": "workbench.action.terminal.sendSequence",

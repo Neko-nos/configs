@@ -140,7 +140,7 @@ The installer opens Karabiner-Elements so you can grant Accessibility and Driver
 
 ##### Hammerspoon
 
-I use [Hammerspoon](https://www.hammerspoon.org/) to enable text selection by dragging in Terminal when applications such as nano capture mouse input.\
+I use [Hammerspoon](https://www.hammerspoon.org/) to enable text selection by Option-dragging in Terminal when applications such as nano capture mouse input. When tmux owns an ordinary mouse selection, Cmd+C is forwarded to tmux so the text is copied only after the shortcut is pressed.\
 Run `Mac/install/hammerspoon.sh` to install Hammerspoon, enable it at login, and link the configuration to `~/.hammerspoon/init.lua`. It also installs Luacheck and StyLua with Homebrew.\
 The installer opens Hammerspoon so you can grant Accessibility access when macOS asks. macOS requires you to approve this protected permission yourself.
 
