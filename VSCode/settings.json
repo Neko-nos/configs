@@ -137,6 +137,7 @@
     // ---------- Terminal ----------
     "terminal.integrated.fontFamily": "MesloLGS NF",
     "terminal.integrated.macOptionClickForcesSelection": true,
+    "terminal.integrated.copyOnSelection": false,
     // Keep pasted screenshots available to terminal apps such as Codex.
     "terminal.integrated.enableImages": false,
     "terminal.integrated.commandsToSkipShell": [

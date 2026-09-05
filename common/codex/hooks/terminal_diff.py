@@ -255,6 +255,25 @@ def section_path(section: list[str]) -> str | None:
     return None
 
 
+def section_line_counts(section: list[str]) -> tuple[int, int]:
+    """
+    Count added and removed lines in one diff section.
+
+    Args:
+        section (list[str]): Per-file unified diff lines.
+
+    Returns:
+        tuple[int, int]: Added and removed line counts.
+    """
+    added = sum(
+        1 for line in section if line.startswith("+") and not line.startswith("+++")
+    )
+    removed = sum(
+        1 for line in section if line.startswith("-") and not line.startswith("---")
+    )
+    return added, removed
+
+
 def render_terminal_diff_row(
     line_number: int | None,
     sign: str,
@@ -306,12 +325,7 @@ def render_terminal_diff_section(section: list[str]) -> list[str]:
     # ref: https://github.com/nornagon/crossterm/blob/87db8bfa6dc99427fd3b071681b07fc31c6ce995/src/style/types/attribute.rs#L94
     reset = "\x1b[0m"
     path = section_path(section)
-    added = sum(
-        1 for line in section if line.startswith("+") and not line.startswith("+++")
-    )
-    deleted = sum(
-        1 for line in section if line.startswith("-") and not line.startswith("---")
-    )
+    added, deleted = section_line_counts(section)
     verb = "Edited"
     if added > 0 and deleted == 0:
         verb = "Added"
@@ -399,21 +413,28 @@ def render_terminal_diff_section(section: list[str]) -> list[str]:
     return lines
 
 
-def render_terminal_diff(diff_text: str) -> str:
+def render_terminal_diff_files(
+    diff_text: str,
+) -> list[tuple[str | None, str, int, int]]:
     """
-    Render a unified diff as Codex-like ANSI terminal output.
+    Render a unified diff into per-file terminal output.
 
     Args:
         diff_text (str): Unified diff text.
 
     Returns:
-        str: ANSI-rendered diff.
+        list[tuple[str | None, str, int, int]]: Display paths, ANSI-rendered
+        diffs, and added and removed line counts.
     """
-    if diff_text == "":
-        return ""
-
     sections = split_diff_sections(diff_text)
     # Syntax setup dominates large diffs, while a small pool avoids excessive processes.
     with ThreadPoolExecutor(max_workers=4) as executor:
         rendered_sections = executor.map(render_terminal_diff_section, sections)
-        return "\n\n".join("\n".join(section) for section in rendered_sections) + "\n"
+        return [
+            (
+                section_path(section),
+                "\n".join(rendered) + "\n",
+                *section_line_counts(section),
+            )
+            for section, rendered in zip(sections, rendered_sections, strict=True)
+        ]
