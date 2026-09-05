@@ -15,7 +15,7 @@ from git_snapshot import (
     run_git,
     worktree_tree,
 )
-from terminal_diff import render_terminal_diff
+from terminal_diff import render_terminal_diff_files
 
 
 def is_cli_session(transcript_path: str | None) -> bool:
@@ -42,26 +42,37 @@ def is_cli_session(transcript_path: str | None) -> bool:
     }
 
 
-def copy_view_command(view_command: str) -> None:
-    """Copy a terminal diff command when a clipboard provider is available."""
-    if "SSH_TTY" in os.environ or "SSH_CONNECTION" in os.environ:
-        raw_command = view_command.encode()
-        # The expected command is short; the limit avoids flooding the terminal.
-        if len(raw_command) > 10_000:
-            return
+def copy_view_command(view_command: str) -> bool:
+    """
+    Copy a terminal diff command when a clipboard provider is available.
 
-        # Base64 prevents the copied text from injecting another control sequence.
-        sequence = b"\x1b]52;c;" + base64.b64encode(raw_command) + b"\x07"
-        # Stop-hook stdout is reserved for JSON, so the sequence must bypass it.
-        with (
-            suppress(OSError),
-            Path("/dev/tty").open("wb", buffering=0) as terminal,
-        ):
+    Args:
+        view_command (str): Command to copy.
+
+    Returns:
+        bool: Whether the command was sent to a clipboard provider.
+    """
+    remote_session = "SSH_TTY" in os.environ or "SSH_CONNECTION" in os.environ
+    if not remote_session:
+        with suppress(OSError, pyperclip.PyperclipException):
+            pyperclip.copy(view_command)
+            return True
+
+    raw_command = view_command.encode()
+    # The expected command is short; the limit avoids flooding the terminal.
+    if len(raw_command) > 1_000:
+        return False
+
+    # Base64 prevents the copied text from injecting another control sequence;
+    # tmux relays OSC 52 from its pane when set-clipboard is on.
+    sequence = b"\x1b]52;c;" + base64.b64encode(raw_command) + b"\x07"
+    # Stop-hook stdout is reserved for JSON, so the sequence must bypass it.
+    try:
+        with Path("/dev/tty").open("wb", buffering=0) as terminal:
             terminal.write(sequence)
-        return
-
-    with suppress(pyperclip.PyperclipException):
-        pyperclip.copy(view_command)
+    except OSError:
+        return False
+    return True
 
 
 def start_turn() -> None:
@@ -115,35 +126,58 @@ def stop_turn() -> None:
     if diff.returncode not in (0, 1):
         raise RuntimeError(diff.stderr.strip() or "Codex turn diff failed")
 
-    terminal_diff_path = session_dir / "last-turn.ansi"
-    terminal_diff_path.write_text(
-        render_terminal_diff(diff.stdout),
-        encoding="utf-8",
-    )
-    view_command = shlex.join(["less", "-R", str(terminal_diff_path)])
-    copy_view_command(view_command)
-
     if diff.stdout == "":
         print(
             json.dumps(
                 {
                     "continue": True,
-                    "systemMessage": (
-                        "Codex turn diff: no file changes.\n"
-                        f"Terminal diff: {terminal_diff_path}"
-                    ),
+                    "systemMessage": "Codex turn diff: no file changes.",
                 },
             ),
         )
         return
 
-    stat = run_git(["diff", "--stat", baseline_tree, current_tree], root)
-    print(f"Terminal diff: {terminal_diff_path}", file=sys.stderr)
-    if stat.stdout.strip():
-        print(stat.stdout, end="", file=sys.stderr)
+    rendered_files = render_terminal_diff_files(diff.stdout)
+    manifest_path = session_dir / "last-turn.json"
+    manifest = []
+    for index, (display_path, rendered, added, removed) in enumerate(
+        rendered_files, start=1
+    ):
+        file_path = session_dir / f"last-turn-{index}.ansi"
+        file_path.write_text(rendered, encoding="utf-8")
+        manifest.append(
+            {
+                "title": display_path or "unknown",
+                "path": str(file_path),
+                "added": added,
+                "removed": removed,
+            }
+        )
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2),
+        encoding="utf-8",
+    )
+    home = Path.home()
+    viewer_path = (
+        Path(__file__).with_name("terminal_diff_viewer.py").resolve().relative_to(home)
+    )
+    manifest_path = manifest_path.resolve().relative_to(home)
+    view_command = (
+        f"python ~/{shlex.quote(str(viewer_path))} "
+        f"--manifest ~/{shlex.quote(str(manifest_path))}"
+    )
+    copied = copy_view_command(view_command)
+
     print(
         json.dumps(
-            {"continue": True, "systemMessage": f"Terminal diff: {terminal_diff_path}"}
+            {
+                "continue": True,
+                "systemMessage": (
+                    "Codex turn diff: viewer command sent to clipboard."
+                    if copied
+                    else "Codex turn diff: could not send viewer command to clipboard."
+                ),
+            }
         )
     )
 
