@@ -86,7 +86,7 @@ setopt correct_all
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
-HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill|less|cat|git branch -d)(| *)"
+HISTORY_IGNORE="(cd|pushd|popd|mkdir|pwd|exit|clear|man|history|kill|less|cat|git branch -d|git branch -m|python ~/configs/common/codex/hooks/terminal_diff_viewer.py)(| *)"
 # Avoid duplicate entries in history
 setopt hist_ignore_all_dups
 setopt hist_ignore_dups
