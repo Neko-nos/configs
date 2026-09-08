@@ -1,5 +1,7 @@
 import os
+import shutil
 import subprocess
+from contextlib import suppress
 from pathlib import Path
 
 
@@ -41,6 +43,29 @@ def git_cache_dir(root: Path) -> Path:
     """
     git_path = run_git(["rev-parse", "--git-path", "codex-turn-diff"], root)
     return root / Path(git_path.stdout.strip())
+
+
+def prune_diff_sessions(
+    cache_dir: Path, current_session_id: str, cutoff: float
+) -> None:
+    """Remove saved sessions whose most recent update predates the cutoff.
+
+    Args:
+        cache_dir (Path): Directory containing saved diff sessions.
+        current_session_id (str): Session to preserve even when resuming old work.
+        cutoff (float): Oldest retained modification time as a Unix timestamp.
+    """
+    for session in cache_dir.iterdir():
+        if session.name == current_session_id:
+            continue
+
+        # Another session's hook may finish pruning the same files first.
+        with suppress(FileNotFoundError):
+            # Edits within a turn do not update the parent session directory's mtime.
+            if session.stat().st_mtime < cutoff and all(
+                path.lstat().st_mtime < cutoff for path in session.rglob("*")
+            ):
+                shutil.rmtree(session)
 
 
 def git_worktree_root(cwd: Path) -> Path | None:
