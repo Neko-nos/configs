@@ -332,7 +332,25 @@ uv sync
 uv run prek install
 ```
 
-Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.\
+Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.
+
+The pre-commit hook uses [pii-server](https://github.com/Neko-nos/pii-server) to check added staged lines for PII and credentials.\
+Install it with the backend for your system:
+
+```console
+# macOS (Apple silicon)
+uv tool install 'pii-server[mlx] @ git+https://github.com/Neko-nos/pii-server@main'
+
+# Ubuntu / WSL
+uv tool install 'pii-server[vllm] @ git+https://github.com/Neko-nos/pii-server@main'
+```
+
+Start the detector before committing:
+
+```console
+pii_server init
+```
+
 The actionlint hook also requires the `actionlint` command. Install it with `<Mac/Ubuntu/WSL>/install/actionlint.sh` if it is missing.\
 The `pre-push` hook benchmarks Zsh startup time with [hyperfine](https://github.com/sharkdp/hyperfine) before pushing.\
 GitHub Actions also benchmarks Zsh startup time on pull requests by comparing the base and head revisions on the same runner, and it publishes benchmark history for pushes to `main`.
