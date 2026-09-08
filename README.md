@@ -67,9 +67,9 @@ For more details, please refer to the files in `common/zsh`.
 #### Coding Agents
 
 - **Codex and Claude Code setup**\
-  Installs the CLI tools and links the shared agent settings into each tool's configuration directory with symbolic links.
-  Codex Git index rules are kept in a separate tracked file and copied into
-  `$CODEX_HOME/rules` because Codex does not discover symlinked rule files.
+  Installs the CLI tools and shared settings for how the agents work.
+  See [common/codex/README.md](./common/codex/README.md) for setup, configuration,
+  the terminal turn-diff viewer, and container/VM usage.
 
 #### Python Environment Management
 
