@@ -4,7 +4,9 @@ import json
 import os
 import shlex
 import sys
+import time
 from contextlib import suppress
+from datetime import timedelta
 from pathlib import Path
 
 import pyperclip
@@ -12,6 +14,7 @@ import pyperclip
 from git_snapshot import (
     git_cache_dir,
     git_worktree_root,
+    prune_diff_sessions,
     run_git,
     worktree_tree,
 )
@@ -75,8 +78,12 @@ def copy_view_command(view_command: str) -> bool:
     return True
 
 
-def start_turn() -> None:
-    """Capture a baseline working-tree snapshot for the current turn."""
+def start_turn(retention_days: int) -> None:
+    """Capture the turn baseline and prune inactive sessions' saved diffs.
+
+    Args:
+        retention_days (int): Number of inactive days to retain saved sessions.
+    """
     # ref: https://developers.openai.com/codex/hooks#common-input-fields
     payload = json.loads(sys.stdin.read())
     if not is_cli_session(payload["transcript_path"]):
@@ -86,13 +93,19 @@ def start_turn() -> None:
     if root is None:
         return
 
-    session_dir = git_cache_dir(root) / payload["session_id"] / payload["turn_id"]
+    cache_dir = git_cache_dir(root)
+    session_dir = cache_dir / payload["session_id"] / payload["turn_id"]
     session_dir.mkdir(parents=True, exist_ok=True)
 
     tree = worktree_tree(root, session_dir / "baseline.index")
     (session_dir / "state.json").write_text(
         json.dumps({"baseline_tree": tree}, indent=2, sort_keys=True),
         encoding="utf-8",
+    )
+    prune_diff_sessions(
+        cache_dir,
+        payload["session_id"],
+        time.time() - timedelta(days=retention_days).total_seconds(),
     )
 
 
@@ -191,10 +204,16 @@ def main() -> int:
     """
     parser = argparse.ArgumentParser(description="Capture Codex turn diffs.")
     parser.add_argument("command", choices=("start", "stop"))
+    parser.add_argument(
+        "--retention-days",
+        type=int,
+        default=30,
+        help="prune other sessions after this many inactive days at turn start (default: 30)",
+    )
     args = parser.parse_args()
 
     if args.command == "start":
-        start_turn()
+        start_turn(args.retention_days)
     else:
         stop_turn()
     return 0

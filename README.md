@@ -67,9 +67,9 @@ For more details, please refer to the files in `common/zsh`.
 #### Coding Agents
 
 - **Codex and Claude Code setup**\
-  Installs the CLI tools and links the shared agent settings into each tool's configuration directory with symbolic links.
-  Codex Git index rules are kept in a separate tracked file and copied into
-  `$CODEX_HOME/rules` because Codex does not discover symlinked rule files.
+  Installs the CLI tools and shared settings for how the agents work.
+  See [common/codex/README.md](./common/codex/README.md) for setup, configuration,
+  the terminal turn-diff viewer, and container/VM usage.
 
 #### Python Environment Management
 
@@ -332,7 +332,25 @@ uv sync
 uv run prek install
 ```
 
-Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.\
+Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.
+
+The pre-commit hook uses [pii-server](https://github.com/Neko-nos/pii-server) to check added staged lines for PII and credentials.\
+Install it with the backend for your system:
+
+```console
+# macOS (Apple silicon)
+uv tool install 'pii-server[mlx] @ git+https://github.com/Neko-nos/pii-server@main'
+
+# Ubuntu / WSL
+uv tool install 'pii-server[vllm] @ git+https://github.com/Neko-nos/pii-server@main'
+```
+
+Start the detector before committing:
+
+```console
+pii_server init
+```
+
 The actionlint hook also requires the `actionlint` command. Install it with `<Mac/Ubuntu/WSL>/install/actionlint.sh` if it is missing.\
 The `pre-push` hook benchmarks Zsh startup time with [hyperfine](https://github.com/sharkdp/hyperfine) before pushing.\
 GitHub Actions also benchmarks Zsh startup time on pull requests by comparing the base and head revisions on the same runner, and it publishes benchmark history for pushes to `main`.

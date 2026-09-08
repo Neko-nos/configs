@@ -40,6 +40,14 @@ repos:
 
 - repo: local
   hooks:
+    - id: pii-server
+      name: Detect PII and credentials in staged files
+      entry: pii_server detect
+      language: system
+      types: [text]
+      require_serial: true
+      stages: [pre-commit]
+
     - id: format-packer
       name: Format Packer HCL files
       entry: packer fmt
