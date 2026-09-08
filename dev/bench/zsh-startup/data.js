@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788601647358,
+  "lastUpdate": 1788874762984,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2195,6 +2195,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 52.015403,
             "range": "± 0.357348",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7f78f03827349f316901aec7cb45ef42f6f68ece",
+          "message": "Merge pull request #106 from Neko-nos/feat/git_codex_hooks\n\nFeat/git codex hooks",
+          "timestamp": "2026-09-08T22:38:37+09:00",
+          "tree_id": "f625780bf831bb45079828ce59311958c70c74d8",
+          "url": "https://github.com/Neko-nos/configs/commit/7f78f03827349f316901aec7cb45ef42f6f68ece"
+        },
+        "date": 1788874762272,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 163.177312,
+            "range": "± 336.395533",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 87.620417,
+            "range": "± 0.190074",
             "unit": "ms"
           }
         ]
