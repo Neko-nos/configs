@@ -80,6 +80,31 @@ exclude = [
 [notice]
 hide_rate_limit_model_nudge = true
 
+[tui]
+# ref: https://learn.chatgpt.com/docs/config-schema.json#/definitions/Tui/properties/whimsy
+whimsy = false
+
+[desktop]
+appearanceTheme = "dark"
+preventSleepWhileRunning = true
+keepRemoteControlAwakeWhilePluggedIn = true
+followUpQueueMode = "queue"
+dock-icon-preference = "codex-system"
+conversationDetailMode = "STEPS_PROSE"
+
+[desktop.appearanceDarkChromeTheme]
+# Use VS Code Dark Modern's blue accent instead of inheriting the account accent for text selections.
+accent = "#0078d4"
+accentSource = "custom"
+# Keep these defaults: ChatGPT rejects themes missing required fields.
+# ref: /Applications/ChatGPT.app/Contents/Resources/app.asar/.vite/build/src-J2PvP4xj.js:119 ($S: required fields; inside ASAR archive).
+# ref: /Applications/ChatGPT.app/Contents/Resources/app.asar/.vite/build/window-all-closed-BKkx4ypf.js:7 (nE: invalid-setting rejection; inside ASAR archive).
+contrast = 60
+ink = "#ffffff"
+opaqueWindows = false
+surface = "#181818"
+fonts = {}
+semanticColors = { diffAdded = "#40c977", diffRemoved = "#fa423e", skill = "#ad7bf9" }
 # codex mcp add kaggle --url https://www.kaggle.com/mcp --bearer-token-env-var KAGGLE_API_TOKEN
 [mcp_servers.kaggle]
 url = "https://www.kaggle.com/mcp"
