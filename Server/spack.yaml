@@ -4,6 +4,7 @@ spack:
   specs:
   - bubblewrap
   - colordiff
+  - ffmpeg
   - fzf
   - hyperfine
   - jq
@@ -12,7 +13,8 @@ spack:
   - ruby
   - 'screen@5:'
   - shellcheck
-  - tmux
+  # The shared configuration uses get-clipboard, introduced in tmux 3.7.
+  - 'tmux@3.7:'
   - tree
   view:
     default:
