@@ -43,6 +43,11 @@ function __load_spack() {
     local architecture
     architecture="$(<"${architecture_cache}")"
     local environment_dir="${spack_root}/var/spack/environments/${architecture}/server"
+    if [[ $- == *i* ]]; then
+        if ! bash "${script_dir}/../update_spack.sh" "${architecture}"; then
+            __warn "Spack environment update failed; the next shell startup will retry."
+        fi
+    fi
     local activation_cache="${cache_dir}/server-${HOSTNAME}.bash"
     __update_cache "spack" "${activation_cache}" \
         "${environment_dir}/spack.yaml" \

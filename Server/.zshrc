@@ -52,6 +52,10 @@ function __load_spack() {
 
     local architecture="$(<"${architecture_cache}")"
     local environment_dir="${spack_root}/var/spack/environments/${architecture}/server"
+    local server_dir="${${(%):-%x}:A:h}"
+    if ! bash "${server_dir}/update_spack.sh" "${architecture}"; then
+        __warn "Spack environment update failed; the next shell startup will retry."
+    fi
     typeset -ga SAFE_ALIAS_INSTALL_CMD SAFE_ALIAS_UPDATE_CMD
     SAFE_ALIAS_INSTALL_CMD=(spack --env-dir "${environment_dir}" install --add)
     SAFE_ALIAS_UPDATE_CMD=()

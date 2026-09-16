@@ -18,21 +18,20 @@ Codex CLI:
 bash Server/install/install.sh
 ```
 
+### Spack
+
 The installer clones the latest Spack release when needed, detects compatible
 host packages and compilers, then installs the targets declared in
-[spack.yaml](./spack.yaml). The environment view exposes only the requested
-commands through the Server shell profiles; build and runtime dependencies
-remain isolated. A system C/C++ compiler and Spack's other
+[spack.yaml](./spack.yaml). A system C/C++ compiler and Spack's other
 [prerequisites](https://spack.readthedocs.io/en/latest/installing_prerequisites.html)
 must already be available because this setup does not have administrator access.
 
-The installer creates the current architecture's environment from the manifest,
-then lets Spack concretize and install it for that host. Run the Spack installer
-again after editing [spack.yaml](./spack.yaml); it refreshes the environment's
-manifest before applying the changes.
+When spack files are newer than the last successful update, shell startup updates
+the environment before activating it.
+To check and apply changes immediately, run:
 
 ```bash
-bash Server/install/spack.sh
+bash Server/update_spack.sh
 ```
 
 ## Bash Features

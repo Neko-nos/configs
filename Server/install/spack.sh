@@ -60,7 +60,9 @@ function main() {
     )
     "${spack_root}/bin/spack" -D "${environment_dir}" external find \
         "${external_find_args[@]}"
-    "${spack_root}/bin/spack" -D "${environment_dir}" install
+    # Root recipes may change without a version bump; reconsider them while
+    # retaining reusable dependencies.
+    "${spack_root}/bin/spack" -D "${environment_dir}" install --force --fresh-roots
 
     printf "Finished Spack package installation for %s!\n" "${architecture}"
 }
