@@ -5,7 +5,6 @@
 --
 globals = {
     "rawrequire",
-    "terminalOptionDrag",
 }
 
 --
