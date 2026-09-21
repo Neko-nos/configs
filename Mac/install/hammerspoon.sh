@@ -19,11 +19,13 @@ else
 fi
 
 mkdir -p "${hammerspoon_config_dir}"
-__install_repo_path \
-    "${repo_hammerspoon_dir}/init.lua" \
-    "${hammerspoon_config_dir}/init.lua" \
-    'Hammerspoon init.lua' \
-    link
+for config_file in "${repo_hammerspoon_dir}"/*.lua; do
+    __install_repo_path \
+        "${config_file}" \
+        "${hammerspoon_config_dir}/${config_file:t}" \
+        "Hammerspoon ${config_file:t}" \
+        link
+done
 
 # init.lua calls hs.autoLaunch(true), so Hammerspoon registers itself after this first launch.
 __open_application_for_setup Hammerspoon '/Applications/Hammerspoon.app'

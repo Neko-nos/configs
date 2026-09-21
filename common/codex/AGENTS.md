@@ -7,6 +7,10 @@
 - Do not stick to your one-sided belief and prejudice.
 - Do not act on your own assumptions; investigate the actual behavior and knowledge.
 
+### Conversation
+
+- Include line numbers when citing code, and use `#L<int>` in GitHub links.
+
 ### Documents
 
 - Answer my questions in the chat space, not in documents of code comments.
@@ -16,6 +20,7 @@
 
 - Do not unnecessarily modify existing comments unless they are within the specified scope.
 - Do not include tests or redundant code solely to clarify intent explicitly.
+- Avoid explicitly passing default values to function arguments.
 - Keep the implementation as simple as possible within the specified scope, avoiding over-engineering.
 - Avoid global variables, except for compiled regex patterns.
   - Regarding magic numbers, do not replace them with variables or global constants. Write a comment to tell readers the intent, not a variable name.
@@ -46,12 +51,34 @@
 
 ## Python-specific Instructions
 
-### Environment
+### uv
+
+#### Basic Usage
 
 - Run `uv sync` and `uv add` outside the sandbox because they may need to update the uv cache and project environment across filesystems.
+- Use `uv run <hoge.py>` instead of `python <hoge.py>` or `uv run python <hoge.py>`.
+  - Avoid using -m or __main__.py unless instructed otherwise.
+
+#### pyproject.toml
+
+- Use the latest versions of external libraries unless there are constraints, and specify this in pyproject.toml. Additionally, do not explicitly list transitive dependencies just for the sake of visibility, unless you intend to override their versions.
+- Use the following configuration instead of other build backends:
+
+    ```toml
+    [build-system]
+    build-backend = "hatchling.build"
+    requires = ["hatchling"]
+
+    [tool.hatch.build]
+    include = ["<src_dir>/*"]
+    ```
+
+- Do not use `[tool.uv.sources]` just for avoiding a first-use downloading
 
 ### Coding style
 
+- Python scripts must not start with a shebang.
+- For arguments, use both short and long options, such as -f/--foo.
 - Keep `try`/`except` blocks to the minimum necessary
 - Do not use unncessary `get*` (do not use it when you know the return value/type)
 - Do not write guards for args or file contents.
@@ -102,6 +129,13 @@ Use `jaxtyping` for array/tensor type annotations. See <https://docs.kidger.site
     ) -> Float[np.ndarray, "*batch num_classes-1"]:        # symbolic expression in the return shape
         ...
     ```
+
+### Linting and tests
+
+- After writing code, run Ruff linting, import sorting, and formatting.
+  - Run `ruff check <hoge.py> --fix && ruff check <hoge.py> --fix --select I && ruff format <hoge.py>`.
+  - Use linters and formatters for other languages as well.
+- Use `pytest` instead of `unittest`.
 
 ## Shell Script Instructions
 
@@ -175,3 +209,4 @@ Use `jaxtyping` for array/tensor type annotations. See <https://docs.kidger.site
 - use GPUs when they are available. you can use them outside of a sandbox, so do not use cpus to train/evaluate models.
 - Never enable memory optimizations that may change quality or numerical behavior without explicit permission; exact quality-neutral optimizations such as FlashAttention are allowed.
 - do not touch other users' jobs
+- use only official checkpoints.
