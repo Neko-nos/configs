@@ -27,11 +27,20 @@ The shared `settings.json` for VSCode.
 
 ## keybindings.json
 
-The `keybindings.json` for VSCode. In the integrated terminal, Shift+Enter
-sends a bracketed-paste newline (`\u001b[200~\n\u001b[201~`). This lets Codex CLI
-insert a newline without submitting the prompt through local or Remote SSH tmux sessions.
-Cmd+C copies a tmux mouse selection without making mouse release copy it automatically.
-Cmd+V uses the local Smart Terminal Paste extension to paste text normally or send
-Ctrl+V when the macOS clipboard contains an image, allowing Codex CLI to attach it.
-In a Remote SSH workspace, the extension instead writes the clipboard image to the
-remote `/tmp` directory and pastes its server-side path into Codex.
+| Area | Function |
+| --- | --- |
+| Editor | Emacs-style navigation and editing. |
+| Integrated terminal | Multiline Codex prompts, selection copying, and tmux shortcuts. |
+| Markdown preview | Refresh the preview. |
+
+## Local extensions
+
+- **Browser Click Routing:** Cmd+click opens web links in VSCode's integrated browser; Ctrl+click opens your default external browser.
+- **Smart Terminal Paste:** Cmd+V pastes text or attaches clipboard images to Codex CLI in the integrated terminal. Remote SSH is supported.
+
+Install from the repository root:
+
+```console
+zsh Mac/install/vscode.sh
+zsh Mac/install/hammerspoon.sh
+```
