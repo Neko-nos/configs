@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1789538096213,
+  "lastUpdate": 1789978664136,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2303,6 +2303,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 88.176872,
             "range": "± 0.318854",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "662e7b71b6211539d4988f645db52b3b5f3399d5",
+          "message": "Merge pull request #109 from Neko-nos/feat/vscode-browser-click-routing\n\nFeat/vscode browser click routing",
+          "timestamp": "2026-09-21T17:17:01+09:00",
+          "tree_id": "bbd7aac08efd3fbef990b770369a225eb6945fb1",
+          "url": "https://github.com/Neko-nos/configs/commit/662e7b71b6211539d4988f645db52b3b5f3399d5"
+        },
+        "date": 1789978663426,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 146.258902,
+            "range": "± 311.311757",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 76.49211,
+            "range": "± 0.37107",
             "unit": "ms"
           }
         ]
