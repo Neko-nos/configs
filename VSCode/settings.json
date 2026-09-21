@@ -159,6 +159,12 @@
     "workbench.editorAssociations": {
         "*.md": "vscode.markdown.preview.editor"
     },
+    // The local opener retains Ctrl-click's external-browser choice from Hammerspoon.
+    "workbench.externalUriOpeners": {
+        "*": "browserClickRouting.open"
+    },
+    // Localhost URLs must use the same modifier-aware opener.
+    "workbench.browser.openLocalhostLinks": false,
 
     // ---------- Editor ----------
     "editor.minimap.enabled": false,

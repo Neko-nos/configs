@@ -1,0 +1,26 @@
+{
+    "name": "browser-click-routing",
+    "displayName": "Browser Click Routing",
+    "description": "Opens Cmd-clicked URLs inside VS Code and Ctrl-clicked URLs externally.",
+    "version": "0.1.0",
+    "publisher": "neko-nos-local",
+    "engines": {
+        "vscode": "^1.131.0"
+    },
+    "extensionKind": [
+        "ui"
+    ],
+    "activationEvents": [
+        "onOpenExternalUri:http",
+        "onOpenExternalUri:https"
+    ],
+    "enabledApiProposals": [
+        "externalUriOpener"
+    ],
+    "main": "./extension.js",
+    "capabilities": {
+        "untrustedWorkspaces": {
+            "supported": true
+        }
+    }
+}
