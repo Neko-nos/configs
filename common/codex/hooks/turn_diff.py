@@ -3,6 +3,7 @@ import base64
 import json
 import os
 import shlex
+import subprocess
 import sys
 import time
 from contextlib import suppress
@@ -10,7 +11,6 @@ from datetime import timedelta
 from pathlib import Path
 
 import pyperclip
-
 from git_snapshot import (
     git_cache_dir,
     git_worktree_root,
@@ -66,14 +66,32 @@ def copy_view_command(view_command: str) -> bool:
     if len(raw_command) > 1_000:
         return False
 
-    # Base64 prevents the copied text from injecting another control sequence;
-    # tmux relays OSC 52 from its pane when set-clipboard is on.
-    sequence = b"\x1b]52;c;" + base64.b64encode(raw_command) + b"\x07"
-    # Stop-hook stdout is reserved for JSON, so the sequence must bypass it.
     try:
-        with Path("/dev/tty").open("wb", buffering=0) as terminal:
-            terminal.write(sequence)
-    except OSError:
+        if "TMUX_PANE" in os.environ:
+            # Pane output can lose clipboard sequences during a tmux redraw.
+            client = subprocess.check_output(
+                [
+                    "tmux",
+                    "display-message",
+                    "-p",
+                    "-t",
+                    os.environ["TMUX_PANE"],
+                    "#{client_name}",
+                ],
+                text=True,
+            ).strip()
+            subprocess.run(
+                ["tmux", "set-buffer", "-w", "-t", client, "--", view_command],
+                check=True,
+            )
+        else:
+            # Base64 prevents the copied text from injecting another control sequence.
+            sequence = b"\x1b]52;c;" + base64.b64encode(raw_command) + b"\x07"
+            # Hooks have no controlling terminal, and stdout is reserved for JSON.
+            terminal_path = os.environ.get("SSH_TTY", "/dev/tty")
+            with Path(terminal_path).open("wb", buffering=0) as terminal:
+                terminal.write(sequence)
+    except (OSError, subprocess.CalledProcessError):
         return False
     return True
 

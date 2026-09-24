@@ -34,6 +34,17 @@ To check and apply changes immediately, run:
 bash Server/update_spack.sh
 ```
 
+## Shared Codex sessions
+
+On servers sharing your home directory, `codex resume` and `codex fork` refresh
+the session list from the shared session files before opening the usual picker.
+This includes sessions created or continued on another server. SQLite databases
+stay on each server's local disk.
+
+Start a new shell after updating this setup. To load the change in an existing
+shell, run `source ~/configs/Server/extra_functions.sh`.
+The in-session `/resume` command does not run this refresh.
+
 ## Bash Features
 
 [.bashrc](./bash/.bashrc) configures the interactive shell.

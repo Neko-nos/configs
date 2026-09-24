@@ -140,6 +140,8 @@ unset -v git_completion_path
 source "${script_dir}/aliases.sh"
 # shellcheck source=/dev/null
 source "${script_dir}/functions.sh"
+# shellcheck source=Server/extra_functions.sh
+source "${script_dir}/../extra_functions.sh"
 # shellcheck source=/dev/null
 source "${script_dir}/prompt.sh"
 unset -v script_dir
