@@ -115,8 +115,13 @@ def start_turn(retention_days: int) -> None:
     session_dir = cache_dir / payload["session_id"] / payload["turn_id"]
     session_dir.mkdir(parents=True, exist_ok=True)
 
+    state_path = session_dir / "state.json"
+    # Mid-turn replies can trigger UserPromptSubmit again with the same turn ID.
+    if state_path.exists():
+        return
+
     tree = worktree_tree(root, session_dir / "baseline.index")
-    (session_dir / "state.json").write_text(
+    state_path.write_text(
         json.dumps({"baseline_tree": tree}, indent=2, sort_keys=True),
         encoding="utf-8",
     )
