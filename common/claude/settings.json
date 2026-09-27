@@ -73,6 +73,11 @@
     }
   },
   "effortLevel": "xhigh",
+  "autoMemoryEnabled": false,
   "skipAutoPermissionPrompt": true,
-  "autoMemoryEnabled": false
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
+    }
+  }
 }
