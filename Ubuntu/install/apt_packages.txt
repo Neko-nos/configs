@@ -6,5 +6,6 @@ icdiff
 screen
 tmux
 shellcheck
+golang-go
 hyperfine
 jq

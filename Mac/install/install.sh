@@ -177,5 +177,9 @@ else
     echo
 fi
 
+if __confirm 'Do you also want to install common command-line tools? [y/N]: '; then
+    bash "${common_install_dir}/commands.sh"
+fi
+
 echo 'All installation scripts have been executed successfully.'
 echo 'For additional installation instructions, please refer to the configs/README.md file.'
