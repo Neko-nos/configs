@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790787773273,
+  "lastUpdate": 1790844027685,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2411,6 +2411,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 82.242281,
             "range": "± 2.971821",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2ca8e87095195a513909023d8833fff68b7ad9eb",
+          "message": "Merge pull request #112 from Neko-nos/feat/shfmt-integration\n\nFeat/shfmt integration",
+          "timestamp": "2026-10-01T17:39:43+09:00",
+          "tree_id": "9d8adb769f5cc9dcb36fd11a08cf7699853acb3b",
+          "url": "https://github.com/Neko-nos/configs/commit/2ca8e87095195a513909023d8833fff68b7ad9eb"
+        },
+        "date": 1790844027259,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 146.503083,
+            "range": "± 313.874617",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 77.733813,
+            "range": "± 4.372479",
             "unit": "ms"
           }
         ]
