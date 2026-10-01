@@ -62,6 +62,10 @@ uv tool install gdown
 uv tool install hf
 uv tool install icdiff
 uv tool install ruff
+
+# Common
+bash "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/../../common/install/commands.sh"
+
 if [[ "${1:-bash}" == "bash" ]]; then
     install_gitstatus
 elif [[ "${1:-bash}" != "zsh" ]]; then
