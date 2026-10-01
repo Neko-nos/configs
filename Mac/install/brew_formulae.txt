@@ -9,6 +9,7 @@ icdiff
 screen
 tmux
 shellcheck
+go
 hyperfine
 jq
 nano

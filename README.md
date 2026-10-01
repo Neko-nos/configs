@@ -303,6 +303,14 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     source actionlint.sh
     ```
 
+18. commands.sh\
+    Install commands with other package manager, like go and uv.
+
+    ```console
+    cd common/install
+    bash commands.sh
+    ```
+
 ### Zsh prompt
 
 #### Prompt with Icons

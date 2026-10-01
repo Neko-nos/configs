@@ -49,6 +49,10 @@
 
 - Do not open Pull Requests or commit yourself; I will review your code and open PRs or commit.
 
+### Security
+
+- Do not use unofficial repos, models, and so on.
+
 ## Python-specific Instructions
 
 ### uv

@@ -62,6 +62,15 @@ repos:
       language: system
       files: (^Server/.*\.sh$|(^|/)([^/]+\.bash|\.bashrc|\.bash_profile)$)
 
+    - id: shfmt
+      name: Format Zsh scripts
+      entry: shfmt
+      language: system
+      args: [-w, -ln=zsh, -i, '4']
+      files: (^|/)([^/]+\.zsh|\.zshrc)$
+      # Powerlevel10k generates these files; preserve its formatting.
+      exclude: (^|/)\.p10k\.zsh$
+
     - id: format-rust
       name: Format Rust code
       entry: cargo fmt --manifest-path common/codex/hooks/syntect_highlight/Cargo.toml --all
