@@ -1,6 +1,7 @@
+import json
+import os
 import re
 import subprocess
-from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 ANSI_SGR_RE = re.compile(r"\x1b\[([0-9;]*)m")
@@ -72,83 +73,91 @@ def path_extension(path: str | None) -> str | None:
     return suffix.removeprefix(".")
 
 
-def syntect_highlight_content_lines(
-    extension: str, lines: list[str]
-) -> list[str] | None:
+def highlighted_diff_sections(sections: list[list[str]]) -> list[list[str | None]]:
     """
-    Syntax-highlight content lines through a syntect-based highlighter.
+    Highlight every diff hunk in one invocation of the installed helper.
 
     Args:
-        extension (str): File extension used for syntax detection.
-        lines (list[str]): Code lines.
+        sections (list[list[str]]): Per-file unified diff sections.
 
     Returns:
-        list[str] | None: ANSI-highlighted lines, or None for unsupported extensions.
+        list[list[str | None]]: Per-file highlighted content lines, using None
+            when syntax highlighting is unavailable.
     """
-    result = subprocess.run(
-        [
-            "cargo",
-            "run",
-            "--quiet",
-            "--manifest-path",
-            str(Path(__file__).parent / "syntect_highlight/Cargo.toml"),
-            "--",
-            extension,
-        ],
-        input="\n".join(lines) + "\n",
-        text=True,
-        capture_output=True,
-        check=False,
-    )
-    if result.returncode != 0:
-        return None
-    highlighted = [
-        keep_row_background(line) for line in result.stdout.split("\n")[: len(lines)]
+    section_hunks = [diff_section_hunks(section) for section in sections]
+    requests = [
+        (
+            path_extension(section_path(section)),
+            ["\n".join(lines) + "\n" for lines in hunks],
+        )
+        for section, hunks in zip(sections, section_hunks, strict=True)
     ]
-    if len(highlighted) != len(lines):
-        raise RuntimeError("syntect highlighter returned an unexpected line count")
-    return highlighted
+    runtime_dir = (
+        Path(
+            os.environ.get("CODEX_SQLITE_HOME")
+            or os.environ.get("CODEX_HOME", Path.home() / ".codex")
+        )
+        / "turn-diff"
+    )
+    try:
+        result = subprocess.run(
+            [str(runtime_dir / "bin/codex-syntect-highlight")],
+            input=json.dumps(requests),
+            text=True,
+            capture_output=True,
+            check=True,
+            # Leave time to save the review within the hook's 30-second limit.
+            timeout=5,
+        )
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired):
+        highlighted_sections = [[None] * len(hunks) for hunks in section_hunks]
+    else:
+        highlighted_sections = json.loads(result.stdout)
+
+    highlighted_files = []
+    for hunks, highlighted_hunks in zip(
+        section_hunks, highlighted_sections, strict=True
+    ):
+        highlighted_lines = []
+        for lines, highlighted in zip(hunks, highlighted_hunks, strict=True):
+            if highlighted is None:
+                highlighted_lines.extend([None] * len(lines))
+                continue
+            rendered = [
+                keep_row_background(line)
+                for line in highlighted.split("\n")[: len(lines)]
+            ]
+            if len(rendered) != len(lines):
+                raise RuntimeError(
+                    "syntect highlighter returned an unexpected line count"
+                )
+            highlighted_lines.extend(rendered)
+        highlighted_files.append(highlighted_lines)
+    return highlighted_files
 
 
-def highlighted_diff_section_lines(
-    path: str | None,
-    section: list[str],
-) -> list[str | None]:
+def diff_section_hunks(section: list[str]) -> list[list[str]]:
     """
-    Syntax-highlight diff content lines by hunk.
+    Group diff content by hunk so each hunk starts with fresh syntax state.
 
     Args:
-        path (str | None): Repository-relative path used for syntax detection.
         section (list[str]): Per-file unified diff lines.
 
     Returns:
-        list[str | None]: Highlighted content lines, aligned to diff content lines.
+        list[list[str]]: Content lines grouped by hunk.
     """
-    highlighted_lines: list[str | None] = []
+    hunks = []
     hunk_lines: list[str] = []
-    extension = path_extension(path)
-
-    def flush_hunk() -> None:
-        if not hunk_lines:
-            return
-        if extension is None:
-            highlighted_lines.extend([None] * len(hunk_lines))
-        else:
-            highlighted_hunk = syntect_highlight_content_lines(extension, hunk_lines)
-            if highlighted_hunk is None:
-                highlighted_lines.extend([None] * len(hunk_lines))
-            else:
-                highlighted_lines.extend(highlighted_hunk)
-        hunk_lines.clear()
-
     for line in section:
         if line.startswith("@@"):
-            flush_hunk()
+            if hunk_lines:
+                hunks.append(hunk_lines)
+                hunk_lines = []
         elif (content := diff_content_text(line)) is not None:
             hunk_lines.append(content)
-    flush_hunk()
-
-    return highlighted_lines
+    if hunk_lines:
+        hunks.append(hunk_lines)
+    return hunks
 
 
 def keep_row_background(text: str) -> str:
@@ -312,12 +321,15 @@ def render_terminal_diff_row(
     return f"{gutter}{sign_span}{content_style}{highlighted}{clear_to_end}{reset}"
 
 
-def render_terminal_diff_section(section: list[str]) -> list[str]:
+def render_terminal_diff_section(
+    section: list[str], highlighted_lines: list[str | None]
+) -> list[str]:
     """
     Render one file section of a unified diff as Codex-like ANSI rows.
 
     Args:
         section (list[str]): Per-file unified diff lines.
+        highlighted_lines (list[str | None]): Syntax colors for the content lines.
 
     Returns:
         list[str]: ANSI-rendered lines.
@@ -343,7 +355,6 @@ def render_terminal_diff_section(section: list[str]) -> list[str]:
     old_number: int | None = None
     new_number: int | None = None
     line_number_width = 1
-    highlighted_lines = highlighted_diff_section_lines(path, section)
     highlighted_index = 0
 
     for line in section:
@@ -427,14 +438,12 @@ def render_terminal_diff_files(
         diffs, and added and removed line counts.
     """
     sections = split_diff_sections(diff_text)
-    # Syntax setup dominates large diffs, while a small pool avoids excessive processes.
-    with ThreadPoolExecutor(max_workers=4) as executor:
-        rendered_sections = executor.map(render_terminal_diff_section, sections)
-        return [
-            (
-                section_path(section),
-                "\n".join(rendered) + "\n",
-                *section_line_counts(section),
-            )
-            for section, rendered in zip(sections, rendered_sections, strict=True)
-        ]
+    highlighted_sections = highlighted_diff_sections(sections)
+    return [
+        (
+            section_path(section),
+            "\n".join(render_terminal_diff_section(section, highlighted)) + "\n",
+            *section_line_counts(section),
+        )
+        for section, highlighted in zip(sections, highlighted_sections, strict=True)
+    ]
