@@ -49,10 +49,6 @@
 
 - Do not open Pull Requests or commit yourself; I will review your code and open PRs or commit.
 
-### Security
-
-- Do not use unofficial repos, models, and so on.
-
 ## Python-specific Instructions
 
 ### uv
@@ -82,7 +78,7 @@
 ### Coding style
 
 - Python scripts must not start with a shebang.
-- For arguments, use both short and long options, such as -f/--foo.
+- For arguments, use both short and long options, such as -f/--foo with a brief description.
 - Keep `try`/`except` blocks to the minimum necessary
 - Do not use unncessary `get*` (do not use it when you know the return value/type)
 - Do not write guards for args or file contents.

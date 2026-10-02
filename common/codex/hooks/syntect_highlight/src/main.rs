@@ -1,25 +1,10 @@
-use std::env;
-use std::io::{self, Read};
-use std::process;
-use std::sync::OnceLock;
+use std::io;
 
 use syntect::easy::HighlightLines;
-use syntect::highlighting::{Color as SyntectColor, FontStyle, Style as SyntectStyle};
+use syntect::highlighting::{Color as SyntectColor, FontStyle, Style as SyntectStyle, Theme};
 use syntect::parsing::SyntaxSet;
 use syntect::util::LinesWithEndings;
 use two_face::theme::EmbeddedThemeName;
-
-static SYNTAX_SET: OnceLock<SyntaxSet> = OnceLock::new();
-
-fn syntax_set() -> &'static SyntaxSet {
-    SYNTAX_SET.get_or_init(two_face::syntax::extra_newlines)
-}
-
-fn syntax_theme() -> syntect::highlighting::Theme {
-    two_face::theme::extra()
-        .get(EmbeddedThemeName::CatppuccinMocha)
-        .clone()
-}
 
 fn convert_syntect_color(color: SyntectColor) -> String {
     format!("38;2;{};{};{}", color.r, color.g, color.b)
@@ -38,14 +23,18 @@ fn convert_style(style: SyntectStyle) -> String {
     format!("\x1b[{}m", parts.join(";"))
 }
 
-fn highlight_code(extension: &str, code: &str) -> Option<String> {
-    let syntax = syntax_set().find_syntax_by_extension(extension)?;
-    let theme = syntax_theme();
-    let mut highlighter = HighlightLines::new(syntax, &theme);
+fn highlight_code(
+    extension: &str,
+    code: &str,
+    syntax_set: &SyntaxSet,
+    theme: &Theme,
+) -> Option<String> {
+    let syntax = syntax_set.find_syntax_by_extension(extension)?;
+    let mut highlighter = HighlightLines::new(syntax, theme);
     let mut output = String::new();
 
     for line in LinesWithEndings::from(code) {
-        let ranges = highlighter.highlight_line(line, syntax_set()).ok()?;
+        let ranges = highlighter.highlight_line(line, syntax_set).ok()?;
         for (style, text) in ranges {
             let text = text.trim_end_matches(['\n', '\r']);
             if text.is_empty() {
@@ -61,21 +50,24 @@ fn highlight_code(extension: &str, code: &str) -> Option<String> {
     Some(output)
 }
 
-fn main() {
-    let mut args = env::args().skip(1);
-    let Some(extension) = args.next() else {
-        eprintln!("usage: codex-syntect-highlight <extension>");
-        process::exit(2);
-    };
-
-    let mut code = String::new();
-    if let Err(error) = io::stdin().read_to_string(&mut code) {
-        eprintln!("failed to read stdin: {error}");
-        process::exit(1);
-    }
-
-    match highlight_code(&extension, &code) {
-        Some(output) => print!("{output}"),
-        None => process::exit(1),
-    }
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let sections: Vec<(Option<String>, Vec<String>)> = serde_json::from_reader(io::stdin().lock())?;
+    let syntax_set = two_face::syntax::extra_newlines();
+    let themes = two_face::theme::extra();
+    let theme = themes.get(EmbeddedThemeName::CatppuccinMocha);
+    let highlighted: Vec<Vec<Option<String>>> = sections
+        .into_iter()
+        .map(|(extension, hunks)| {
+            hunks
+                .into_iter()
+                .map(|code| {
+                    extension
+                        .as_deref()
+                        .and_then(|extension| highlight_code(extension, &code, &syntax_set, theme))
+                })
+                .collect()
+        })
+        .collect();
+    serde_json::to_writer(io::stdout().lock(), &highlighted)?;
+    Ok(())
 }

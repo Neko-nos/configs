@@ -6,6 +6,7 @@ spack:
   - colordiff
   - ffmpeg
   - fzf
+  - go
   - hyperfine
   - jq
   - 'nano@9:'
