@@ -11,6 +11,15 @@ codex_sqlite_home="${CODEX_SQLITE_HOME:-${CODEX_HOME:-$HOME/.codex}}"
 source "${script_dir}/utils.sh"
 source "${script_dir}/rust.sh"
 
+# Build hooks
+# Servers already keep this directory on local disk for SQLite locking.
+cargo build --release --locked \
+    --manifest-path "${common_codexdir}/hooks/syntect_highlight/Cargo.toml" \
+    --target-dir "${codex_sqlite_home}/turn-diff/target"
+mkdir -p "${codex_sqlite_home}/turn-diff/bin"
+install -m 755 "${codex_sqlite_home}/turn-diff/target/release/codex-syntect-highlight" \
+    "${codex_sqlite_home}/turn-diff/bin/codex-syntect-highlight"
+
 mkdir -p "${codex_home}" "${codex_home}/rules" "${codex_sqlite_home}"
 
 __install_repo_path "${common_codexdir}/AGENTS.md" "${codex_home}/AGENTS.md" 'AGENTS.md' link
