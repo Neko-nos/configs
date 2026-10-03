@@ -5,7 +5,7 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # Shared function autoload path
@@ -26,14 +26,14 @@ autoload -Uz __warn __info __update_cache
 # early bootstrap phase and removed after config loading to avoid changing
 # interactive shell behavior outside initialization.
 # ref: https://zenn.dev/fuzmare/articles/zsh-source-zcompile-all
-function __ensure_zcompiled () {
+function __ensure_zcompiled() {
     local compiled="$1.zwc"
     if [[ ! -r "${compiled}" || "$1" -nt "${compiled}" ]]; then
         __info "Compiling ${1}"
         zcompile "${1}"
     fi
 }
-function source () {
+function source() {
     __ensure_zcompiled "$1"
     builtin source "$1"
 }
@@ -140,8 +140,12 @@ setopt extended_history
 setopt hist_fcntl_lock
 
 # Key settings
+if [[ -n "${TTY}" ]]; then
+    # Read the controlling terminal so this also works with redirected stdin.
+    stty susp undef <"${TTY}"
+fi
 # Treat path separators as word boundaries for zle word-editing commands such as Ctrl+w.
-WORDCHARS="${WORDCHARS//\/}"
+WORDCHARS="${WORDCHARS//\//}"
 # Fix Ctrl+Left/Right not working in some terminals
 # ref: https://unix.stackexchange.com/questions/58870/ctrl-left-right-arrow-keys-issue
 bindkey "^[[1;5C" forward-word
@@ -183,7 +187,7 @@ function _uv_run_mod() {
 }
 compdef _uv_run_mod uv
 
-function __load_zsh_files () {
+function __load_zsh_files() {
     emulate -L zsh
     # Use indirect parameter expansion to avoid bad substitution error
     local os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
