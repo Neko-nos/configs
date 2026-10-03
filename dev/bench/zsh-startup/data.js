@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790953706288,
+  "lastUpdate": 1791009562526,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2483,6 +2483,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 77.793691,
             "range": "± 0.604772",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a6171ba0cd62ffa6b0b6310d00ce3ce5f2186461",
+          "message": "Merge pull request #116 from Neko-nos/feat/codex-turn-undo\n\nFeat/codex turn undo",
+          "timestamp": "2026-10-03T15:38:33+09:00",
+          "tree_id": "45c84865d4580164448d167f36ccc775015ad896",
+          "url": "https://github.com/Neko-nos/configs/commit/a6171ba0cd62ffa6b0b6310d00ce3ce5f2186461"
+        },
+        "date": 1791009561886,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 154.60513,
+            "range": "± 325.517459",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 81.456757,
+            "range": "± 2.167073",
             "unit": "ms"
           }
         ]
