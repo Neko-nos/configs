@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1791009562526,
+  "lastUpdate": 1791010314345,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2519,6 +2519,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 81.456757,
             "range": "± 2.167073",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "069770ad93c1804144427267a5e44610eff27b8b",
+          "message": "Merge pull request #114 from Neko-nos/dependabot/github_actions/benchmark-action/github-action-benchmark-1.22.2\n\nchore(deps): bump benchmark-action/github-action-benchmark from 1.22.1 to 1.22.2",
+          "timestamp": "2026-10-03T15:51:06+09:00",
+          "tree_id": "e1d81e1712ad76f5f19f76b452cd0971e6fc7f52",
+          "url": "https://github.com/Neko-nos/configs/commit/069770ad93c1804144427267a5e44610eff27b8b"
+        },
+        "date": 1791010313767,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 132.298824,
+            "range": "± 274.912508",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 70.633095,
+            "range": "± 0.169561",
             "unit": "ms"
           }
         ]
