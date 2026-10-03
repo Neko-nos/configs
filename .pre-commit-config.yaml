@@ -29,14 +29,14 @@ repos:
     - id: luacheck
       language: system
       args: [--config, Mac/hammerspoon/.luacheckrc]
-      files: ^Mac/hammerspoon/init\.lua$
+      files: ^Mac/hammerspoon/.*\.lua$
 
 - repo: https://github.com/JohnnyMorganz/StyLua
   rev: v2.5.2
   hooks:
     - id: stylua-system
       args: [--config-path, Mac/hammerspoon/.stylua.toml]
-      files: ^Mac/hammerspoon/init\.lua$
+      files: ^Mac/hammerspoon/.*\.lua$
 
 - repo: local
   hooks:
