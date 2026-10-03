@@ -7,9 +7,12 @@
     "engines": {
         "vscode": "^1.132.0"
     },
-    "categories": ["Other"],
-    "extensionKind": ["ui"],
-    "activationEvents": ["onCommand:smartTerminalPaste.paste"],
+    "categories": [
+        "Other"
+    ],
+    "extensionKind": [
+        "ui"
+    ],
     "main": "./extension.js",
     "capabilities": {
         "untrustedWorkspaces": {

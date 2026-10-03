@@ -20,36 +20,6 @@
 
     // ---------- LaTeX Workshop ----------
 
-    "latex-workshop.intellisense.package.enabled": true,
-
-    // Files to delete when cleaning generated files.
-    // Adds "*.synctex.gz" to the default values.
-    "latex-workshop.latex.clean.fileTypes": [
-        "*.aux",
-        "*.bbl",
-        "*.blg",
-        "*.idx",
-        "*.ind",
-        "*.lof",
-        "*.lot",
-        "*.out",
-        "*.toc",
-        "*.acn",
-        "*.acr",
-        "*.alg",
-        "*.glg",
-        "*.glo",
-        "*.gls",
-        "*.ist",
-        "*.fls",
-        "*.log",
-        "*.fdb_latexmk",
-        "*.snm",
-        "*.nav",
-        "*.dvi",
-        "*.synctex.gz"
-    ],
-
     "latex-workshop.latex.outDir": "out",
 
     // Build
@@ -86,14 +56,9 @@
 
     // ---------- Python ----------
 
-    // Virtual environment folders.
-    "python.venvFolders": [
-        ".venv"
-    ],
-
     // Do not activate virtual environments immediately after opening a terminal.
     // ref: https://code.visualstudio.com/docs/python/environments
-    "python.terminal.activateEnvironment": false,
+    "python-envs.terminal.autoActivationType": "off",
 
     // Jupyter Notebook settings.
     "notebook.lineNumbers": "on",
@@ -102,7 +67,6 @@
         "editor.indentSize": 4,
         "editor.insertSpaces": true
     },
-    "jupyter.askForKernelRestart": true,
 
     // ---------- C/C++ ----------
     "[cpp]": {
@@ -198,8 +162,6 @@
         "editor.autoIndent": "advanced",
     },
 
-    // ---------- Claude Code ----------
-    "claudeCode.preferredLocation": "panel",
     "github.copilot.enable": {
         "*": false,
     },

@@ -1,9 +1,5 @@
 # VScode
 
-## launch.json
-
-This is designed to be placed in each workspace and currently contains only Python debugging configurations.
-
 ## settings.json
 
 The shared `settings.json` for VSCode.
