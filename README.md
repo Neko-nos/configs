@@ -77,11 +77,6 @@ Provides a setup script for modern Python environment management: **[uv](https:/
 
 ### 4. VSCode Settings & Customizations
 
-- **Automatic Line Breaks for Markdown with `linebreak.py`**\
-  Addresses the common issue where Markdown previews (`markdown.preview.break: true`) show line breaks correctly in VSCode, but standard Markdown renderers like GitHub require explicit hard breaks.\
-  It is tedious to append a trailing backslash manually every time you write Markdown, especially in Japanese.\
-  This script, used with the [Run on save](https://marketplace.visualstudio.com/items?itemName=pucelle.run-on-save) extension, automatically inserts trailing backslashes into your Markdown file.
-
 - **Curated `settings.json`**\
   Includes useful settings for general VSCode usage, Python development, Markdown, and LaTeX.
 
