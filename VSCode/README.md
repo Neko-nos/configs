@@ -1,21 +1,25 @@
-# VScode
+# VSCode
 
 ## settings.json
 
-The shared `settings.json` for VSCode.
+Editor, terminal, and language preferences.
 
 ## keybindings.json
 
-| Area | Function |
-| --- | --- |
-| Editor | Emacs-style navigation and editing. |
-| Integrated terminal | Multiline Codex prompts, selection copying, and tmux shortcuts. |
-| Markdown preview | Refresh the preview. |
+Editor and terminal shortcuts, including Emacs-style editing and tmux controls.
 
-## Local extensions
+## Local extensions (macOS)
 
-- **Browser Click Routing:** Cmd+click opens web links in VSCode's integrated browser; Ctrl+click opens your default external browser.
-- **Smart Terminal Paste:** Cmd+V pastes text or attaches clipboard images to Codex CLI in the integrated terminal. Remote SSH is supported.
+### Browser Click Routing
+
+Cmd+click opens web links in VSCode's integrated browser; Ctrl+click opens your default external browser.
+The installer applies the required startup options from `argv.json`.
+
+### Smart Terminal Paste
+
+Cmd+V pastes text or attaches clipboard images to Codex CLI in the integrated terminal. Remote SSH is supported.
+
+### Installation
 
 Install from the repository root:
 

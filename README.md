@@ -77,8 +77,8 @@ Provides a setup script for modern Python environment management: **[uv](https:/
 
 ### 4. VSCode Settings & Customizations
 
-- **Curated `settings.json`**\
-  Includes useful settings for general VSCode usage, Python development, Markdown, and LaTeX.
+Shared editor settings and keyboard shortcuts, plus local macOS extensions for opening links in VSCode or your browser and pasting clipboard images into Codex, including over Remote SSH.\
+See [VSCode/README.md](./VSCode/README.md) for extension usage and installation.
 
 ### 5. Disposable Environments for Codex
 
