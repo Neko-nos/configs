@@ -5,7 +5,11 @@ style, and run development tasks in Ubuntu or macOS environments.
 
 ## Review changes after each request
 
-The turn-diff viewer lets you check what changed in a turn. It lists the affected files, and  lets you open a colored diff for each file.
+The turn-diff viewer lets you check what changed in a turn. It lists the affected files,
+and lets you open a colored diff for each file.
+
+After a CLI turn finishes, run the copied command in a terminal to open the viewer.
+Press **U** to undo all changes from that turn, or **R** to reapply them.
 
 ![](./hooks/viewer.png)
 
