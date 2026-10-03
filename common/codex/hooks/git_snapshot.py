@@ -86,3 +86,39 @@ def worktree_tree(root: Path, index_path: Path) -> str:
     run_git(["add", "-A", "--", "."], root, env=env)
     tree = run_git(["write-tree"], root, env=env)
     return tree.stdout.strip()
+
+
+def write_turn_patch(
+    root: Path, baseline_tree: str, current_tree: str, patch_path: Path
+) -> None:
+    """
+    Write a reversible Git patch between two working tree snapshots.
+
+    Args:
+        root (Path): Git repository root.
+        baseline_tree (str): Working tree snapshot before the turn.
+        current_tree (str): Working tree snapshot after the turn.
+        patch_path (Path): Destination for the patch.
+    """
+    # Keep the original bytes so CRLF and non-UTF-8 files can be restored exactly.
+    with patch_path.open("wb") as patch:
+        subprocess.run(
+            [
+                "git",
+                "diff",
+                "--binary",
+                "--find-renames",
+                "--no-ext-diff",
+                "--no-textconv",
+                "--no-color",
+                "--src-prefix=a/",
+                "--dst-prefix=b/",
+                baseline_tree,
+                current_tree,
+                "--",
+            ],
+            cwd=root,
+            stdout=patch,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
