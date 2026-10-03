@@ -1,10 +1,7 @@
 import json
 import os
-import re
 import subprocess
 from pathlib import Path
-
-ANSI_SGR_RE = re.compile(r"\x1b\[([0-9;]*)m")
 
 
 def parse_hunk_header(line: str) -> tuple[int, int]:
@@ -123,10 +120,7 @@ def highlighted_diff_sections(sections: list[list[str]]) -> list[list[str | None
             if highlighted is None:
                 highlighted_lines.extend([None] * len(lines))
                 continue
-            rendered = [
-                keep_row_background(line)
-                for line in highlighted.split("\n")[: len(lines)]
-            ]
+            rendered = highlighted.split("\n")[: len(lines)]
             if len(rendered) != len(lines):
                 raise RuntimeError(
                     "syntect highlighter returned an unexpected line count"
@@ -158,31 +152,6 @@ def diff_section_hunks(section: list[str]) -> list[list[str]]:
     if hunk_lines:
         hunks.append(hunk_lines)
     return hunks
-
-
-def keep_row_background(text: str) -> str:
-    """
-    Remove ANSI background resets from embedded syntax-highlighted text.
-
-    Args:
-        text (str): ANSI-highlighted text.
-
-    Returns:
-        str: Text that can be rendered inside a diff row background.
-    """
-
-    def replace_sgr(match: re.Match[str]) -> str:
-        raw_params = match.group(1)
-        params = ["0"] if raw_params == "" else raw_params.split(";")
-        if "0" in params or "00" in params:
-            return "\x1b[39m"
-        if "49" in params:
-            params = [param for param in params if param != "49"]
-        if not params:
-            return ""
-        return f"\x1b[{';'.join(params)}m"
-
-    return ANSI_SGR_RE.sub(replace_sgr, text)
 
 
 def diff_content_text(line: str) -> str | None:
