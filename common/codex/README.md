@@ -14,7 +14,8 @@ The turn-diff viewer lets you check what changed in a turn. It lists the affecte
 When you submit a new CLI request, saved reviews for sessions with no updates
 in the past 30 days are automatically removed from that repository.
 
-To change the period, edit `--retention-days 30` in the `UserPromptSubmit` hook command in [hooks.json](./hooks.json).
+To change the period, edit `--retention-days 30` in the `prune_turns.py` command in
+[hooks.json](./hooks.json).
 
 ## Rules
 

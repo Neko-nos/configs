@@ -1,244 +1,28 @@
-import argparse
-import base64
-import json
-import os
-import shlex
-import subprocess
-import sys
-import time
-from contextlib import suppress
-from datetime import timedelta
-from pathlib import Path
-
-import pyperclip
-from git_snapshot import (
-    git_cache_dir,
-    git_worktree_root,
-    prune_diff_sessions,
-    run_git,
-    worktree_tree,
-)
-from terminal_diff import render_terminal_diff_files
-
-
-def is_cli_session(transcript_path: str | None) -> bool:
-    """
-    Return whether a Codex transcript belongs to a CLI session.
-
-    Args:
-        transcript_path (str | None): Path to the Codex session transcript.
-
-    Returns:
-        bool: Whether the session was started from the CLI.
-    """
-    if transcript_path is None:
-        return False
-
-    with Path(transcript_path).open(encoding="utf-8") as transcript:
-        metadata = json.loads(transcript.readline())
-    # Codex names the TUI client codex-tui and sets codex_exec as the exec originator.
-    # ref: https://github.com/openai/codex/blob/8b8fa7276f3da289108512d673303eeacc5bcff3/codex-rs/tui/src/lib.rs#L562
-    # ref: https://github.com/openai/codex/blob/8b8fa7276f3da289108512d673303eeacc5bcff3/codex-rs/exec/src/lib.rs#L241
-    return metadata["payload"]["originator"] in {
-        "codex-tui",
-        "codex_exec",
-    }
-
-
-def copy_view_command(view_command: str) -> bool:
-    """
-    Copy a terminal diff command when a clipboard provider is available.
-
-    Args:
-        view_command (str): Command to copy.
-
-    Returns:
-        bool: Whether the command was sent to a clipboard provider.
-    """
-    remote_session = "SSH_TTY" in os.environ or "SSH_CONNECTION" in os.environ
-    if not remote_session:
-        with suppress(OSError, pyperclip.PyperclipException):
-            pyperclip.copy(view_command)
-            return True
-
-    raw_command = view_command.encode()
-    # The expected command is short; the limit avoids flooding the terminal.
-    if len(raw_command) > 1_000:
-        return False
-
-    try:
-        if "TMUX_PANE" in os.environ:
-            # Pane output can lose clipboard sequences during a tmux redraw.
-            client = subprocess.check_output(
-                [
-                    "tmux",
-                    "display-message",
-                    "-p",
-                    "-t",
-                    os.environ["TMUX_PANE"],
-                    "#{client_name}",
-                ],
-                text=True,
-            ).strip()
-            subprocess.run(
-                ["tmux", "set-buffer", "-w", "-t", client, "--", view_command],
-                check=True,
-            )
-        else:
-            # Base64 prevents the copied text from injecting another control sequence.
-            sequence = b"\x1b]52;c;" + base64.b64encode(raw_command) + b"\x07"
-            # Hooks have no controlling terminal, and stdout is reserved for JSON.
-            terminal_path = os.environ.get("SSH_TTY", "/dev/tty")
-            with Path(terminal_path).open("wb", buffering=0) as terminal:
-                terminal.write(sequence)
-    except (OSError, subprocess.CalledProcessError):
-        return False
-    return True
-
-
-def start_turn(retention_days: int) -> None:
-    """Capture the turn baseline and prune inactive sessions' saved diffs.
-
-    Args:
-        retention_days (int): Number of inactive days to retain saved sessions.
-    """
-    # ref: https://developers.openai.com/codex/hooks#common-input-fields
-    payload = json.loads(sys.stdin.read())
-    if not is_cli_session(payload["transcript_path"]):
-        return
-
-    root = git_worktree_root(Path(payload["cwd"]))
-    if root is None:
-        return
-
-    cache_dir = git_cache_dir(root)
-    session_dir = cache_dir / payload["session_id"] / payload["turn_id"]
-    session_dir.mkdir(parents=True, exist_ok=True)
-
-    state_path = session_dir / "state.json"
-    # Mid-turn replies can trigger UserPromptSubmit again with the same turn ID.
-    if state_path.exists():
-        return
-
-    tree = worktree_tree(root, session_dir / "baseline.index")
-    state_path.write_text(
-        json.dumps({"baseline_tree": tree}, indent=2, sort_keys=True),
-        encoding="utf-8",
-    )
-    prune_diff_sessions(
-        cache_dir,
-        payload["session_id"],
-        time.time() - timedelta(days=retention_days).total_seconds(),
-    )
-
-
-def stop_turn() -> None:
-    """Save a diff from the turn baseline to the current working tree."""
-    # ref: https://developers.openai.com/codex/hooks#common-input-fields
-    payload = json.loads(sys.stdin.read())
-    if not is_cli_session(payload["transcript_path"]):
-        print(json.dumps({"continue": True}))
-        return
-
-    root = git_worktree_root(Path(payload["cwd"]))
-    if root is None:
-        print(json.dumps({"continue": True}))
-        return
-
-    session_dir = git_cache_dir(root) / payload["session_id"] / payload["turn_id"]
-    state_path = session_dir / "state.json"
-    if not state_path.exists():
-        print(json.dumps({"continue": True}))
-        return
-
-    state = json.loads(state_path.read_text(encoding="utf-8"))
-
-    current_tree = worktree_tree(root, session_dir / "current.index")
-    baseline_tree = str(state["baseline_tree"])
-    diff = run_git(
-        ["diff", "--binary", "--find-renames", baseline_tree, current_tree],
-        root,
-    )
-    if diff.returncode not in (0, 1):
-        raise RuntimeError(diff.stderr.strip() or "Codex turn diff failed")
-
-    if diff.stdout == "":
-        print(
-            json.dumps(
-                {
-                    "continue": True,
-                    "systemMessage": "Codex turn diff: no file changes.",
-                },
-            ),
-        )
-        return
-
-    rendered_files = render_terminal_diff_files(diff.stdout)
-    manifest_path = session_dir / "last-turn.json"
-    manifest = []
-    for index, (display_path, rendered, added, removed) in enumerate(
-        rendered_files, start=1
-    ):
-        file_path = session_dir / f"last-turn-{index}.ansi"
-        file_path.write_text(rendered, encoding="utf-8")
-        manifest.append(
-            {
-                "title": display_path or "unknown",
-                "path": str(file_path),
-                "added": added,
-                "removed": removed,
-            }
-        )
-    manifest_path.write_text(
-        json.dumps(manifest, indent=2),
-        encoding="utf-8",
-    )
-    home = Path.home()
-    viewer_path = (
-        Path(__file__).with_name("terminal_diff_viewer.py").resolve().relative_to(home)
-    )
-    manifest_path = manifest_path.resolve().relative_to(home)
-    view_command = (
-        f"python ~/{shlex.quote(str(viewer_path))} "
-        f"--manifest ~/{shlex.quote(str(manifest_path))}"
-    )
-    copied = copy_view_command(view_command)
-
-    print(
-        json.dumps(
-            {
-                "continue": True,
-                "systemMessage": (
-                    "Codex turn diff: viewer command sent to clipboard."
-                    if copied
-                    else "Codex turn diff: could not send viewer command to clipboard."
-                ),
-            }
-        )
-    )
+from hook_context import read_hook_context
+from prune_turns import prune_diff_sessions, retention_parser
+from save_turn import main as save_turn
+from turn_store import capture_baseline
 
 
 def main() -> int:
     """
-    Run the turn diff hook.
+    Handle the hook commands still loaded by an active Codex session.
 
     Returns:
         int: Process exit status.
     """
-    parser = argparse.ArgumentParser(description="Capture Codex turn diffs.")
+    # Active sessions can keep invoking this path after hooks.json changes.
+    parser = retention_parser("Run previously loaded turn hooks.")
     parser.add_argument("command", choices=("start", "stop"))
-    parser.add_argument(
-        "--retention-days",
-        type=int,
-        default=30,
-        help="prune other sessions after this many inactive days at turn start (default: 30)",
-    )
     args = parser.parse_args()
+    if args.command == "stop":
+        return save_turn()
 
-    if args.command == "start":
-        start_turn(args.retention_days)
-    else:
-        stop_turn()
+    context = read_hook_context()
+    if context is not None:
+        root, turn_dir = context
+        capture_baseline(root, turn_dir)
+        prune_diff_sessions(turn_dir, args.retention_days)
     return 0
 
 
