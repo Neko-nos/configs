@@ -1,7 +1,5 @@
 import os
-import shutil
 import subprocess
-from contextlib import suppress
 from pathlib import Path
 
 
@@ -26,8 +24,8 @@ def run_git(
         cwd=cwd,
         env=env,
         text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
+        check=False,
     )
 
 
@@ -43,29 +41,6 @@ def git_cache_dir(root: Path) -> Path:
     """
     git_path = run_git(["rev-parse", "--git-path", "codex-turn-diff"], root)
     return root / Path(git_path.stdout.strip())
-
-
-def prune_diff_sessions(
-    cache_dir: Path, current_session_id: str, cutoff: float
-) -> None:
-    """Remove saved sessions whose most recent update predates the cutoff.
-
-    Args:
-        cache_dir (Path): Directory containing saved diff sessions.
-        current_session_id (str): Session to preserve even when resuming old work.
-        cutoff (float): Oldest retained modification time as a Unix timestamp.
-    """
-    for session in cache_dir.iterdir():
-        if session.name == current_session_id:
-            continue
-
-        # Another session's hook may finish pruning the same files first.
-        with suppress(FileNotFoundError):
-            # Edits within a turn do not update the parent session directory's mtime.
-            if session.stat().st_mtime < cutoff and all(
-                path.lstat().st_mtime < cutoff for path in session.rglob("*")
-            ):
-                shutil.rmtree(session)
 
 
 def git_worktree_root(cwd: Path) -> Path | None:
@@ -111,3 +86,39 @@ def worktree_tree(root: Path, index_path: Path) -> str:
     run_git(["add", "-A", "--", "."], root, env=env)
     tree = run_git(["write-tree"], root, env=env)
     return tree.stdout.strip()
+
+
+def write_turn_patch(
+    root: Path, baseline_tree: str, current_tree: str, patch_path: Path
+) -> None:
+    """
+    Write a reversible Git patch between two working tree snapshots.
+
+    Args:
+        root (Path): Git repository root.
+        baseline_tree (str): Working tree snapshot before the turn.
+        current_tree (str): Working tree snapshot after the turn.
+        patch_path (Path): Destination for the patch.
+    """
+    # Keep the original bytes so CRLF and non-UTF-8 files can be restored exactly.
+    with patch_path.open("wb") as patch:
+        subprocess.run(
+            [
+                "git",
+                "diff",
+                "--binary",
+                "--find-renames",
+                "--no-ext-diff",
+                "--no-textconv",
+                "--no-color",
+                "--src-prefix=a/",
+                "--dst-prefix=b/",
+                baseline_tree,
+                current_tree,
+                "--",
+            ],
+            cwd=root,
+            stdout=patch,
+            stderr=subprocess.PIPE,
+            check=True,
+        )

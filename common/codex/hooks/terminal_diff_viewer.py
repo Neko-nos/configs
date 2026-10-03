@@ -10,6 +10,8 @@ import tty
 import unicodedata
 from pathlib import Path
 
+from turn_store import apply_turn
+
 ANSI_ESCAPE_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
 
 
@@ -106,7 +108,11 @@ def truncate_ansi(text: str, width: int) -> str:
 
 
 def file_list_lines(
-    entries: list[dict[str, object]], selected: int, width: int, height: int
+    entries: list[dict[str, object]],
+    selected: int,
+    width: int,
+    height: int,
+    status: str,
 ) -> list[str]:
     """
     Render the interactive file selection view.
@@ -116,6 +122,7 @@ def file_list_lines(
         selected (int): Selected file index.
         width (int): Terminal width.
         height (int): Terminal height.
+        status (str): Current turn state or action result.
 
     Returns:
         list[str]: ANSI-styled screen lines.
@@ -132,7 +139,7 @@ def file_list_lines(
         "│",
     ]
 
-    visible_count = min(5, max(1, height - 7))
+    visible_count = min(5, max(1, height - 9))
     start = max(0, selected - visible_count // 2)
     start = min(start, max(0, len(entries) - visible_count))
     end = min(len(entries), start + visible_count)
@@ -161,6 +168,8 @@ def file_list_lines(
     lines.extend(
         [
             "│",
+            f"│  {status}",
+            "│  \x1b[2mU undo turn · R reapply turn\x1b[0m",
             "\x1b[2m╰─ ↑/↓ select · Enter view · Esc close\x1b[0m",
         ]
     )
@@ -168,7 +177,7 @@ def file_list_lines(
 
 
 def detail_lines(
-    entry: dict[str, object], scroll: int, width: int, height: int
+    entry: dict[str, object], scroll: int, width: int, height: int, status: str
 ) -> tuple[list[str], int]:
     """
     Render the selected file's scrollable detail view.
@@ -178,18 +187,21 @@ def detail_lines(
         scroll (int): First visible diff line.
         width (int): Terminal width.
         height (int): Terminal height.
+        status (str): Current turn state or action result.
 
     Returns:
         tuple[list[str], int]: Screen lines and the largest valid scroll offset.
     """
     diff_lines = Path(str(entry["path"])).read_text(encoding="utf-8").splitlines()
-    body_height = max(1, height - 2)
+    body_height = max(1, height - 4)
     maximum_scroll = max(0, len(diff_lines) - body_height)
     scroll = min(scroll, maximum_scroll)
     visible = diff_lines[scroll : scroll + body_height]
     title = truncate_text(str(entry["title"]), max(1, width - 15))
     lines = [f"\x1b[1m╭─ Turn diff · {title}\x1b[0m"]
     lines.extend(visible)
+    lines.append(f"│ {status}")
+    lines.append("│ \x1b[2mU undo turn · R reapply turn\x1b[0m")
     lines.append("\x1b[2m╰─ ↑/↓ scroll · Space page down · B page up · Esc back\x1b[0m")
     return lines, maximum_scroll
 
@@ -242,7 +254,9 @@ def view_turn(manifest_path: Path) -> None:
     Args:
         manifest_path (Path): JSON manifest containing diff titles and paths.
     """
-    entries = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    entries = manifest["files"]
+    status = "Turn changes applied." if manifest["applied"] else "Turn changes undone."
     file_descriptor = sys.stdin.fileno()
     original_terminal_attributes = termios.tcgetattr(file_descriptor)
     selected = 0
@@ -261,11 +275,11 @@ def view_turn(manifest_path: Path) -> None:
             if should_redraw or screen_size != (width, height):
                 if is_showing_detail:
                     lines, maximum_scroll = detail_lines(
-                        entries[selected], scroll, width, height
+                        entries[selected], scroll, width, height, status
                     )
                     scroll = min(scroll, maximum_scroll)
                 else:
-                    lines = file_list_lines(entries, selected, width, height)
+                    lines = file_list_lines(entries, selected, width, height, status)
                 draw_screen(lines, width, height)
                 screen_size = (width, height)
                 should_redraw = False
@@ -277,8 +291,15 @@ def view_turn(manifest_path: Path) -> None:
             if key == b"\x03":  # Ctrl+C
                 break
 
+            if key.lower() in {b"u", b"r"}:
+                try:
+                    status = apply_turn(manifest_path, reverse=key.lower() == b"u")
+                except (OSError, RuntimeError) as error:
+                    status = "Could not apply: " + " ".join(str(error).splitlines())
+                continue
+
             if is_showing_detail:
-                body_height = max(1, height - 2)
+                body_height = max(1, height - 4)
                 if key == b"\x1b":  # Escape
                     is_showing_detail = False
                     scroll = 0

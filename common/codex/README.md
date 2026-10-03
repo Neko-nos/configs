@@ -5,7 +5,11 @@ style, and run development tasks in Ubuntu or macOS environments.
 
 ## Review changes after each request
 
-The turn-diff viewer lets you check what changed in a turn. It lists the affected files, and  lets you open a colored diff for each file.
+The turn-diff viewer lets you check what changed in a turn. It lists the affected files,
+and lets you open a colored diff for each file.
+
+After a CLI turn finishes, run the copied command in a terminal to open the viewer.
+Press **U** to undo all changes from that turn, or **R** to reapply them.
 
 ![](./hooks/viewer.png)
 
@@ -14,7 +18,8 @@ The turn-diff viewer lets you check what changed in a turn. It lists the affecte
 When you submit a new CLI request, saved reviews for sessions with no updates
 in the past 30 days are automatically removed from that repository.
 
-To change the period, edit `--retention-days 30` in the `UserPromptSubmit` hook command in [hooks.json](./hooks.json).
+To change the period, edit `--retention-days 30` in the `prune_turns.py` command in
+[hooks.json](./hooks.json).
 
 ## Rules
 
