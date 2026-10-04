@@ -18,7 +18,7 @@ source "${script_dir}/utils.sh"
 #   Appends shell code to ~/.zprofile
 #######################################
 function __append_brew_shellenv_cache() {
-    cat <<'EOF' >> ~/.zprofile
+    cat <<'EOF' >>~/.zprofile
 __mac_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
 if [[ -n "${(P)__mac_specific_zsh_var}" ]]; then
     source "${(P)__mac_specific_zsh_var}/brew_shellenv_cache.zsh"
@@ -49,9 +49,8 @@ fi
 # Install the formulae required by brew_formulae.txt (default to the minimum formulae required to source our .zshrc)
 # Read package names from a dedicated file descriptor so interactive prompts can
 # keep using the terminal stdin even after a brew command runs.
-exec 3< "${script_dir}/brew_formulae.txt"
-while IFS= read -r line <&3
-do
+exec 3<"${script_dir}/brew_formulae.txt"
+while IFS= read -r line <&3; do
     # We allow blank lines and comments (#) in brew_formulae.txt.
     [[ -z "${line}" || "${line}" == \#* ]] && continue
     __install_formula "${line}"
@@ -66,13 +65,13 @@ __enable_login_item LinearMouse '/Applications/LinearMouse.app'
 if brew list --formula --versions nano >/dev/null 2>&1; then
     nano_path="export PATH=\"$(brew --prefix nano)/bin:\$PATH\""
     if ! grep -Fq "${nano_path}" ~/.zprofile 2>/dev/null; then
-        echo "${nano_path}" >> ~/.zprofile
+        echo "${nano_path}" >>~/.zprofile
     fi
 fi
 
 coreutils_path='export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"'
 if ! grep -Fq "${coreutils_path}" ~/.zprofile 2>/dev/null; then
-    echo "${coreutils_path}" >> ~/.zprofile
+    echo "${coreutils_path}" >>~/.zprofile
 fi
 
 echo 'Finished Homebrew configuration!'

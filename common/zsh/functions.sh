@@ -33,7 +33,7 @@ function _search_cdr_warn_once() {
     emulate -L zsh
     setopt err_return
     local message="${1}"
-    if (( _cdr_search_warned_unsupported != 0 )); then
+    if ((_cdr_search_warned_unsupported != 0)); then
         return 0
     fi
     _cdr_search_warned_unsupported=1
@@ -51,7 +51,7 @@ function _search_cdr_warn_once() {
 # Returns:
 #   0 on success, non-zero on failure.
 #######################################
-function search-cdr () {
+function search-cdr() {
     emulate -L zsh
     setopt err_return
     local -a filter_cmd
@@ -90,7 +90,7 @@ function _history_search_warn_once() {
     emulate -L zsh
     setopt err_return
     local message="${1}"
-    if (( _history_search_warned_unsupported != 0 )); then
+    if ((_history_search_warned_unsupported != 0)); then
         return 0
     fi
     _history_search_warned_unsupported=1
@@ -124,9 +124,9 @@ function _history_entries_nul() {
     local -a event_numbers
     event_numbers=("${(@kon)history}")
     local i
-    for (( i=${#event_numbers[@]}; i>=1; i-- )); do
+    for ((i = ${#event_numbers[@]}; i >= 1; i--)); do
         local entry="${history[${event_numbers[i]}]}"
-        if (( ! ${+seen[${entry}]} )); then
+        if ((! ${+seen[${entry}]})); then
             seen[${entry}]=1
             print -rn -- "${entry}"$'\0'
         fi
@@ -161,7 +161,7 @@ function search-history() {
     local cmd_name="${filter_cmd[1]}"
     local supports_nul=0
     case "$cmd_name" in
-        fzf|fzf-tmux|sk|skim)
+        fzf | fzf-tmux | sk | skim)
             supports_nul=1
             ;;
         *)
@@ -169,7 +169,7 @@ function search-history() {
             ;;
     esac
 
-    if (( supports_nul == 0 )); then
+    if ((supports_nul == 0)); then
         _history_search_warn_once "FILTER_CMD must support NUL-delimited input to preserve multiline history."
         return 0
     fi
@@ -223,7 +223,7 @@ function show-options() {
 function ruff-fix() {
     emulate -L zsh
     setopt err_return
-    if (( $# == 0 )); then
+    if (($# == 0)); then
         printf "usage: ruff-fix <path-or-ruff-options>...\n" >&2
         return 2
     fi
@@ -245,7 +245,7 @@ function ruff-fix() {
     "${ruff_cmd[@]}" format "$@"
 }
 
-if (( ${+commands[tree]} )); then
+if ((${+commands[tree]})); then
     #######################################
     # Print a directory tree, limiting its depth when invoked from home.
     # Globals:
@@ -270,7 +270,7 @@ if (( ${+commands[tree]} )); then
     }
 fi
 
-if (( ${+commands[docker]} )); then
+if ((${+commands[docker]})); then
     #######################################
     # Run Docker commands and rebuild an image from a build context.
     # Arguments:
@@ -287,7 +287,7 @@ if (( ${+commands[docker]} )); then
             command docker "$@"
             return
         fi
-        if (( $# != 3 )); then
+        if (($# != 3)); then
             printf "usage: docker rebuild <image> <context>\n" >&2
             return 2
         fi
@@ -299,7 +299,7 @@ if (( ${+commands[docker]} )); then
     }
 fi
 
-if (( ${+commands[packer]} )); then
+if ((${+commands[packer]})); then
     #######################################
     # Run Packer commands and rebuild a Tart VM from a template.
     # Arguments:
@@ -316,7 +316,7 @@ if (( ${+commands[packer]} )); then
             command packer "$@"
             return
         fi
-        if (( $# != 3 )); then
+        if (($# != 3)); then
             printf "usage: packer rebuild <VM> <template>\n" >&2
             return 2
         fi
@@ -329,7 +329,7 @@ if (( ${+commands[packer]} )); then
     }
 fi
 
-if (( ${+commands[tart]} )); then
+if ((${+commands[tart]})); then
     #######################################
     # Run Tart commands and share the current directory with VMs.
     # Globals:

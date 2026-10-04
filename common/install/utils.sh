@@ -40,7 +40,7 @@ function __confirm() {
 #   0 if installed, already matching, or intentionally skipped
 #   1 if source path does not exist or install mode is invalid
 #######################################
-function __install_repo_path {
+function __install_repo_path() {
     local source_path="${1}"
     local destination_path="${2}"
     local display_name="${3}"

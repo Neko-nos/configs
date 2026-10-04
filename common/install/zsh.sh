@@ -25,8 +25,8 @@ function ensure_zprofile_envs() {
         # Print a newline using echo because read -q doesn't.
         echo
         echo 'Appending FILTER_CMD to ~/.zprofile.'
-        echo '# Envs used for .zshrc' >> ~/.zprofile
-        echo 'export FILTER_CMD="fzf"' >> ~/.zprofile
+        echo '# Envs used for .zshrc' >>~/.zprofile
+        echo 'export FILTER_CMD="fzf"' >>~/.zprofile
     fi
     echo
 
@@ -34,10 +34,10 @@ function ensure_zprofile_envs() {
     if ! read -q; then
         echo
         echo 'Appending CONFIGS_COMMON_ZSH and __os_specific_zsh_var to ~/.zprofile.'
-        echo 'export CONFIGS_COMMON_ZSH="$HOME/configs/common/zsh"' >> ~/.zprofile
-        echo 'export __os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"' >> ~/.zprofile
-        echo "export \${__os_specific_zsh_var}=\"\$HOME/configs/${os_name}\"" >> ~/.zprofile
-        echo 'unset -v __os_specific_zsh_var' >> ~/.zprofile
+        echo 'export CONFIGS_COMMON_ZSH="$HOME/configs/common/zsh"' >>~/.zprofile
+        echo 'export __os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"' >>~/.zprofile
+        echo "export \${__os_specific_zsh_var}=\"\$HOME/configs/${os_name}\"" >>~/.zprofile
+        echo 'unset -v __os_specific_zsh_var' >>~/.zprofile
     fi
     echo
 }
@@ -90,8 +90,8 @@ if command -v sheldon >/dev/null 2>&1; then
     echo 'You have already installed sheldon.'
 else
     # ref: https://github.com/rossmacarthur/sheldon?tab=readme-ov-file#pre-built-binaries
-    curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
-    | bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
+    curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh |
+        bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
 fi
 if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml" ]]; then
     echo 'You have already created sheldon config file.'

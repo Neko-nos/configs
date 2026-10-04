@@ -6,7 +6,6 @@ typeset -g _history_last_command=""
 typeset -g _history_script_dir="${${(%):-%N}:A:h}"
 typeset -g _history_warned_no_py=0
 
-
 #######################################
 # Emit a warning once per session.
 # Globals:
@@ -21,7 +20,7 @@ typeset -g _history_warned_no_py=0
 function _history_warn_once() {
     emulate -L zsh
     local message="${1}"
-    if (( _history_warned_no_py != 0 )); then
+    if ((_history_warned_no_py != 0)); then
         return 0
     fi
     _history_warned_no_py=1
@@ -125,7 +124,7 @@ function _history_prune_failed_file() {
     fi
 
     emulate -L zsh
-    if (( last_status == 0 )); then
+    if ((last_status == 0)); then
         return 0
     fi
 

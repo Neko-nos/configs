@@ -12,7 +12,7 @@ set -euo pipefail
 # Outputs:
 #   Writes installation status to stdout.
 #######################################
-function install_fonts {
+function install_fonts() {
     local font_directory="${HOME}/Library/Fonts"
     local font_file
 
@@ -21,8 +21,7 @@ function install_fonts {
         'MesloLGS NF Regular.ttf' \
         'MesloLGS NF Bold.ttf' \
         'MesloLGS NF Italic.ttf' \
-        'MesloLGS NF Bold Italic.ttf'
-    do
+        'MesloLGS NF Bold Italic.ttf'; do
         if [[ -f "${font_directory}/${font_file}" ]]; then
             echo "You have already installed ${font_file}."
             continue

@@ -25,11 +25,11 @@ function __safe_alias() {
     local target_package="${3:-$cmd_name}"
     # Use arrays for commands to avoid word-splitting and quoting pitfalls.
     local -a install_cmd=()
-    if (( ${#SAFE_ALIAS_INSTALL_CMD[@]} > 0 )); then
+    if ((${#SAFE_ALIAS_INSTALL_CMD[@]} > 0)); then
         install_cmd=("${SAFE_ALIAS_INSTALL_CMD[@]}")
     fi
 
-    if (( ${#install_cmd[@]} == 0 )); then
+    if ((${#install_cmd[@]} == 0)); then
         __warn "Package manager is not configured for ${target_package}; skipping alias '${alias_name}'."
         return 0
     fi
@@ -38,7 +38,7 @@ function __safe_alias() {
     if read -q; then
         # Print a newline using echo because read -q doesn't.
         echo
-        if (( ${#SAFE_ALIAS_UPDATE_CMD[@]} > 0 )); then
+        if ((${#SAFE_ALIAS_UPDATE_CMD[@]} > 0)); then
             "${SAFE_ALIAS_UPDATE_CMD[@]}" || return 0
         fi
         "${install_cmd[@]}" "${target_package}"

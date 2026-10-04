@@ -39,8 +39,8 @@ function __install_docker_engine() {
         "Suites: ${ubuntu_codename}" \
         'Components: stable' \
         "Architectures: ${architecture}" \
-        'Signed-By: /etc/apt/keyrings/docker.asc' \
-        | sudo tee /etc/apt/sources.list.d/docker.sources >/dev/null
+        'Signed-By: /etc/apt/keyrings/docker.asc' |
+        sudo tee /etc/apt/sources.list.d/docker.sources >/dev/null
 
     sudo apt-get update
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -74,12 +74,12 @@ function __install_nvidia_container_toolkit() {
     sudo apt-get update
     sudo apt-get install -y --no-install-recommends ca-certificates curl gnupg2
 
-    curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
-        | sudo gpg --dearmor --yes -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+    curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey |
+        sudo gpg --dearmor --yes -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
 
-    curl -fsSL https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
-        | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
-        | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list >/dev/null
+    curl -fsSL https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list |
+        sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' |
+        sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list >/dev/null
 
     sudo apt-get update
     # ref: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/arch-overview.html#which-package-should-i-use-then

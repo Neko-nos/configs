@@ -39,7 +39,7 @@ function ensure_key() {
     fi
 
     if [[ -f "${key_path}" && ! -f "${key_path}.pub" ]]; then
-        ssh-keygen -y -f "${key_path}" > "${key_path}.pub"
+        ssh-keygen -y -f "${key_path}" >"${key_path}.pub"
         echo "Created public key from existing private key: ${key_path}.pub"
         return 0
     fi
@@ -123,7 +123,7 @@ function ensure_ssh_config() {
         return 0
     fi
 
-    cat <<EOF >> "${config_path}"
+    cat <<EOF >>"${config_path}"
 
 Host github.com
     HostName github.com
@@ -181,7 +181,6 @@ function show_manual_key_instructions() {
     echo ''
     echo "Public key file: ${public_key_path}"
 }
-
 
 #######################################
 # Test SSH authentication to GitHub.

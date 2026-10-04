@@ -20,7 +20,7 @@ source "${script_dir}/utils.sh"
 # Returns:
 #   0 if the repository exists or was cloned, 1 if setup should be skipped
 #######################################
-function __ensure_nanorc_repository {
+function __ensure_nanorc_repository() {
     if [[ -d "${nanorc_repo_dir}" ]]; then
         return 0
     fi
@@ -48,7 +48,7 @@ function __ensure_nanorc_repository {
 # Returns:
 #   0 on success or when no system syntax directory is available
 #######################################
-function __link_system_nano_syntax_files {
+function __link_system_nano_syntax_files() {
     local source_dir
     local source_file
     local -a syntax_dirs=(
@@ -79,7 +79,7 @@ function __link_system_nano_syntax_files {
 # Returns:
 #   0 on success
 #######################################
-function __link_custom_nano_syntax_files {
+function __link_custom_nano_syntax_files() {
     local source_file
     local custom_syntax_dir="${nanorc_repo_dir}/syntax"
 
@@ -104,7 +104,6 @@ if __ensure_nanorc_repository; then
     __install_repo_path "${nanorc_repo_dir}/.nanorc" "${HOME}/.nanorc" '.nanorc' link
     __link_custom_nano_syntax_files
 fi
-
 
 unset -v script_dir
 unset -v nanorc_repo_dir

@@ -15,18 +15,18 @@ common_gitdir="${script_dir}/../git"
 # Outputs:
 #   Writes configuration to ~/.gitconfig
 #######################################
-function __set_up_gitconfig {
+function __set_up_gitconfig() {
     touch ~/.gitconfig
     printf 'What is your email used for GitHub? : '
     read -r email
     printf 'What is your GitHub username? : '
     read -r name
-    echo '[user]' >> ~/.gitconfig
-    echo "    email = ${email}" >> ~/.gitconfig
-    echo "    name = ${name}" >> ~/.gitconfig
-    echo '[include]' >> ~/.gitconfig
+    echo '[user]' >>~/.gitconfig
+    echo "    email = ${email}" >>~/.gitconfig
+    echo "    name = ${name}" >>~/.gitconfig
+    echo '[include]' >>~/.gitconfig
     local common_gitconfig="${common_gitdir:A}/.gitconfig"
-    echo "    path = ${common_gitconfig:A}" >> ~/.gitconfig
+    echo "    path = ${common_gitconfig:A}" >>~/.gitconfig
 }
 
 if [[ -f ~/.gitconfig ]]; then
@@ -35,14 +35,16 @@ if [[ -f ~/.gitconfig ]]; then
     if read -q; then
         timestamp="$(date +%Y%m%d%H%M%S)"
         # Print a newline using echo because read -q doesn't.
-        echo; mv ~/.gitconfig ~/.gitconfig_old_"${timestamp}"
+        echo
+        mv ~/.gitconfig ~/.gitconfig_old_"${timestamp}"
         echo "Renamed your .gitconfig to .gitconfig_old_${timestamp} as a backup file."
         __set_up_gitconfig
     else
         echo
     fi
 else
-    echo; __set_up_gitconfig
+    echo
+    __set_up_gitconfig
 fi
 
 if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore" ]]; then
@@ -51,7 +53,8 @@ if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore" ]]; then
     if read -q; then
         timestamp="$(date +%Y%m%d%H%M%S)"
         # Print a newline using echo because read -q doesn't.
-        echo; mv "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore_old_${timestamp}"
+        echo
+        mv "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore_old_${timestamp}"
         echo "Renamed your global git ignore file to ignore_old_${timestamp} as a backup file."
         ln -s "${common_gitdir:A}/.gitignore_template" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore"
     else

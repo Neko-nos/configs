@@ -22,9 +22,8 @@ echo
 
 # Read package names from a dedicated file descriptor so apt-get cannot consume
 # the package list after the user answers one of the prompts.
-exec 3< "${script_dir}/apt_packages.txt"
-while IFS= read -r line <&3
-do
+exec 3<"${script_dir}/apt_packages.txt"
+while IFS= read -r line <&3; do
     [[ -z "${line}" || "${line}" == \#* ]] && continue
     __install_package "${line}"
 done

@@ -2,7 +2,7 @@ autoload -Uz __safe_alias __warn __update_cache
 
 typeset -ga SAFE_ALIAS_INSTALL_CMD SAFE_ALIAS_UPDATE_CMD
 # Use arrays for commands to avoid word-splitting and quoting pitfalls.
-if (( ${#SAFE_ALIAS_INSTALL_CMD[@]} == 0 )); then
+if ((${#SAFE_ALIAS_INSTALL_CMD[@]} == 0)); then
     if [[ "${OSTYPE}" == "darwin"* ]]; then
         SAFE_ALIAS_INSTALL_CMD=(brew install)
         SAFE_ALIAS_UPDATE_CMD=()

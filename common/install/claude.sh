@@ -21,7 +21,7 @@ source "${script_dir}/utils.sh"
 # Returns:
 #   0 if Claude Code is installed, already present, or skipped
 #######################################
-function __install_claude_if_missing {
+function __install_claude_if_missing() {
     if command -v claude >/dev/null 2>&1; then
         echo 'You have already installed Claude Code.'
         return 0
