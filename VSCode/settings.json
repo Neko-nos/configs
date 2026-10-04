@@ -135,6 +135,8 @@
     "files.watcherExclude": {
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
+        "**/.ruff_cache/**": true,
+        "**/.pytest_cache/**": true,
         "**/.venv/**": true,
         "**/outputs/**": true,
         "**/hostfile/**": true,
