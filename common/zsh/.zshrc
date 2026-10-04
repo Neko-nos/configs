@@ -83,6 +83,10 @@ unset -v _zcompdump
 # Match both lowercase and uppercase letters during completion
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*:default' menu select=1
+# Prevent zsh's fallback from restoring ignored paths when nothing else matches.
+zstyle ':completion:*' completer _complete
+zstyle ':completion:*:(*files|*directories)' ignored-patterns \
+    '(|*/)(.git|.ruff_cache|.pytest_cache|.venv|__pycache__|.DS_Store)(|/)'
 # Correct typos
 setopt correct
 setopt correct_all
