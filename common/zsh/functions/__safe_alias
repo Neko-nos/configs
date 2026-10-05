@@ -14,6 +14,8 @@
 #######################################
 function __safe_alias() {
     emulate -L zsh
+    autoload -Uz __confirm
+
     local alias_name="$1"
     local alias_cmd="$2"
     local cmd_name="${alias_cmd%% *}"
@@ -34,10 +36,7 @@ function __safe_alias() {
         return 0
     fi
 
-    printf "Install ${target_package}? [y/N]: "
-    if read -q; then
-        # Print a newline using echo because read -q doesn't.
-        echo
+    if __confirm "Install ${target_package}? [y/N]: "; then
         if ((${#SAFE_ALIAS_UPDATE_CMD[@]} > 0)); then
             "${SAFE_ALIAS_UPDATE_CMD[@]}" || return 0
         fi

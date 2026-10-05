@@ -1,4 +1,4 @@
-autoload -Uz add-zsh-hook __python_runner __warn
+autoload -Uz add-zsh-hook __confirm __python_runner __warn
 
 typeset -g _history_last_command=""
 # Zsh-native expansion is used over $(realpath $(dirname $0)) for better performance.
@@ -230,15 +230,7 @@ function _history_confirm_interactive_edit() {
     fi
 
     print -ru2 -- "IMPORTANT: For safe history editing, use this only when this is the only zsh session using ${histfile}."
-    print -nu2 -- "Closing them now can also trigger that rewrite. Continue only if this is actually the only zsh process using this HISTFILE. Continue? [y/N]: "
-    if read -q; then
-        # Print a newline using echo because read -q doesn't.
-        echo >&2
-        return 0
-    fi
-    # Print a newline using echo because read -q doesn't.
-    echo >&2
-    return 1
+    __confirm "Closing them now can also trigger that rewrite. Continue only if this is actually the only zsh process using this HISTFILE. Continue? [y/N]: " >&2
 }
 
 #######################################
