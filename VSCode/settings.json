@@ -20,36 +20,6 @@
 
     // ---------- LaTeX Workshop ----------
 
-    "latex-workshop.intellisense.package.enabled": true,
-
-    // Files to delete when cleaning generated files.
-    // Adds "*.synctex.gz" to the default values.
-    "latex-workshop.latex.clean.fileTypes": [
-        "*.aux",
-        "*.bbl",
-        "*.blg",
-        "*.idx",
-        "*.ind",
-        "*.lof",
-        "*.lot",
-        "*.out",
-        "*.toc",
-        "*.acn",
-        "*.acr",
-        "*.alg",
-        "*.glg",
-        "*.glo",
-        "*.gls",
-        "*.ist",
-        "*.fls",
-        "*.log",
-        "*.fdb_latexmk",
-        "*.snm",
-        "*.nav",
-        "*.dvi",
-        "*.synctex.gz"
-    ],
-
     "latex-workshop.latex.outDir": "out",
 
     // Build
@@ -82,36 +52,13 @@
         "editor.detectIndentation": false
     },
 
-    /// Be careful because line breaks will no longer match the GitHub preview.
-    // "markdown.preview.breaks": true,
-    // Instead, run a script that automatically inserts trailing backslashes when saving Markdown files.
-    // RunOnSave: https://github.com/pucelle/vscode-run-on-save
-    "runOnSave.commands": [
-        {
-            "globMatch": "**/*.md",
-            // Do not use commandBeforeSaving because this command modifies the file.
-            // Specify the Python executable directly because VSCode changes can make the normal python command unavailable.
-            "command": "~/.local/bin/python ~/linebreak.py -f ${file}",
-            // Use terminal if command not found errors still occur.
-            // ref: https://github.com/pucelle/vscode-run-on-save/issues/37
-            "runIn": "backend",
-            "runningStatusMessage": "Start insert line-break symbols into ${fileBasename}.",
-            "finishStatusMessage": "Finished.",
-            "statusMessageTimeout": 1000,
-        }
-    ],
     "markdown-pdf.displayHeaderFooter": false,
 
     // ---------- Python ----------
 
-    // Virtual environment folders.
-    "python.venvFolders": [
-        ".venv"
-    ],
-
     // Do not activate virtual environments immediately after opening a terminal.
     // ref: https://code.visualstudio.com/docs/python/environments
-    "python.terminal.activateEnvironment": false,
+    "python-envs.terminal.autoActivationType": "off",
 
     // Jupyter Notebook settings.
     "notebook.lineNumbers": "on",
@@ -120,7 +67,6 @@
         "editor.indentSize": 4,
         "editor.insertSpaces": true
     },
-    "jupyter.askForKernelRestart": true,
 
     // ---------- C/C++ ----------
     "[cpp]": {
@@ -189,6 +135,8 @@
     "files.watcherExclude": {
         "**/.git/objects/**": true,
         "**/.git/subtree-cache/**": true,
+        "**/.ruff_cache/**": true,
+        "**/.pytest_cache/**": true,
         "**/.venv/**": true,
         "**/outputs/**": true,
         "**/hostfile/**": true,
@@ -216,8 +164,6 @@
         "editor.autoIndent": "advanced",
     },
 
-    // ---------- Claude Code ----------
-    "claudeCode.preferredLocation": "panel",
     "github.copilot.enable": {
         "*": false,
     },

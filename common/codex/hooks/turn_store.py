@@ -22,7 +22,7 @@ def capture_baseline(root: Path, turn_dir: Path) -> None:
 
     tree = worktree_tree(root, turn_dir / "baseline.index")
     state_path.write_text(
-        json.dumps({"baseline_tree": tree}, indent=2, sort_keys=True),
+        json.dumps({"baseline_tree": tree}, indent=2),
         encoding="utf-8",
     )
 
@@ -41,7 +41,7 @@ def save_turn_diff(root: Path, turn_dir: Path) -> Path | None:
     state = json.loads((turn_dir / "state.json").read_text(encoding="utf-8"))
     current_tree = worktree_tree(root, turn_dir / "current.index")
     patch_path = turn_dir / "last-turn.patch"
-    write_turn_patch(root, str(state["baseline_tree"]), current_tree, patch_path)
+    write_turn_patch(root, state["baseline_tree"], current_tree, patch_path)
     if patch_path.stat().st_size == 0:
         return None
 

@@ -6,16 +6,12 @@
                     {
                         "description": "Emacs keybinds",
                         "manipulators": [
-                            // The Codex extension prompt is a webview, so VSCode/keybindings.json
-                            // bindings guarded by editorTextFocus do not apply there. Keep these Karabiner mappings.
-                            // VS Code keeps Ctrl+A/E/K/T in keybindings.json so Ctrl+A can reach tmux.
                             // ChatGPT keeps Ctrl+K/T native; its composer ignores Command+Delete.
                             {
                                 "conditions": [
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.openai\\.codex$",
-                                            "^com\\.microsoft\\.VSCode$",
                                             "^com\\.microsoft\\.Excel$",
                                             "^com\\.microsoft\\.Powerpoint$",
                                             "^com\\.microsoft\\.Word$"
@@ -38,7 +34,6 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.openai\\.codex$",
-                                            "^com\\.microsoft\\.VSCode$",
                                             "^com\\.microsoft\\.Excel$",
                                             "^com\\.microsoft\\.Powerpoint$",
                                             "^com\\.microsoft\\.Word$"
@@ -61,7 +56,6 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.openai\\.codex$",
-                                            "^com\\.microsoft\\.VSCode$",
                                             "^com\\.microsoft\\.Excel$",
                                             "^com\\.microsoft\\.Powerpoint$",
                                             "^com\\.microsoft\\.Word$"
@@ -84,7 +78,6 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.openai\\.codex$",
-                                            "^com\\.microsoft\\.VSCode$",
                                             "^com\\.microsoft\\.Excel$",
                                             "^com\\.microsoft\\.Powerpoint$",
                                             "^com\\.microsoft\\.Word$"
@@ -107,7 +100,6 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.openai\\.codex$",
-                                            "^com\\.microsoft\\.VSCode$",
                                             "^com\\.microsoft\\.Excel$",
                                             "^com\\.microsoft\\.Powerpoint$",
                                             "^com\\.microsoft\\.Word$"
@@ -130,7 +122,6 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.openai\\.codex$",
-                                            "^com\\.microsoft\\.VSCode$",
                                             "^com\\.microsoft\\.Excel$",
                                             "^com\\.microsoft\\.Powerpoint$",
                                             "^com\\.microsoft\\.Word$"
@@ -153,7 +144,6 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.openai\\.codex$",
-                                            "^com\\.microsoft\\.VSCode$",
                                             "^com\\.microsoft\\.Excel$",
                                             "^com\\.microsoft\\.Powerpoint$",
                                             "^com\\.microsoft\\.Word$"
@@ -181,7 +171,6 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.openai\\.codex$",
-                                            "^com\\.microsoft\\.VSCode$",
                                             "^com\\.microsoft\\.Excel$",
                                             "^com\\.microsoft\\.Powerpoint$",
                                             "^com\\.microsoft\\.Word$"
@@ -309,29 +298,6 @@
                                         "key_code": "delete_or_backspace",
                                         "modifiers": ["command"]
                                     }
-                                ],
-                                "type": "basic"
-                            },
-                            {
-                                "conditions": [
-                                    {
-                                        "bundle_identifiers": ["^com\\.microsoft\\.VSCode$"],
-                                        "type": "frontmost_application_if"
-                                    }
-                                ],
-                                "from": {
-                                    "key_code": "u",
-                                    "modifiers": {
-                                        "mandatory": ["control"],
-                                        "optional": ["caps_lock"]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "left_arrow",
-                                        "modifiers": ["command", "shift"]
-                                    },
-                                    { "key_code": "delete_or_backspace" }
                                 ],
                                 "type": "basic"
                             },

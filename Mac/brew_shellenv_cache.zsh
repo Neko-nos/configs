@@ -22,7 +22,7 @@ function __load_brew_shellenv_cache() {
 
     if [[ ! -r "${cache_file}" || -n "${cache_file}"(#qN.mh+24) ]]; then
         mkdir -p "${cache_file:h}"
-        if ! "${brew_cmd}" shellenv >| "${tmp_cache}"; then
+        if ! "${brew_cmd}" shellenv >|"${tmp_cache}"; then
             print -u2 -- "Warning: Failed to update Homebrew shellenv cache: ${cache_file}"
             return 1
         fi

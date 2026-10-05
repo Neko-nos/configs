@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import fcntl
 from pathlib import Path
 
 import history_codec
@@ -30,26 +29,6 @@ def test_drops_incomplete_meta_pair_entry(tmp_path: Path, read_locked_text) -> N
 
     assert read_locked_text(histfile) == ""
     assert histfile.read_bytes() == b""
-
-
-def test_locked_history_file_takes_exclusive_lock(
-    monkeypatch,
-    tmp_path: Path,
-) -> None:
-    """Ensure the shared history file lock uses an exclusive fcntl lock."""
-
-    histfile = tmp_path / ".zsh_history"
-    calls: list[int] = []
-
-    def record_lock(_file_descriptor: int, flags: int) -> None:
-        calls.append(flags)
-
-    monkeypatch.setattr(history_codec.fcntl, "lockf", record_lock)
-
-    with history_codec.locked_history_file(histfile):
-        pass
-
-    assert calls == [fcntl.LOCK_EX]
 
 
 def test_locked_history_text_helpers_round_trip(

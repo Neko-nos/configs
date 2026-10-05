@@ -23,7 +23,7 @@ source "${common_install_dir}/utils.sh"
 # Returns:
 #   Exit status of the last brew/read command run.
 #######################################
-function __install_formula {
+function __install_formula() {
     emulate -L zsh
     setopt err_return
     local formula_name="${1}"
@@ -68,7 +68,7 @@ function __install_formula {
 #   0 if the application is absent, already configured, or added successfully
 #   Non-zero if macOS cannot update the login items
 #######################################
-function __enable_login_item {
+function __enable_login_item() {
     emulate -L zsh
     setopt err_return
     local application_name="${1}"
@@ -95,7 +95,7 @@ function __enable_login_item {
 #   0 if the application is absent or opened successfully
 #   Non-zero if macOS cannot open the application
 #######################################
-function __open_application_for_setup {
+function __open_application_for_setup() {
     emulate -L zsh
     setopt err_return
     local application_name="${1}"

@@ -17,7 +17,7 @@ source "${common_install_dir}/utils.sh"
 # Returns:
 #   Exit status of the last apt-get/read command run.
 #######################################
-function __install_package {
+function __install_package() {
     local package_name="${1}"
 
     if dpkg -L "${package_name}" >/dev/null 2>&1; then
@@ -49,7 +49,7 @@ function __install_package {
 # Returns:
 #   Exit status of the last winget.exe/read command run.
 #######################################
-function __install_winget_package {
+function __install_winget_package() {
     local package_id="${1}"
     local display_name="${2}"
 

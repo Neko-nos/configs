@@ -12,7 +12,7 @@ from pathlib import Path
 
 from turn_store import apply_turn
 
-ANSI_ESCAPE_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
+ANSI_TOKEN_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]|.")
 
 
 def character_width(character: str, column: int) -> int:
@@ -89,22 +89,59 @@ def truncate_ansi(text: str, width: int) -> str:
     """
     truncated = []
     column = 0
-    index = 0
-    while index < len(text):
-        match = ANSI_ESCAPE_RE.match(text, index)
-        if match is not None:
-            truncated.append(match.group())
-            index = match.end()
+    for token in ANSI_TOKEN_RE.findall(text):
+        if token.startswith("\x1b["):
+            truncated.append(token)
             continue
 
-        character = text[index]
-        character_columns = character_width(character, column)
+        character_columns = character_width(token, column)
         if column + character_columns > width:
             break
-        truncated.append(character)
+        truncated.append(token)
         column += character_columns
-        index += 1
     return "".join(truncated) + "\x1b[0m"
+
+
+def wrap_ansi(text: str, width: int) -> list[str]:
+    """
+    Soft-wrap ANSI-styled text into independently drawable screen rows.
+
+    Args:
+        text (str): ANSI-styled text without newlines.
+        width (int): Maximum terminal width.
+
+    Returns:
+        list[str]: Display rows with styles preserved and tabs expanded.
+    """
+    rows = []
+    row = ""
+    styles = ""
+    column = 0
+    logical_column = 0
+    for token in ANSI_TOKEN_RE.findall(text):
+        if token.startswith("\x1b["):
+            row += token
+            if token in {"\x1b[m", "\x1b[0m"}:
+                styles = ""
+            elif token.endswith("m"):
+                styles += token
+            continue
+
+        character_columns = character_width(token, logical_column)
+        logical_column += character_columns
+        # Expand tabs before wrapping so their alignment survives a line break.
+        characters = " " * character_columns if token == "\t" else token
+        for character in characters:
+            character_columns = character_width(character, column)
+            if column and column + character_columns > width:
+                rows.append(row + "\x1b[0m")
+                # Scrolling can start at a continuation row, after its style origin.
+                row = styles
+                column = 0
+            row += character
+            column += character_columns
+    rows.append(row + "\x1b[0m")
+    return rows
 
 
 def file_list_lines(
@@ -184,7 +221,7 @@ def detail_lines(
 
     Args:
         entry (dict[str, object]): Selected diff manifest entry.
-        scroll (int): First visible diff line.
+        scroll (int): First visible wrapped diff row.
         width (int): Terminal width.
         height (int): Terminal height.
         status (str): Current turn state or action result.
@@ -192,7 +229,11 @@ def detail_lines(
     Returns:
         tuple[list[str], int]: Screen lines and the largest valid scroll offset.
     """
-    diff_lines = Path(str(entry["path"])).read_text(encoding="utf-8").splitlines()
+    diff_lines = [
+        row
+        for line in Path(str(entry["path"])).read_text(encoding="utf-8").splitlines()
+        for row in wrap_ansi(line, width)
+    ]
     body_height = max(1, height - 4)
     maximum_scroll = max(0, len(diff_lines) - body_height)
     scroll = min(scroll, maximum_scroll)
@@ -215,14 +256,9 @@ def draw_screen(lines: list[str], width: int, height: int) -> None:
         width (int): Terminal width.
         height (int): Terminal height.
     """
-    output = ["\x1b[H"]
-    for row in range(height):
-        output.append("\x1b[2K")
-        if row < len(lines):
-            output.append(truncate_ansi(lines[row], width))
-        if row < height - 1:
-            output.append("\r\n")
-    sys.stdout.write("".join(output))
+    rows = ["\x1b[2K" + truncate_ansi(line, width) for line in lines[:height]]
+    rows.extend(["\x1b[2K"] * (height - len(rows)))
+    sys.stdout.write("\x1b[H" + "\r\n".join(rows))
     sys.stdout.flush()
 
 

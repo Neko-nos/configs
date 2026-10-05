@@ -1,11 +1,10 @@
-autoload -Uz add-zsh-hook __python_runner __warn
+autoload -Uz add-zsh-hook __confirm __python_runner __warn
 
 typeset -g _history_last_command=""
 # Zsh-native expansion is used over $(realpath $(dirname $0)) for better performance.
 # Since this is a Zsh-only script, we prioritize avoiding subshells and external commands.
 typeset -g _history_script_dir="${${(%):-%N}:A:h}"
 typeset -g _history_warned_no_py=0
-
 
 #######################################
 # Emit a warning once per session.
@@ -21,7 +20,7 @@ typeset -g _history_warned_no_py=0
 function _history_warn_once() {
     emulate -L zsh
     local message="${1}"
-    if (( _history_warned_no_py != 0 )); then
+    if ((_history_warned_no_py != 0)); then
         return 0
     fi
     _history_warned_no_py=1
@@ -125,7 +124,7 @@ function _history_prune_failed_file() {
     fi
 
     emulate -L zsh
-    if (( last_status == 0 )); then
+    if ((last_status == 0)); then
         return 0
     fi
 
@@ -231,15 +230,7 @@ function _history_confirm_interactive_edit() {
     fi
 
     print -ru2 -- "IMPORTANT: For safe history editing, use this only when this is the only zsh session using ${histfile}."
-    print -nu2 -- "Closing them now can also trigger that rewrite. Continue only if this is actually the only zsh process using this HISTFILE. Continue? [y/N]: "
-    if read -q; then
-        # Print a newline using echo because read -q doesn't.
-        echo >&2
-        return 0
-    fi
-    # Print a newline using echo because read -q doesn't.
-    echo >&2
-    return 1
+    __confirm "Closing them now can also trigger that rewrite. Continue only if this is actually the only zsh process using this HISTFILE. Continue? [y/N]: " >&2
 }
 
 #######################################

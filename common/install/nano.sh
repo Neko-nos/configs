@@ -20,21 +20,17 @@ source "${script_dir}/utils.sh"
 # Returns:
 #   0 if the repository exists or was cloned, 1 if setup should be skipped
 #######################################
-function __ensure_nanorc_repository {
+function __ensure_nanorc_repository() {
     if [[ -d "${nanorc_repo_dir}" ]]; then
         return 0
     fi
 
     echo "Custom nanorc repository was not found: ${nanorc_repo_dir}"
-    printf "Do you want to clone our nanorc (${nano_repo_url}) into ${nanorc_repo_dir}? [y/N]: "
-    if read -q; then
-        # Print a newline using echo because read -q doesn't.
-        echo
+    if __confirm "Do you want to clone our nanorc (${nano_repo_url}) into ${nanorc_repo_dir}? [y/N]: "; then
         git clone "${nano_repo_url}" "${nanorc_repo_dir}"
         return 0
     fi
 
-    echo
     echo 'Skipped nano configuration because the custom nanorc repository is unavailable.'
     return 1
 }
@@ -48,7 +44,7 @@ function __ensure_nanorc_repository {
 # Returns:
 #   0 on success or when no system syntax directory is available
 #######################################
-function __link_system_nano_syntax_files {
+function __link_system_nano_syntax_files() {
     local source_dir
     local source_file
     local -a syntax_dirs=(
@@ -79,7 +75,7 @@ function __link_system_nano_syntax_files {
 # Returns:
 #   0 on success
 #######################################
-function __link_custom_nano_syntax_files {
+function __link_custom_nano_syntax_files() {
     local source_file
     local custom_syntax_dir="${nanorc_repo_dir}/syntax"
 
@@ -104,7 +100,6 @@ if __ensure_nanorc_repository; then
     __install_repo_path "${nanorc_repo_dir}/.nanorc" "${HOME}/.nanorc" '.nanorc' link
     __link_custom_nano_syntax_files
 fi
-
 
 unset -v script_dir
 unset -v nanorc_repo_dir

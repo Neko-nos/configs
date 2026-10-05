@@ -31,15 +31,15 @@ function configure_gh_apt_repository() {
     fi
 
     sudo mkdir -p -m 755 /etc/apt/keyrings
-    wget -nv -O - https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-        | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg >/dev/null
+    wget -nv -O - https://cli.github.com/packages/githubcli-archive-keyring.gpg |
+        sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg >/dev/null
     sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
 
     sudo mkdir -p -m 755 /etc/apt/sources.list.d
     local architecture
     architecture="$(dpkg --print-architecture)"
-    echo "deb [arch=${architecture} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
-        | sudo tee "${source_list}" >/dev/null
+    echo "deb [arch=${architecture} signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" |
+        sudo tee "${source_list}" >/dev/null
 }
 
 configure_gh_apt_repository

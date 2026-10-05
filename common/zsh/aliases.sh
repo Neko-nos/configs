@@ -2,7 +2,7 @@ autoload -Uz __safe_alias __warn __update_cache
 
 typeset -ga SAFE_ALIAS_INSTALL_CMD SAFE_ALIAS_UPDATE_CMD
 # Use arrays for commands to avoid word-splitting and quoting pitfalls.
-if (( ${#SAFE_ALIAS_INSTALL_CMD[@]} == 0 )); then
+if ((${#SAFE_ALIAS_INSTALL_CMD[@]} == 0)); then
     if [[ "${OSTYPE}" == "darwin"* ]]; then
         SAFE_ALIAS_INSTALL_CMD=(brew install)
         SAFE_ALIAS_UPDATE_CMD=()
@@ -30,7 +30,7 @@ if [[ -n "$LS_COLORS" ]]; then
 fi
 
 # ref: https://atmarkit.itmedia.co.jp/ait/articles/1802/01/news025.html
-__safe_alias tree 'tree -acq -I ".git|.ruff_cache|.venv|env|venv|__pycache__|.DS_Store"'
+__safe_alias tree 'tree -acq -I ".git|.ruff_cache|.pytest_cache|.venv|__pycache__|.DS_Store"'
 
 __safe_alias diff 'colordiff -u'
 __safe_alias icdiff 'icdiff -U 1 --line-numbers'

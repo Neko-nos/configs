@@ -34,7 +34,7 @@ fi
 chmod 600 "${config_path}"
 
 # Permit only this VM alias to leave the host sandbox; all trailing arguments run in the guest.
-cat > "${HOME}/.codex/rules/tart-vm-${vm_name}.rules" <<EOF
+cat >"${HOME}/.codex/rules/tart-vm-${vm_name}.rules" <<EOF
 # Keep the host sandboxed while allowing unrestricted commands only inside this VM.
 prefix_rule(
     pattern=["ssh", "${vm_name}"],

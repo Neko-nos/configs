@@ -13,8 +13,8 @@ source "${script_dir}/utils.sh"
 
 if [[ ! -f /etc/apt/sources.list.d/vscode.sources ]]; then
     # ref: https://code.visualstudio.com/docs/setup/linux
-    wget -qO- https://packages.microsoft.com/keys/microsoft.asc \
-        | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc |
+        sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
     sudo tee /etc/apt/sources.list.d/vscode.sources >/dev/null <<'EOF'
 Types: deb
 URIs: https://packages.microsoft.com/repos/code

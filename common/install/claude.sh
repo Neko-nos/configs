@@ -21,19 +21,14 @@ source "${script_dir}/utils.sh"
 # Returns:
 #   0 if Claude Code is installed, already present, or skipped
 #######################################
-function __install_claude_if_missing {
+function __install_claude_if_missing() {
     if command -v claude >/dev/null 2>&1; then
         echo 'You have already installed Claude Code.'
         return 0
     fi
 
-    printf 'Do you want to install Claude Code? [y/N]: '
-    if read -q; then
-        # Print a newline using echo because read -q doesn't.
-        echo
+    if __confirm 'Do you want to install Claude Code? [y/N]: '; then
         curl -fsSL https://claude.ai/install.sh | bash
-    else
-        echo
     fi
 }
 

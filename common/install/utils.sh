@@ -1,29 +1,6 @@
 #!/bin/zsh
 
-#######################################
-# Read a yes/no confirmation from stdin.
-# Globals:
-#   None
-# Arguments:
-#   1: Prompt message
-# Outputs:
-#   Writes the prompt and a trailing newline to stdout.
-# Returns:
-#   0 if the user answers yes, 1 otherwise.
-#######################################
-function __confirm() {
-    local prompt="${1}"
-
-    printf '%s' "${prompt}"
-    if read -q; then
-        # Print a newline using echo because read -q doesn't.
-        echo
-        return 0
-    fi
-
-    echo
-    return 1
-}
+autoload -Uz "${${(%):-%N}:A:h}/../zsh/functions/__confirm"
 
 #######################################
 # Install a repository-managed path with an optional replacement prompt.
@@ -40,7 +17,7 @@ function __confirm() {
 #   0 if installed, already matching, or intentionally skipped
 #   1 if source path does not exist or install mode is invalid
 #######################################
-function __install_repo_path {
+function __install_repo_path() {
     local source_path="${1}"
     local destination_path="${2}"
     local display_name="${3}"
@@ -68,12 +45,9 @@ function __install_repo_path {
 
     if [[ -e "${destination_path}" || -L "${destination_path}" ]]; then
         echo "You have already created ${display_name}."
-        printf "Do you want to replace it with our ${display_name}? [y/N]: "
-        if read -q; then
+        if __confirm "Do you want to replace it with our ${display_name}? [y/N]: "; then
             local timestamp="$(date +%Y%m%d%H%M%S)"
             local backup_path="${destination_path}_old_${timestamp}"
-            # Print a newline using echo because read -q doesn't.
-            echo
             mv "${destination_path}" "${backup_path}"
             echo "Renamed your ${display_name} to ${backup_path} as a backup."
             if [[ "${install_mode}" == 'link' ]]; then
@@ -81,9 +55,6 @@ function __install_repo_path {
             else
                 cp "${source_path}" "${destination_path}"
             fi
-        else
-            echo
-            return 0
         fi
         return 0
     fi

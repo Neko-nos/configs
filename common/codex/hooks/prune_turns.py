@@ -33,27 +33,6 @@ def prune_diff_sessions(turn_dir: Path, retention_days: int) -> None:
                 shutil.rmtree(session)
 
 
-def retention_parser(description: str) -> argparse.ArgumentParser:
-    """
-    Build the parser shared by the cleanup and legacy hooks.
-
-    Args:
-        description (str): Description shown in command help.
-
-    Returns:
-        argparse.ArgumentParser: Parser with the retention option.
-    """
-    parser = argparse.ArgumentParser(description=description)
-    parser.add_argument(
-        "-r",
-        "--retention-days",
-        type=int,
-        default=30,
-        help="prune other sessions after this many inactive days (default: 30)",
-    )
-    return parser
-
-
 def main() -> int:
     """
     Prune inactive sessions independently of baseline capture.
@@ -61,7 +40,14 @@ def main() -> int:
     Returns:
         int: Process exit status.
     """
-    parser = retention_parser("Prune saved Codex turn reviews.")
+    parser = argparse.ArgumentParser(description="Prune saved Codex turn reviews.")
+    parser.add_argument(
+        "-r",
+        "--retention-days",
+        type=int,
+        default=30,
+        help="prune other sessions after this many inactive days (default: 30)",
+    )
     args = parser.parse_args()
     context = read_hook_context()
     if context is None:

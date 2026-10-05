@@ -49,7 +49,7 @@ while (($# > 0)); do
             export ZSH_STARTUP_BENCHMARK_KEEP_RESULTS='true'
             shift
             ;;
-        -h|--help)
+        -h | --help)
             usage
             exit 0
             ;;

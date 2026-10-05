@@ -17,7 +17,7 @@ source "${common_install_dir}/utils.sh"
 # Returns:
 #   Exit status of the last apt-get/read command run.
 #######################################
-function __install_package {
+function __install_package() {
     local package_name="${1}"
 
     if dpkg -L "${package_name}" >/dev/null 2>&1; then

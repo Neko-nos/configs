@@ -20,24 +20,19 @@ function ensure_zprofile_envs() {
     local os_name="${1}"
 
     # Our .zshrc requires some env variables to be set in advance
-    printf 'Did you already set FILTER_CMD in .zprofile? [y/N]: '
-    if ! read -q; then
-        # Print a newline using echo because read -q doesn't.
-        echo
+    if ! __confirm 'Did you already set FILTER_CMD in .zprofile? [y/N]: '; then
         echo 'Appending FILTER_CMD to ~/.zprofile.'
-        echo '# Envs used for .zshrc' >> ~/.zprofile
-        echo 'export FILTER_CMD="fzf"' >> ~/.zprofile
+        echo '# Envs used for .zshrc' >>~/.zprofile
+        echo 'export FILTER_CMD="fzf"' >>~/.zprofile
     fi
     echo
 
-    printf 'Did you already set envs for CONFIGS_COMMON_ZSH and __os_specific_zsh_var in .zprofile? [y/N]: '
-    if ! read -q; then
-        echo
+    if ! __confirm 'Did you already set envs for CONFIGS_COMMON_ZSH and __os_specific_zsh_var in .zprofile? [y/N]: '; then
         echo 'Appending CONFIGS_COMMON_ZSH and __os_specific_zsh_var to ~/.zprofile.'
-        echo 'export CONFIGS_COMMON_ZSH="$HOME/configs/common/zsh"' >> ~/.zprofile
-        echo 'export __os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"' >> ~/.zprofile
-        echo "export \${__os_specific_zsh_var}=\"\$HOME/configs/${os_name}\"" >> ~/.zprofile
-        echo 'unset -v __os_specific_zsh_var' >> ~/.zprofile
+        echo 'export CONFIGS_COMMON_ZSH="$HOME/configs/common/zsh"' >>~/.zprofile
+        echo 'export __os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"' >>~/.zprofile
+        echo "export \${__os_specific_zsh_var}=\"\$HOME/configs/${os_name}\"" >>~/.zprofile
+        echo 'unset -v __os_specific_zsh_var' >>~/.zprofile
     fi
     echo
 }
@@ -58,12 +53,9 @@ function configure_zprofile() {
     local zprofile_template="${installer_dir}/../../${os_name}/.zprofile_template"
 
     if [[ -f "${zprofile_template}" ]]; then
-        printf 'Do you want to create ~/.zprofile from our template? [y/N]: '
-        if read -q; then
-            echo
+        if __confirm 'Do you want to create ~/.zprofile from our template? [y/N]: '; then
             __install_repo_path "${zprofile_template}" ~/.zprofile '.zprofile' copy
         else
-            echo
             ensure_zprofile_envs "${os_name}"
         fi
     fi
@@ -90,8 +82,8 @@ if command -v sheldon >/dev/null 2>&1; then
     echo 'You have already installed sheldon.'
 else
     # ref: https://github.com/rossmacarthur/sheldon?tab=readme-ov-file#pre-built-binaries
-    curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
-    | bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
+    curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh |
+        bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
 fi
 if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/sheldon/plugins.toml" ]]; then
     echo 'You have already created sheldon config file.'

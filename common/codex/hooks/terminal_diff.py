@@ -1,10 +1,7 @@
 import json
 import os
-import re
 import subprocess
 from pathlib import Path
-
-ANSI_SGR_RE = re.compile(r"\x1b\[([0-9;]*)m")
 
 
 def parse_hunk_header(line: str) -> tuple[int, int]:
@@ -67,13 +64,10 @@ def path_extension(path: str | None) -> str | None:
     """
     if path is None:
         return None
-    suffix = Path(path).suffix
-    if suffix == "":
-        return None
-    return suffix.removeprefix(".")
+    return Path(path).suffix.removeprefix(".") or None
 
 
-def highlighted_diff_sections(sections: list[list[str]]) -> list[list[str | None]]:
+def highlighted_diff_sections(sections: list[list[str]]) -> list[list[str]]:
     """
     Highlight every diff hunk in one invocation of the installed helper.
 
@@ -81,8 +75,7 @@ def highlighted_diff_sections(sections: list[list[str]]) -> list[list[str | None
         sections (list[list[str]]): Per-file unified diff sections.
 
     Returns:
-        list[list[str | None]]: Per-file highlighted content lines, using None
-            when syntax highlighting is unavailable.
+        list[list[str]]: Per-file content lines, highlighted when available.
     """
     section_hunks = [diff_section_hunks(section) for section in sections]
     requests = [
@@ -120,18 +113,9 @@ def highlighted_diff_sections(sections: list[list[str]]) -> list[list[str | None
     ):
         highlighted_lines = []
         for lines, highlighted in zip(hunks, highlighted_hunks, strict=True):
-            if highlighted is None:
-                highlighted_lines.extend([None] * len(lines))
-                continue
-            rendered = [
-                keep_row_background(line)
-                for line in highlighted.split("\n")[: len(lines)]
-            ]
-            if len(rendered) != len(lines):
-                raise RuntimeError(
-                    "syntect highlighter returned an unexpected line count"
-                )
-            highlighted_lines.extend(rendered)
+            highlighted_lines.extend(
+                lines if highlighted is None else highlighted.split("\n")[: len(lines)]
+            )
         highlighted_files.append(highlighted_lines)
     return highlighted_files
 
@@ -160,31 +144,6 @@ def diff_section_hunks(section: list[str]) -> list[list[str]]:
     return hunks
 
 
-def keep_row_background(text: str) -> str:
-    """
-    Remove ANSI background resets from embedded syntax-highlighted text.
-
-    Args:
-        text (str): ANSI-highlighted text.
-
-    Returns:
-        str: Text that can be rendered inside a diff row background.
-    """
-
-    def replace_sgr(match: re.Match[str]) -> str:
-        raw_params = match.group(1)
-        params = ["0"] if raw_params == "" else raw_params.split(";")
-        if "0" in params or "00" in params:
-            return "\x1b[39m"
-        if "49" in params:
-            params = [param for param in params if param != "49"]
-        if not params:
-            return ""
-        return f"\x1b[{';'.join(params)}m"
-
-    return ANSI_SGR_RE.sub(replace_sgr, text)
-
-
 def diff_content_text(line: str) -> str | None:
     """
     Return code text from a unified diff content line.
@@ -195,11 +154,7 @@ def diff_content_text(line: str) -> str | None:
     Returns:
         str | None: Code text without the diff prefix, or None for metadata.
     """
-    if line.startswith("+") and not line.startswith("+++"):
-        return line[1:]
-    if line.startswith("-") and not line.startswith("---"):
-        return line[1:]
-    if line.startswith(" "):
+    if line.startswith(("+", "-", " ")) and not line.startswith(("+++", "---")):
         return line[1:]
     return None
 
@@ -284,55 +239,58 @@ def section_line_counts(section: list[str]) -> tuple[int, int]:
 
 
 def render_terminal_diff_row(
-    line_number: int | None,
+    line_number: int,
     sign: str,
     text: str,
-    highlighted_text: str | None,
     line_number_width: int,
-    background: tuple[int, int, int] | None,
-    sign_color: int | None,
-    dim_content: bool = False,
 ) -> str:
     """
     Render one Codex-like terminal diff row.
 
     Args:
-        line_number (int | None): Line number to display.
+        line_number (int): Line number to display.
         sign (str): Diff sign column.
-        text (str): Code text.
-        highlighted_text (str | None): Pre-highlighted code text.
+        text (str): Code text, highlighted when available.
         line_number_width (int): Width of the line-number gutter.
-        background (tuple[int, int, int] | None): Optional line background.
-        sign_color (int | None): Optional sign foreground.
-        dim_content (bool): Whether syntax content should be dimmed.
 
     Returns:
         str: ANSI-rendered row.
     """
+    if sign == "+":
+        # ref: https://github.com/openai/codex/blob/da4c8ca57d40b074bdc1b5b1218851100150c56b/codex-rs/tui/src/diff_render.rs#L61
+        background = (33, 58, 43)
+        sign_color = 32
+    elif sign == "-":
+        # ref: https://github.com/openai/codex/blob/da4c8ca57d40b074bdc1b5b1218851100150c56b/codex-rs/tui/src/diff_render.rs#L62
+        background = (74, 34, 29)
+        sign_color = 31
+    else:
+        background = None
+        sign_color = None
+
     # ref: https://github.com/nornagon/crossterm/blob/87db8bfa6dc99427fd3b071681b07fc31c6ce995/src/style/types/attribute.rs#L94
     reset = "\x1b[0m"
-    number = "" if line_number is None else str(line_number)
-    gutter_text = f"{number:>{line_number_width}} "
+    gutter_text = f"{line_number:>{line_number_width}} "
     gutter = ansi_code(background=background, dim=True) + gutter_text
     sign_span = ansi_code(sign_color, background, bold=sign != " ") + sign
-    content_style = ansi_code(background=background, dim=dim_content)
-    highlighted = highlighted_text if highlighted_text is not None else text
+    content_style = ansi_code(background=background, dim=sign == "-")
     clear_to_end = f"{ansi_code(background=background)}\x1b[K" if background else ""
-    return f"{gutter}{sign_span}{content_style}{highlighted}{clear_to_end}{reset}"
+    return f"{gutter}{sign_span}{content_style}{text}{clear_to_end}{reset}"
 
 
 def render_terminal_diff_section(
-    section: list[str], highlighted_lines: list[str | None]
-) -> list[str]:
+    section: list[str], highlighted_lines: list[str]
+) -> tuple[str | None, str, int, int]:
     """
     Render one file section of a unified diff as Codex-like ANSI rows.
 
     Args:
         section (list[str]): Per-file unified diff lines.
-        highlighted_lines (list[str | None]): Syntax colors for the content lines.
+        highlighted_lines (list[str]): Content lines, highlighted when available.
 
     Returns:
-        list[str]: ANSI-rendered lines.
+        tuple[str | None, str, int, int]: Display path, ANSI-rendered diff,
+            and added and removed line counts.
     """
     # ref: https://github.com/nornagon/crossterm/blob/87db8bfa6dc99427fd3b071681b07fc31c6ce995/src/style/types/attribute.rs#L94
     reset = "\x1b[0m"
@@ -352,10 +310,9 @@ def render_terminal_diff_section(
         f"({ansi_code(32)}+{added}{reset} {ansi_code(31)}-{deleted}{reset})"
     )
     lines = [header, ""]
-    old_number: int | None = None
-    new_number: int | None = None
+    old_number = new_number = 0
     line_number_width = 1
-    highlighted_index = 0
+    highlighted = iter(highlighted_lines)
 
     for line in section:
         if line.startswith("@@"):
@@ -366,62 +323,23 @@ def render_terminal_diff_section(
                 line_number_width,
             )
             lines.append(f"{ansi_code(dim=True)}{line}{reset}")
-        elif line.startswith("+") and not line.startswith("+++"):
-            highlighted = highlighted_lines[highlighted_index]
-            highlighted_index += 1
+        elif diff_content_text(line) is not None:
+            sign = line[0]
             lines.append(
                 render_terminal_diff_row(
-                    new_number,
-                    "+",
-                    line[1:],
-                    highlighted,
+                    old_number if sign == "-" else new_number,
+                    sign,
+                    next(highlighted),
                     line_number_width,
-                    # ref: https://github.com/openai/codex/blob/da4c8ca57d40b074bdc1b5b1218851100150c56b/codex-rs/tui/src/diff_render.rs#L61
-                    (33, 58, 43),
-                    32,
                 ),
             )
-            if new_number is not None:
-                new_number += 1
-        elif line.startswith("-") and not line.startswith("---"):
-            highlighted = highlighted_lines[highlighted_index]
-            highlighted_index += 1
-            lines.append(
-                render_terminal_diff_row(
-                    old_number,
-                    "-",
-                    line[1:],
-                    highlighted,
-                    line_number_width,
-                    # ref: https://github.com/openai/codex/blob/da4c8ca57d40b074bdc1b5b1218851100150c56b/codex-rs/tui/src/diff_render.rs#L62
-                    (74, 34, 29),
-                    31,
-                    dim_content=True,
-                ),
-            )
-            if old_number is not None:
+            if sign != "+":
                 old_number += 1
-        elif line.startswith(" ") and old_number is not None and new_number is not None:
-            highlighted = highlighted_lines[highlighted_index]
-            highlighted_index += 1
-            lines.append(
-                render_terminal_diff_row(
-                    new_number,
-                    " ",
-                    line[1:],
-                    highlighted,
-                    line_number_width,
-                    None,
-                    None,
-                ),
-            )
-            old_number += 1
-            new_number += 1
-        elif line.startswith(("diff --git ", "index ", "--- ", "+++ ")):
-            continue
+            if sign != "-":
+                new_number += 1
         elif line.startswith(("Binary files ", "new file ", "deleted file ")):
             lines.append(f"{ansi_code(dim=True)}{line}{reset}")
-    return lines
+    return path, "\n".join(lines) + "\n", added, deleted
 
 
 def render_terminal_diff_files(
@@ -440,10 +358,6 @@ def render_terminal_diff_files(
     sections = split_diff_sections(diff_text)
     highlighted_sections = highlighted_diff_sections(sections)
     return [
-        (
-            section_path(section),
-            "\n".join(render_terminal_diff_section(section, highlighted)) + "\n",
-            *section_line_counts(section),
-        )
+        render_terminal_diff_section(section, highlighted)
         for section, highlighted in zip(sections, highlighted_sections, strict=True)
     ]

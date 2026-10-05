@@ -20,10 +20,10 @@
         "when": "terminalFocus && !terminalTextSelected && !terminalTextSelectedInFocused"
     },
     {
-        // Preserve the shell's ctrl+u while the bundle-wide Codex prompt mapping is active.
-        "key": "cmd+shift+left",
+        // Forward nano's Ctrl+Z undo binding through local and remote terminals.
+        "key": "cmd+z",
         "command": "workbench.action.terminal.sendSequence",
-        "args": { "text": "\u0015" },
+        "args": { "text": "\u001a" },
         "when": "terminalFocus"
     },
     {

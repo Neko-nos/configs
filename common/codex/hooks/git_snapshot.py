@@ -53,10 +53,6 @@ def git_worktree_root(cwd: Path) -> Path | None:
     Returns:
         Path | None: Git worktree root, or None outside a Git worktree.
     """
-    inside_worktree = run_git(["rev-parse", "--is-inside-work-tree"], cwd)
-    if inside_worktree.returncode != 0 or inside_worktree.stdout.strip() != "true":
-        return None
-
     root = run_git(["rev-parse", "--show-toplevel"], cwd)
     if root.returncode != 0:
         return None
@@ -78,10 +74,8 @@ def worktree_tree(root: Path, index_path: Path) -> str:
     env["GIT_INDEX_FILE"] = str(index_path)
 
     head = run_git(["rev-parse", "--verify", "HEAD"], root, env=env)
-    if head.returncode == 0:
-        run_git(["read-tree", "HEAD"], root, env=env)
-    else:
-        run_git(["read-tree", "--empty"], root, env=env)
+    treeish = "HEAD" if head.returncode == 0 else "--empty"
+    run_git(["read-tree", treeish], root, env=env)
 
     run_git(["add", "-A", "--", "."], root, env=env)
     tree = run_git(["write-tree"], root, env=env)
