@@ -27,13 +27,8 @@ function __install_claude_if_missing() {
         return 0
     fi
 
-    printf 'Do you want to install Claude Code? [y/N]: '
-    if read -q; then
-        # Print a newline using echo because read -q doesn't.
-        echo
+    if __confirm 'Do you want to install Claude Code? [y/N]: '; then
         curl -fsSL https://claude.ai/install.sh | bash
-    else
-        echo
     fi
 }
 

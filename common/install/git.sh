@@ -6,6 +6,8 @@ set -e
 script_dir="${${(%):-%N}:A:h}"
 common_gitdir="${script_dir}/../git"
 
+source "${script_dir}/utils.sh"
+
 #######################################
 # Set up ~/.gitconfig with user info and a shared include.
 # Globals:
@@ -31,16 +33,11 @@ function __set_up_gitconfig() {
 
 if [[ -f ~/.gitconfig ]]; then
     echo 'You have already created .gitconfig'
-    printf 'Do you want to include our .gitconfig? [y/N]: '
-    if read -q; then
+    if __confirm 'Do you want to include our .gitconfig? [y/N]: '; then
         timestamp="$(date +%Y%m%d%H%M%S)"
-        # Print a newline using echo because read -q doesn't.
-        echo
         mv ~/.gitconfig ~/.gitconfig_old_"${timestamp}"
         echo "Renamed your .gitconfig to .gitconfig_old_${timestamp} as a backup file."
         __set_up_gitconfig
-    else
-        echo
     fi
 else
     echo
@@ -49,16 +46,11 @@ fi
 
 if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore" ]]; then
     echo 'You have already created global git ignore file.'
-    printf 'Do you want to replace it with our global git ignore file? [y/N]: '
-    if read -q; then
+    if __confirm 'Do you want to replace it with our global git ignore file? [y/N]: '; then
         timestamp="$(date +%Y%m%d%H%M%S)"
-        # Print a newline using echo because read -q doesn't.
-        echo
         mv "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore_old_${timestamp}"
         echo "Renamed your global git ignore file to ignore_old_${timestamp} as a backup file."
         ln -s "${common_gitdir:A}/.gitignore_template" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore"
-    else
-        echo
     fi
 else
     mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/git"

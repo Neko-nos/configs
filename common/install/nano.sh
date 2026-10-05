@@ -26,15 +26,11 @@ function __ensure_nanorc_repository() {
     fi
 
     echo "Custom nanorc repository was not found: ${nanorc_repo_dir}"
-    printf "Do you want to clone our nanorc (${nano_repo_url}) into ${nanorc_repo_dir}? [y/N]: "
-    if read -q; then
-        # Print a newline using echo because read -q doesn't.
-        echo
+    if __confirm "Do you want to clone our nanorc (${nano_repo_url}) into ${nanorc_repo_dir}? [y/N]: "; then
         git clone "${nano_repo_url}" "${nanorc_repo_dir}"
         return 0
     fi
 
-    echo
     echo 'Skipped nano configuration because the custom nanorc repository is unavailable.'
     return 1
 }
