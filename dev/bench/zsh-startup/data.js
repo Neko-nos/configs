@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1791010372470,
+  "lastUpdate": 1791204519174,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2591,6 +2591,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 75.720491,
             "range": "± 0.921469",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ceef7c733c0789e7235e5e634b332c3825e361b5",
+          "message": "Merge pull request #117 from Neko-nos/refactor/remove_legacy_code\n\nRefactor/remove legacy code",
+          "timestamp": "2026-10-05T21:47:52+09:00",
+          "tree_id": "2e656e67c1baacb5cf7f2f442d5536f25eba7d78",
+          "url": "https://github.com/Neko-nos/configs/commit/ceef7c733c0789e7235e5e634b332c3825e361b5"
+        },
+        "date": 1791204518926,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 148.718421,
+            "range": "± 334.447215",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 72.661496,
+            "range": "± 0.539482",
             "unit": "ms"
           }
         ]
