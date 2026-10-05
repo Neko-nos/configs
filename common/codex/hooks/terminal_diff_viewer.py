@@ -256,14 +256,9 @@ def draw_screen(lines: list[str], width: int, height: int) -> None:
         width (int): Terminal width.
         height (int): Terminal height.
     """
-    output = ["\x1b[H"]
-    for row in range(height):
-        output.append("\x1b[2K")
-        if row < len(lines):
-            output.append(truncate_ansi(lines[row], width))
-        if row < height - 1:
-            output.append("\r\n")
-    sys.stdout.write("".join(output))
+    rows = ["\x1b[2K" + truncate_ansi(line, width) for line in lines[:height]]
+    rows.extend(["\x1b[2K"] * (height - len(rows)))
+    sys.stdout.write("\x1b[H" + "\r\n".join(rows))
     sys.stdout.flush()
 
 

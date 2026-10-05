@@ -38,7 +38,7 @@ def read_hook_context() -> tuple[Path, Path] | None:
             outside a CLI session with a Git working tree.
     """
     # ref: https://developers.openai.com/codex/hooks#common-input-fields
-    payload = json.loads(sys.stdin.read())
+    payload = json.load(sys.stdin)
     if not is_cli_session(payload["transcript_path"]):
         return None
 
