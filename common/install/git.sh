@@ -44,18 +44,8 @@ else
     __set_up_gitconfig
 fi
 
-if [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore" ]]; then
-    echo 'You have already created global git ignore file.'
-    if __confirm 'Do you want to replace it with our global git ignore file? [y/N]: '; then
-        timestamp="$(date +%Y%m%d%H%M%S)"
-        mv "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore_old_${timestamp}"
-        echo "Renamed your global git ignore file to ignore_old_${timestamp} as a backup file."
-        ln -s "${common_gitdir:A}/.gitignore_template" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore"
-    fi
-else
-    mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/git"
-    ln -s "${common_gitdir:A}/.gitignore_template" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore"
-fi
+mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/git"
+__install_repo_path "${common_gitdir}/.gitignore_template" "${XDG_CONFIG_HOME:-$HOME/.config}/git/ignore" 'global git ignore file' link
 
 echo 'Finished git configuration!'
 echo ''
