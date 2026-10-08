@@ -11,13 +11,19 @@
         "ui"
     ],
     "activationEvents": [
+        "onStartupFinished",
         "onOpenExternalUri:http",
         "onOpenExternalUri:https"
     ],
     "enabledApiProposals": [
-        "externalUriOpener"
+        "externalUriOpener",
+        "terminalDataWriteEvent",
+        "terminalDimensions"
     ],
     "main": "./extension.js",
+    "dependencies": {
+        "@xterm/headless": "6.0.0"
+    },
     "capabilities": {
         "untrustedWorkspaces": {
             "supported": true
