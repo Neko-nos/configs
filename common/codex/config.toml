@@ -8,7 +8,6 @@ model_reasoning_effort = "xhigh"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
 default_permissions = "vm_automation"
-personality = "pragmatic"
 service_tier = "priority"
 
 [permissions.workspace_with_secret_denies]
@@ -63,19 +62,19 @@ allow_local_binding = true
 [shell_environment_policy]
 inherit = "all"
 ignore_default_excludes = false
-exclude = [
-    "AWS_*",
-    "AZURE_*",
-    "GCP_*",
-    "GOOGLE_*",
-    "GH_TOKEN",
-    "GITHUB_TOKEN",
-    "ANTHROPIC_API_KEY",
-    "OPENAI_API_KEY",
-    "HUGGINGFACE_*",
-    "HF_*",
-    "KAGGLE_*",
-]
+
+[shell_environment_policy.filters]
+"AWS_*" = "exclude"
+"AZURE_*" = "exclude"
+"GCP_*" = "exclude"
+"GOOGLE_*" = "exclude"
+"GH_TOKEN" = "exclude"
+"GITHUB_TOKEN" = "exclude"
+"ANTHROPIC_API_KEY" = "exclude"
+"OPENAI_API_KEY" = "exclude"
+"HUGGINGFACE_*" = "exclude"
+"HF_*" = "exclude"
+"KAGGLE_*" = "exclude"
 
 [notice]
 hide_rate_limit_model_nudge = true
