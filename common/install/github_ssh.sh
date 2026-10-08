@@ -72,10 +72,7 @@ function ensure_agent() {
     if [[ -n "${SSH_AUTH_SOCK:-}" ]]; then
         if ssh-add -l >/dev/null 2>&1; then
             return 0
-        fi
-
-        local ssh_add_status="${?}"
-        if [[ "${ssh_add_status}" -eq 1 ]]; then
+        elif [[ "${?}" -eq 1 ]]; then
             return 0
         fi
     fi
