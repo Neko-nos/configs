@@ -1,7 +1,6 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
-# Stop running this script if any error occurs
-set -e
+set -euo pipefail
 
 #######################################
 # Install rustup with a minimal Rust toolchain when it is missing.

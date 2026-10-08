@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 autoload -Uz "${${(%):-%N}:A:h}/../zsh/functions/__confirm"
 

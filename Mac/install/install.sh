@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-# Stop running this script if any error occurs
-set -e
+set -euo pipefail
 
 # Keep this distinct from script_dir; sourced child installers may unset script_dir.
 install_script_dir="${${(%):-%N}:A:h}"

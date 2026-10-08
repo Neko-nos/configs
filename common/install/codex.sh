@@ -1,7 +1,6 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
-# Stop running this script if any error occurs
-set -e
+set -euo pipefail
 
 script_dir="${${(%):-%N}:A:h}"
 common_codexdir="${script_dir}/../codex"

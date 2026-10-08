@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-# Stop running this script if any error occurs
-set -e
+set -euo pipefail
 
 script_dir="${${(%):-%N}:A:h}"
 common_install_dir="${script_dir}/../../common/install"

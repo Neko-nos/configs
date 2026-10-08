@@ -1,7 +1,6 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
-# Stop running this script if any error occurs
-set -e
+set -euo pipefail
 
 script_dir="${${(%):-%N}:A:h}"
 
@@ -75,8 +74,6 @@ else
     exit 1
 fi
 
-__os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
-
 # sheldon
 if command -v sheldon >/dev/null 2>&1; then
     echo 'You have already installed sheldon.'
@@ -116,7 +113,11 @@ configure_zprofile "${OSNAME}" "${script_dir}"
 # Only source ~/.zprofile here. ~/.zshrc depends on tools and plugins that may
 # still be unavailable during installation, so loading it in the installer can
 # fail before the new shell environment is fully ready.
+# Profiles may expand unset variables (e.g. LD_LIBRARY_PATH) and expect
+# pipelines to return the last command's status.
+set +uo pipefail
 source ~/.zprofile
+set -uo pipefail
 
 # Cleaning up
 unset -v script_dir

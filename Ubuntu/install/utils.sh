@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 script_dir="${${(%):-%N}:A:h}"
 common_install_dir="${script_dir}/../../common/install"
