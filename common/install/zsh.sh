@@ -75,8 +75,6 @@ else
     exit 1
 fi
 
-__os_specific_zsh_var="CONFIGS_${OSTYPE//[^a-zA-Z0-9]/_}_ZSH"
-
 # sheldon
 if command -v sheldon >/dev/null 2>&1; then
     echo 'You have already installed sheldon.'
