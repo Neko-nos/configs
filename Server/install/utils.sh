@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #######################################
 # Read a yes/no confirmation from stdin.
@@ -80,14 +80,14 @@ function __install_repo_path() {
 
     source_resolved_path="$(readlink -f "${source_path}")"
 
-    if [[ "${install_mode}" == "link" && -L "${destination_path}" \
-        && "$(readlink -f "${destination_path}")" == "${source_resolved_path}" ]]; then
+    if [[ "${install_mode}" == "link" && -L "${destination_path}" &&
+        "$(readlink -f "${destination_path}")" == "${source_resolved_path}" ]]; then
         printf "You have already linked %s to the repository copy.\n" "${display_name}"
         return 0
     fi
 
-    if [[ "${install_mode}" == "copy" && -f "${destination_path}" && ! -L "${destination_path}" ]] \
-        && cmp -s "${source_path}" "${destination_path}"; then
+    if [[ "${install_mode}" == "copy" && -f "${destination_path}" && ! -L "${destination_path}" ]] &&
+        cmp -s "${source_path}" "${destination_path}"; then
         printf "You have already copied %s from the repository.\n" "${display_name}"
         return 0
     fi

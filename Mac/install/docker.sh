@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-# Stop running this script if any error occurs
-set -e
+set -euo pipefail
 
 docker_script_dir="${${(%):-%N}:A:h}"
 

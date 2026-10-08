@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 script_dir="${${(%):-%N}:A:h}"
 common_install_dir="${script_dir}/../../common/install"
@@ -53,7 +53,8 @@ function __install_winget_package() {
     local package_id="${1}"
     local display_name="${2}"
 
-    if winget.exe list "${package_id}" | grep -Fq -- "${package_id}"; then
+    # Consume all output so pipefail does not treat an early pipe close as failure.
+    if winget.exe list "${package_id}" | grep -F -- "${package_id}" >/dev/null; then
         echo "You have already installed ${display_name}."
         if __confirm "Update ${display_name}? [y/N]: "; then
             winget.exe upgrade "${package_id}"

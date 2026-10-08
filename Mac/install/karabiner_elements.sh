@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-# Stop running this script if any error occurs
 set -euo pipefail
 
 script_dir="${${(%):-%N}:A:h}"

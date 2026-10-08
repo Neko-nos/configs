@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -euo pipefail
 
@@ -25,9 +25,9 @@ function install_codex_cli() {
     curl -fsSL "https://raw.githubusercontent.com/openai/codex/refs/heads/main/scripts/install/install.sh" -o "${installer_path}"
 
     CODEX_INSTALL_DIR="${codex_install_dir}" \
-    CODEX_HOME="${codex_home}" \
-    CODEX_NON_INTERACTIVE=true \
-    sh "${installer_path}"
+        CODEX_HOME="${codex_home}" \
+        CODEX_NON_INTERACTIVE=true \
+        sh "${installer_path}"
 
     command -v codex >/dev/null 2>&1
 }
@@ -52,8 +52,8 @@ function main() {
 
     install_codex_cli "${cache_dir}" "${user_bin_dir}" "${codex_home}"
     CODEX_HOME="${codex_home}" \
-    CODEX_SQLITE_HOME="${codex_sqlite_home}" \
-    zsh "${repo_root}/common/install/codex.sh"
+        CODEX_SQLITE_HOME="${codex_sqlite_home}" \
+        zsh "${repo_root}/common/install/codex.sh"
 }
 
 main
