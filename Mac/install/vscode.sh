@@ -63,6 +63,7 @@ __install_repo_path "${repo_vscodedir}/settings.json" "${vscode_user_dir}/settin
 __install_repo_path "${repo_vscodedir}/keybindings.json" "${vscode_user_dir}/keybindings.json" 'VSCode keybindings.json' link
 __install_repo_path "${repo_vscodedir}/argv.json" "${vscode_argv_path}" 'VSCode argv.json' link
 
+__install_vscode_extension zsh-language-server https://github.com/Neko-nos/zsh-language-server.git
 __install_vscode_extension smart-terminal-paste https://github.com/Neko-nos/smart-terminal-paste.git
 if __confirm 'Install browser-click-routing extension? [y/N]: '; then
     (
