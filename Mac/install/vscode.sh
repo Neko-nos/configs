@@ -6,9 +6,9 @@ script_dir="${${(%):-%N}:A:h}"
 repo_vscodedir="${script_dir}/../../VSCode"
 repo_vscodedir="${repo_vscodedir:A}"
 # ref: https://code.visualstudio.com/docs/configure/settings#_settings-file-locations
-vscode_user_dir="${VSCODE_USER_DIR:-$HOME/Library/Application Support/Code/User}"
-vscode_extensions_dir="${VSCODE_EXTENSIONS_DIR:-$HOME/.vscode/extensions}"
-vscode_argv_path="${VSCODE_ARGV_PATH:-$HOME/.vscode/argv.json}"
+vscode_user_dir="${HOME}/Library/Application Support/Code/User"
+vscode_extensions_dir="${HOME}/.vscode/extensions"
+vscode_argv_path="${HOME}/.vscode/argv.json"
 
 source "${script_dir}/utils.sh"
 
