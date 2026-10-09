@@ -22,6 +22,8 @@ fi
 
 mkdir -p "${vscode_user_dir}" "${vscode_extensions_dir}" "${vscode_argv_path:h}"
 
+npm install --omit=dev --prefix "${repo_vscodedir}/extensions/browser-click-routing"
+
 __install_repo_path "${repo_vscodedir}/settings.json" "${vscode_user_dir}/settings.json" 'VSCode settings.json' link
 __install_repo_path "${repo_vscodedir}/keybindings.json" "${vscode_user_dir}/keybindings.json" 'VSCode keybindings.json' link
 __install_repo_path "${repo_vscodedir}/extensions/smart-terminal-paste" "${vscode_extensions_dir}/smart-terminal-paste" 'Smart Terminal Paste extension' link

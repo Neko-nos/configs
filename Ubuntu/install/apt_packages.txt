@@ -9,3 +9,4 @@ shellcheck
 golang-go
 hyperfine
 jq
+npm
