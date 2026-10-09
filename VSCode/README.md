@@ -8,16 +8,12 @@ Editor, terminal, and language preferences.
 
 Editor and terminal shortcuts, including Emacs-style editing and tmux controls.
 
-## Local extensions (macOS)
+## Custom extensions (macOS)
 
-### Browser Click Routing
-
-Cmd+click opens web links in VSCode's integrated browser; Ctrl+click opens your default external browser.
-The installer applies the required startup options from `argv.json`.
-
-### Smart Terminal Paste
-
-Cmd+V pastes text or attaches clipboard images to Codex CLI in the integrated terminal. Remote SSH is supported.
+| Extension | Usage |
+| --- | --- |
+| [Browser Click Routing](extensions/browser-click-routing/README.md) | Cmd+click opens web links in VSCode; Ctrl+click opens your default browser. |
+| [Smart Terminal Paste](https://github.com/Neko-nos/smart-terminal-paste) | Cmd+V pastes text or attaches clipboard images to Codex CLI, including over Remote SSH. |
 
 ### Installation
 
