@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1791449823472,
+  "lastUpdate": 1791517653692,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2663,6 +2663,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 80.872278,
             "range": "± 0.428533",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "dc4c9e2d00e0db65587efd7cd8fd321cda5c8c5e",
+          "message": "Merge pull request #119 from Neko-nos/fix/vscode_and_codex\n\nFix/vscode and codex",
+          "timestamp": "2026-10-09T12:45:34+09:00",
+          "tree_id": "aa26db45a58fecc831cd5d681f70441da34227b6",
+          "url": "https://github.com/Neko-nos/configs/commit/dc4c9e2d00e0db65587efd7cd8fd321cda5c8c5e"
+        },
+        "date": 1791517653168,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 148.18054,
+            "range": "± 314.180041",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 77.547625,
+            "range": "± 0.445649",
             "unit": "ms"
           }
         ]
