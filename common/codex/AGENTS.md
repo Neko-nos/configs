@@ -150,6 +150,7 @@ Use `jaxtyping` for array/tensor type annotations. See <https://docs.kidger.site
 - Use `set` with useful options (e.g., `set -euo pipefail`) at the beginning of a script
 - Indent: 4 spaces, no tabs
 - Declare function-specific variables with `local`
+- Do not create and use custom environment variables
 - Write function comments (similar to Python docstrings) with the following style (Google Style)
   - The comment should describe the intended behaviour using:
     - Description of the function
