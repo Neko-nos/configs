@@ -77,7 +77,7 @@ Provides a setup script for modern Python environment management: **[uv](https:/
 
 ### 4. VSCode Settings & Customizations
 
-Shared editor settings and keyboard shortcuts, plus local macOS extensions for opening links in VSCode or your browser and pasting clipboard images into Codex, including over Remote SSH.\
+Shared editor settings, keyboard shortcuts, and macOS extensions for browser link routing, Codex clipboard images, and Zsh support.\
 See [VSCode/README.md](./VSCode/README.md) for extension usage and installation.
 
 ### 5. Disposable Environments for Codex
@@ -267,7 +267,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     ```
 
 14. claude.sh\
-    Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
+    Install Claude Code when needed and set up configuration links in `$CLAUDE_CONFIG_DIR` (default: `~/.claude`).
 
     ```console
     cd common/install

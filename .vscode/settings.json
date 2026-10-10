@@ -1,0 +1,7 @@
+{
+    // custom extension settings (zsh language server)
+    // https://github.com/Neko-nos/zsh-language-server
+    "files.associations": {
+        "**/common/zsh/functions/*": "zsh"
+    }
+}

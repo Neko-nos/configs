@@ -3,7 +3,14 @@
     "displayName": "Browser Click Routing",
     "description": "Opens Cmd-clicked URLs inside VS Code and Ctrl-clicked URLs externally.",
     "version": "0.1.0",
-    "publisher": "neko-nos-local",
+    "private": true,
+    "publisher": "Neko-nos",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Neko-nos/configs.git",
+        "directory": "VSCode/extensions/browser-click-routing"
+    },
     "engines": {
         "vscode": "^1.131.0"
     },
@@ -21,8 +28,17 @@
         "terminalDimensions"
     ],
     "main": "./extension.js",
+    "scripts": {
+        "check": "biome check --error-on-warnings .",
+        "format": "biome check --write .",
+        "package": "vsce package"
+    },
     "dependencies": {
         "@xterm/headless": "6.0.0"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "2.5.15",
+        "@vscode/vsce": "4.0.0"
     },
     "capabilities": {
         "untrustedWorkspaces": {

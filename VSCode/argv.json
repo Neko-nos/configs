@@ -1,3 +1,3 @@
 {
-    "enable-proposed-api": ["neko-nos-local.browser-click-routing"]
+    "enable-proposed-api": ["Neko-nos.browser-click-routing"]
 }

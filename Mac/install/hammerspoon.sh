@@ -5,7 +5,7 @@ set -euo pipefail
 script_dir="${${(%):-%N}:A:h}"
 repo_hammerspoon_dir="${script_dir}/../hammerspoon"
 repo_hammerspoon_dir="${repo_hammerspoon_dir:A}"
-hammerspoon_config_dir="${HAMMERSPOON_CONFIG_DIR:-${HOME}/.hammerspoon}"
+hammerspoon_config_dir="${HOME}/.hammerspoon"
 
 source "${script_dir}/utils.sh"
 

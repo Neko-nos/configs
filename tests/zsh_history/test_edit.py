@@ -53,7 +53,6 @@ def test_select_editor_requires_editor_configuration() -> None:
 
 
 def test_merges_append_added_while_editor_is_open(
-    monkeypatch,
     tmp_path: Path,
     read_locked_text,
 ) -> None:
@@ -69,31 +68,29 @@ def test_merges_append_added_while_editor_is_open(
         "\n".join(
             [
                 "from pathlib import Path",
-                "import os",
                 "import sys",
-                "edit_path = Path(sys.argv[1])",
+                "edit_path = Path(sys.argv[3])",
                 "edit_path.write_text(",
                 "    edit_path.read_text(encoding='utf-8') + ': 3:0;echo edited\\n',",
                 "    encoding='utf-8',",
                 ")",
-                "histfile = Path(os.environ['TARGET_HISTFILE'])",
+                "histfile = Path(sys.argv[1])",
                 "histfile.write_bytes(",
-                "    histfile.read_bytes() + bytes.fromhex(os.environ['APPEND_HEX'])",
+                "    histfile.read_bytes() + bytes.fromhex(sys.argv[2])",
                 ")",
             ],
         ),
         encoding="utf-8",
     )
-    monkeypatch.setenv("TARGET_HISTFILE", os.fspath(histfile))
-    monkeypatch.setenv(
-        "APPEND_HEX",
-        history_codec.encode_history_text(external_history).hex(),
-    )
-
     stdout = io.StringIO()
     result = history_edit.edit_history_file(
         histfile,
-        [sys.executable, str(editor_script)],
+        [
+            sys.executable,
+            str(editor_script),
+            str(histfile),
+            history_codec.encode_history_text(external_history).hex(),
+        ],
         stdout=stdout,
     )
 
@@ -146,28 +143,27 @@ def test_saves_editor_work_when_post_edit_merge_aborts(
         "\n".join(
             [
                 "from pathlib import Path",
-                "import os",
                 "import sys",
-                "edit_path = Path(sys.argv[1])",
+                "edit_path = Path(sys.argv[3])",
                 "edit_path.write_text(",
                 "    edit_path.read_text(encoding='utf-8') + ': 3:0;echo edited\\n',",
                 "    encoding='utf-8',",
                 ")",
-                "Path(os.environ['TARGET_HISTFILE']).write_bytes(",
-                "    bytes.fromhex(os.environ['REWRITTEN_HEX'])",
-                ")",
+                "Path(sys.argv[1]).write_bytes(bytes.fromhex(sys.argv[2]))",
             ],
         ),
         encoding="utf-8",
     )
-    monkeypatch.setenv("TARGET_HISTFILE", os.fspath(histfile))
-    monkeypatch.setenv(
-        "REWRITTEN_HEX",
-        history_codec.encode_history_text(rewritten_history).hex(),
-    )
-
     with pytest.raises(history_edit.HistoryEditError, match="edited history was saved"):
-        history_edit.edit_history_file(histfile, [sys.executable, str(editor_script)])
+        history_edit.edit_history_file(
+            histfile,
+            [
+                sys.executable,
+                str(editor_script),
+                str(histfile),
+                history_codec.encode_history_text(rewritten_history).hex(),
+            ],
+        )
 
     saved_files = sorted(tmp_path.glob("zsh-history-edit-abort-edited-*.txt"))
     assert len(saved_files) == 1
