@@ -267,7 +267,7 @@ If you want to run a particular script, instead of executing `install.sh`, simpl
     ```
 
 14. claude.sh\
-    Install Claude Code when needed and set up configuration links in `$CLAUDE_HOME` (default: `~/.claude`).
+    Install Claude Code when needed and set up configuration links in `$CLAUDE_CONFIG_DIR` (default: `~/.claude`).
 
     ```console
     cd common/install

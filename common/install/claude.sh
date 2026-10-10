@@ -5,7 +5,6 @@ set -euo pipefail
 script_dir="${${(%):-%N}:A:h}"
 common_claudedir="${script_dir}/../claude"
 common_codexdir="${script_dir}/../codex"
-claude_home="${CLAUDE_HOME:-$HOME/.claude}"
 
 source "${script_dir}/utils.sh"
 
@@ -33,10 +32,10 @@ function __install_claude_if_missing() {
 
 __install_claude_if_missing
 
-mkdir -p "${claude_home}"
+mkdir -p "${CLAUDE_CONFIG_DIR:-${HOME}/.claude}"
 
-__install_repo_path "${common_claudedir}/settings.json" "${claude_home}/settings.json" 'settings.json' link
-__install_repo_path "${common_codexdir}/AGENTS.md" "${claude_home}/CLAUDE.md" 'CLAUDE.md' link
+__install_repo_path "${common_claudedir}/settings.json" "${CLAUDE_CONFIG_DIR:-${HOME}/.claude}/settings.json" 'settings.json' link
+__install_repo_path "${common_codexdir}/AGENTS.md" "${CLAUDE_CONFIG_DIR:-${HOME}/.claude}/CLAUDE.md" 'CLAUDE.md' link
 
 echo 'Finished Claude Code configuration!'
 echo ''
