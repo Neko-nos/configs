@@ -58,6 +58,7 @@
 - Run `uv sync` and `uv add` outside the sandbox because they may need to update the uv cache and project environment across filesystems.
 - Use `uv run <hoge.py>` instead of `python <hoge.py>` or `uv run python <hoge.py>`.
   - Avoid using -m or __main__.py unless instructed otherwise.
+  - Do not attach `--frozen` or `--extra` to `uv run`
 
 #### pyproject.toml
 
