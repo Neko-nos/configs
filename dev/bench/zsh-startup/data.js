@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1791638420831,
+  "lastUpdate": 1791970517521,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2735,6 +2735,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 71.832817,
             "range": "± 0.276217",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a9272ab7929d8a010332e4cbf166ca66df186017",
+          "message": "Merge pull request #121 from Neko-nos/feat/codex-diff-mouse-navigation\n\nFeat/codex diff mouse navigation",
+          "timestamp": "2026-10-14T18:33:06+09:00",
+          "tree_id": "f86998e12e3defbf6d54dd55488ef37ad0ced0b2",
+          "url": "https://github.com/Neko-nos/configs/commit/a9272ab7929d8a010332e4cbf166ca66df186017"
+        },
+        "date": 1791970516848,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 207.393664,
+            "range": "± 593.544611",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 73.440479,
+            "range": "± 4.19937",
             "unit": "ms"
           }
         ]
