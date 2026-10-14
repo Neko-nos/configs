@@ -13,6 +13,7 @@ from pathlib import Path
 from turn_store import apply_turn
 
 ANSI_TOKEN_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]|.")
+MOUSE_EVENT_RE = re.compile(rb"\x1b\[<(\d+);\d+;(\d+)M")
 
 
 def character_width(character: str, column: int) -> int:
@@ -144,6 +145,24 @@ def wrap_ansi(text: str, width: int) -> list[str]:
     return rows
 
 
+def file_list_range(count: int, selected: int, height: int) -> range:
+    """
+    Locate visible files for rendering and mouse selection.
+
+    Args:
+        count (int): Number of files.
+        selected (int): Selected file index.
+        height (int): Terminal height.
+
+    Returns:
+        range: Visible file indices.
+    """
+    visible_count = min(5, max(1, height - 9))
+    start = max(0, selected - visible_count // 2)
+    start = min(start, max(0, count - visible_count))
+    return range(start, min(count, start + visible_count))
+
+
 def file_list_lines(
     entries: list[dict[str, object]],
     selected: int,
@@ -176,15 +195,13 @@ def file_list_lines(
         "│",
     ]
 
-    visible_count = min(5, max(1, height - 9))
-    start = max(0, selected - visible_count // 2)
-    start = min(start, max(0, len(entries) - visible_count))
-    end = min(len(entries), start + visible_count)
+    visible = file_list_range(len(entries), selected, height)
+    start, end = visible.start, visible.stop
     if start > 0:
         lines.append(f"│  \x1b[2m↑ {start} more\x1b[0m")
 
     content_width = max(10, width - 4)
-    for index in range(start, end):
+    for index in visible:
         entry = entries[index]
         stats = f"+{entry['added']} -{entry['removed']}"
         path_width = max(1, content_width - text_width(stats) - 3)
@@ -207,7 +224,7 @@ def file_list_lines(
             "│",
             f"│  {status}",
             "│  \x1b[2mU undo turn · R reapply turn\x1b[0m",
-            "\x1b[2m╰─ ↑/↓ select · Enter view · Esc close\x1b[0m",
+            "\x1b[2m╰─ Enter view · Esc close\x1b[0m",
         ]
     )
     return lines
@@ -243,7 +260,7 @@ def detail_lines(
     lines.extend(visible)
     lines.append(f"│ {status}")
     lines.append("│ \x1b[2mU undo turn · R reapply turn\x1b[0m")
-    lines.append("\x1b[2m╰─ ↑/↓ scroll · Space page down · B page up · Esc back\x1b[0m")
+    lines.append("\x1b[2m╰─ Space page down · B page up · Esc back\x1b[0m")
     return lines, maximum_scroll
 
 
@@ -264,13 +281,13 @@ def draw_screen(lines: list[str], width: int, height: int) -> None:
 
 def read_key(file_descriptor: int) -> bytes | None:
     """
-    Read one terminal key sequence.
+    Read one terminal key or mouse sequence.
 
     Args:
         file_descriptor (int): Terminal input file descriptor.
 
     Returns:
-        bytes | None: Key sequence, or None while waiting for input.
+        bytes | None: Input sequence, or None while waiting for input.
     """
     if not select.select([file_descriptor], [], [], 0.2)[0]:
         return None
@@ -279,7 +296,12 @@ def read_key(file_descriptor: int) -> bytes | None:
     if key != b"\x1b":  # Escape
         return key
     while select.select([file_descriptor], [], [], 0.02)[0]:
-        key += os.read(file_descriptor, 16)
+        key += os.read(file_descriptor, 1)
+        if len(key) == 2 and key[-1:] not in {b"[", b"O"}:
+            break
+        # Stop at the final byte so queued wheel events remain separate inputs.
+        if len(key) > 2 and 0x40 <= key[-1] <= 0x7E:
+            break
     return key
 
 
@@ -304,7 +326,7 @@ def view_turn(manifest_path: Path) -> None:
 
     try:
         tty.setraw(file_descriptor)
-        sys.stdout.write("\x1b[?1049h\x1b[?25l")
+        sys.stdout.write("\x1b[?1049h\x1b[?25l\x1b[?1000h\x1b[?1006h")
         sys.stdout.flush()
         while True:
             width, height = shutil.get_terminal_size()
@@ -326,6 +348,29 @@ def view_turn(manifest_path: Path) -> None:
             should_redraw = True
             if key == b"\x03":  # Ctrl+C
                 break
+
+            if mouse := MOUSE_EVENT_RE.fullmatch(key):
+                button, row = map(int, mouse.groups())
+                if button in {64, 65}:  # Wheel up/down
+                    # Approximate VS Code's 50 px step / 18 px macOS line height.
+                    # Terminal wheel reports lack pixel deltas, so round to 3 rows.
+                    # ref: https://github.com/microsoft/vscode/blob/0c9c0a4295a9222e12a605537738719455ae3056/src/vs/base/browser/ui/scrollbar/scrollableElement.ts#L23
+                    # ref: https://github.com/microsoft/vscode/blob/0c9c0a4295a9222e12a605537738719455ae3056/src/vs/editor/common/config/fontInfo.ts#L14
+                    movement = -3 if button == 64 else 3
+                    if is_showing_detail:
+                        scroll = max(0, min(maximum_scroll, scroll + movement))
+                    else:
+                        selected = max(0, min(len(entries) - 1, selected + movement))
+                elif button == 0 and not is_showing_detail:  # Left click
+                    visible = file_list_range(len(entries), selected, height)
+                    # The overflow indicator adds a row above the file list.
+                    first_row = 4 + (visible.start > 0)
+                    index = visible.start + row - first_row
+                    if index in visible:
+                        selected = index
+                        is_showing_detail = True
+                        scroll = 0
+                continue
 
             if key.lower() in {b"u", b"r"}:
                 try:
@@ -362,7 +407,7 @@ def view_turn(manifest_path: Path) -> None:
         termios.tcsetattr(
             file_descriptor, termios.TCSADRAIN, original_terminal_attributes
         )
-        sys.stdout.write("\x1b[0m\x1b[?25h\x1b[?1049l")
+        sys.stdout.write("\x1b[?1006l\x1b[?1000l\x1b[0m\x1b[?25h\x1b[?1049l")
         sys.stdout.flush()
 
 
