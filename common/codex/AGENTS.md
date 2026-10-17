@@ -15,6 +15,8 @@
 
 - Answer my questions in the chat space, not in documents of code comments.
 - Write a document for end-users, not an internal reference for developers like me.
+  - How to use the tool with a concise explanation of what it is, not how and why you implemented and designed so
+  - Do not write "Requirements"
 
 ### Coding
 
