@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1791970517521,
+  "lastUpdate": 1792227215224,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2771,6 +2771,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 73.440479,
             "range": "± 4.19937",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fd7887b5cc64e15693a9d59eaf3305eaae29d490",
+          "message": "Merge pull request #122 from Neko-nos/perf/reduce_vram_usage_vscode\n\nperf(vscode): disable unused functions",
+          "timestamp": "2026-10-17T17:52:01+09:00",
+          "tree_id": "cbe85b7a5680be0b42430b18908dc31a7f51610d",
+          "url": "https://github.com/Neko-nos/configs/commit/fd7887b5cc64e15693a9d59eaf3305eaae29d490"
+        },
+        "date": 1792227214560,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 188.054933,
+            "range": "± 531.172293",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 69.187208,
+            "range": "± 0.378935",
             "unit": "ms"
           }
         ]
