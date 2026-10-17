@@ -60,6 +60,9 @@
     // ref: https://code.visualstudio.com/docs/python/environments
     "python-envs.terminal.autoActivationType": "off",
 
+    // Pylance consumes too much memory
+    "python.analysis.languageServerMode": "light",
+
     // Jupyter Notebook settings.
     "notebook.lineNumbers": "on",
     "notebook.editorOptionsCustomizations": {
@@ -77,6 +80,10 @@
         "editor.tabSize": 2,
         "editor.insertSpaces": true
     },
+
+    // ---------- Swift ----------
+    "swift.autoGenerateLaunchConfigurations": false,
+    "swift.sourcekit-lsp.backgroundIndexing": "off",
 
     // ---------- General ----------
 
@@ -164,8 +171,6 @@
         "editor.autoIndent": "advanced",
     },
 
-    "github.copilot.enable": {
-        "*": false,
-    },
+    "chat.disableAIFeatures": true,
     "diffEditor.hideUnchangedRegions.enabled": true,
 }
