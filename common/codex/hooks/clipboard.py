@@ -46,6 +46,9 @@ def copy_view_command(view_command: str) -> bool:
                 ["tmux", "set-buffer", "-w", "-t", client, "--", view_command],
                 check=True,
             )
+            # set-buffer succeeds without delivering to a clipboard if no client exists.
+            if not client:
+                return False
         else:
             # Base64 prevents the copied text from injecting another control sequence.
             sequence = b"\x1b]52;c;" + base64.b64encode(raw_command) + b"\x07"
