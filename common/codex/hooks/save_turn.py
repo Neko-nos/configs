@@ -31,11 +31,13 @@ def save_turn() -> str | None:
     viewer_path = (
         Path(__file__).with_name("terminal_diff_viewer.py").resolve().relative_to(home)
     )
-    manifest_path = manifest_path.resolve().relative_to(home)
-    view_command = (
-        f"python ~/{shlex.quote(str(viewer_path))} "
-        f"--manifest ~/{shlex.quote(str(manifest_path))}"
+    manifest_path = manifest_path.resolve()
+    manifest_arg = (
+        f"~/{shlex.quote(str(manifest_path.relative_to(home)))}"
+        if manifest_path.is_relative_to(home)
+        else shlex.quote(str(manifest_path))
     )
+    view_command = f"python ~/{shlex.quote(str(viewer_path))} --manifest {manifest_arg}"
     copied = copy_view_command(view_command)
 
     return (
