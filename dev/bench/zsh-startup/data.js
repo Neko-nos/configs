@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792227215224,
+  "lastUpdate": 1792227894672,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2807,6 +2807,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 69.187208,
             "range": "± 0.378935",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "05f44cea2528139fcb7b2e79e534d5c472dcf956",
+          "message": "Merge pull request #123 from Neko-nos/fix/tmux-ssh-agent\n\nFix/tmux ssh agent",
+          "timestamp": "2026-10-17T18:03:32+09:00",
+          "tree_id": "1a05e35e566dfb87f30a3bcc99f7f79cc36496ef",
+          "url": "https://github.com/Neko-nos/configs/commit/05f44cea2528139fcb7b2e79e534d5c472dcf956"
+        },
+        "date": 1792227894086,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 152.246945,
+            "range": "± 334.713588",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 77.81529,
+            "range": "± 1.706818",
             "unit": "ms"
           }
         ]
