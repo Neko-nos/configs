@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+from codecs import escape_decode
 from pathlib import Path
 
 
@@ -169,6 +170,10 @@ def strip_diff_path(path: str) -> str | None:
     Returns:
         str | None: Repository-relative path, or None for `/dev/null`.
     """
+    # Git adds a tab after paths containing spaces and quotes paths using C escapes.
+    path = path.removesuffix("\t")
+    if path.startswith('"'):
+        path = escape_decode(path[1:-1].encode())[0].decode(errors="replace")
     # delete
     if path == "/dev/null":
         return None
