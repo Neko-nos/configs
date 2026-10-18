@@ -27,6 +27,9 @@ for config_file in "${repo_hammerspoon_dir}"/*.lua; do
         link
 done
 
+# Send screenshots to the clipboard so finder_paste.lua can save them in Finder.
+defaults write com.apple.screencapture target -string clipboard
+
 # init.lua calls hs.autoLaunch(true), so Hammerspoon registers itself after this first launch.
 __open_application_for_setup Hammerspoon '/Applications/Hammerspoon.app'
 

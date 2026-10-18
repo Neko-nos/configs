@@ -139,6 +139,12 @@ I use [Hammerspoon](https://www.hammerspoon.org/) to enable text selection by Op
 Run `Mac/install/hammerspoon.sh` to install Hammerspoon, enable it at login, and link the configuration to `~/.hammerspoon/init.lua`. It also installs Luacheck and StyLua with Homebrew.\
 The installer opens Hammerspoon so you can grant Accessibility access when macOS asks. macOS requires you to approve this protected permission yourself.
 
+##### Screenshots
+
+Run `Mac/install/hammerspoon.sh` to send screenshots to the clipboard by default and enable **Command+V** image pasting in Finder.
+
+With an image on the clipboard, open a folder in Finder and press **Command+V**. The image is saved as `image.png`; subsequent pastes use `image1.png`, `image2.png`, and so on, keeping existing files.
+
 ### Command-Line Environment & Tools
 
 There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.\
