@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792227894672,
+  "lastUpdate": 1792328378943,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2843,6 +2843,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 77.81529,
             "range": "± 1.706818",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "edf3c3a2647cdbe13ad84be9da3e74cea9fc61db",
+          "message": "Merge pull request #124 from Neko-nos/feat/screenshot_and_tmux\n\nFeat/screenshot and tmux",
+          "timestamp": "2026-10-18T21:58:25+09:00",
+          "tree_id": "616be6378c70122d7903572ad28b746c8b31afa6",
+          "url": "https://github.com/Neko-nos/configs/commit/edf3c3a2647cdbe13ad84be9da3e74cea9fc61db"
+        },
+        "date": 1792328378569,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 162.383993,
+            "range": "± 325.39208",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 88.699135,
+            "range": "± 1.562999",
             "unit": "ms"
           }
         ]
