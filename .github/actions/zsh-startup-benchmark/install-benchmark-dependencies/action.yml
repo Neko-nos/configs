@@ -14,6 +14,17 @@ runs:
         # Keep benchmark dependencies aligned with the Ubuntu install script.
         sudo xargs -a "$GITHUB_WORKSPACE/Ubuntu/install/apt_packages.txt" apt-get install -y
 
+    - name: Install Hyperfine 2.0.0
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        # Ubuntu's apt package still uses Hyperfine 1.x.
+        curl -fsSL -o "$RUNNER_TEMP/hyperfine_2.0.0_amd64.deb" \
+          https://github.com/sharkdp/hyperfine/releases/download/v2.0.0/hyperfine_2.0.0_amd64.deb
+        sudo apt-get install -y "$RUNNER_TEMP/hyperfine_2.0.0_amd64.deb"
+        hyperfine --version
+
     - name: Install dircolors-solarized
       shell: bash
       run: |
