@@ -146,18 +146,11 @@ function measure_startup_time() {
 function read_result_metric() {
     local result_file="${1}"
     local metric_name="${2}"
-    local metric_value
 
-    metric_value="$(
-        sed -n "s/.*\"${metric_name}\": \\([0-9.eE+-]*\\|null\\).*/\\1/p" "${result_file}" | head -n 1
-    )"
-
-    if [[ -z "${metric_value}" || "${metric_value}" == 'null' ]]; then
-        print -r -- '0'
-        return 0
-    fi
-
-    print -r -- "${metric_value}"
+    # Hyperfine 2 separates timing from other metrics; Ubuntu packages still use the flat format.
+    jq -r --arg metric "${metric_name}" \
+        '.results[0] | (.summary.time_wall_clock // .) | .[$metric] // 0' \
+        "${result_file}"
 }
 
 #######################################

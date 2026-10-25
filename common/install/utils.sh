@@ -33,7 +33,8 @@ function __install_repo_path() {
         return 1
     fi
 
-    if [[ "${install_mode}" == 'link' && -L "${destination_path}" && "${destination_path:A}" == "${source_path:A}" ]]; then
+    # Compare link targets so version-specific links can be replaced with stable paths.
+    if [[ "${install_mode}" == 'link' && -L "${destination_path}" && "$(readlink "${destination_path}")" == "${source_path:a}" ]]; then
         echo "You have already linked ${display_name} to the repository copy."
         return 0
     fi
@@ -51,7 +52,7 @@ function __install_repo_path() {
             mv "${destination_path}" "${backup_path}"
             echo "Renamed your ${display_name} to ${backup_path} as a backup."
             if [[ "${install_mode}" == 'link' ]]; then
-                ln -s "${source_path:A}" "${destination_path}"
+                ln -s "${source_path:a}" "${destination_path}"
             else
                 cp "${source_path}" "${destination_path}"
             fi
@@ -60,8 +61,8 @@ function __install_repo_path() {
     fi
 
     if [[ "${install_mode}" == 'link' ]]; then
-        ln -s "${source_path:A}" "${destination_path}"
-        echo "Created symlink: ${destination_path} -> ${source_path:A}"
+        ln -s "${source_path:a}" "${destination_path}"
+        echo "Created symlink: ${destination_path} -> ${source_path:a}"
     else
         cp "${source_path}" "${destination_path}"
         echo "Copied ${source_path} to ${destination_path}"
