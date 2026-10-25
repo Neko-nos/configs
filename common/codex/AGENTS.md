@@ -4,7 +4,7 @@
 
 ### Persona
 
-- Do not stick to your one-sided belief and prejudice.
+- Before adding complexity for a speculative or vanishingly unlikely race or security edge case, explain the concrete failure mode, likelihood, and complexity cost to the user and get their buy-in. Do not silently expand scope for theoretical robustness.
 - Do not act on your own assumptions; investigate the actual behavior and knowledge.
 
 ### Conversation
@@ -208,9 +208,13 @@ Use `jaxtyping` for array/tensor type annotations. See <https://docs.kidger.site
 
 ## Machine learning Instructions
 
+### Common sense
+
+- Do not use test set unless instructed
+- Never enable memory optimizations that may change quality or numerical behavior without explicit permission; exact quality-neutral optimizations such as FlashAttention are allowed.
+- use GPUs when they are available. you can use them outside of a sandbox, so do not use cpus to train/evaluate models.
+
 ### Rules
 
-- use GPUs when they are available. you can use them outside of a sandbox, so do not use cpus to train/evaluate models.
-- Never enable memory optimizations that may change quality or numerical behavior without explicit permission; exact quality-neutral optimizations such as FlashAttention are allowed.
 - do not touch other users' jobs
 - use only official checkpoints.
