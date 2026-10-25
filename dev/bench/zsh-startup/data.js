@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792328378943,
+  "lastUpdate": 1792924252564,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2879,6 +2879,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 88.699135,
             "range": "± 1.562999",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5bb425892b4c38af6556d31b9c8c4fce56a07665",
+          "message": "Merge pull request #125 from Neko-nos/fix/toolchain-upgrade-compatibility\n\nFix/toolchain upgrade compatibility",
+          "timestamp": "2026-10-25T19:29:15+09:00",
+          "tree_id": "2513c3f2d08d5f44a65c9952af6c30940997335d",
+          "url": "https://github.com/Neko-nos/configs/commit/5bb425892b4c38af6556d31b9c8c4fce56a07665"
+        },
+        "date": 1792924251917,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 113.414848,
+            "range": "± 228.578462",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 62.238724,
+            "range": "± 0.607669",
             "unit": "ms"
           }
         ]
