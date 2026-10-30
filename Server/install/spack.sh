@@ -19,6 +19,7 @@ function main() {
     local environment_dir
     local -a external_find_args
     local manifest_path
+    local recipe_dir
     local script_dir
     local spack_root="${HOME}/spack"
 
@@ -52,12 +53,14 @@ function main() {
     external_find_args=(
         # Keep this root managed instead of detecting its view.
         --exclude fzf
-        # Its detector does not check development files.
-        --exclude openssl
         # Search host paths, not another architecture's view.
         --path /usr
         --path /usr/local
     )
+    # Spack searches every namespace, so upstream detectors must not bypass our overrides.
+    for recipe_dir in "${script_dir}/../spack_repo/server/packages/"*; do
+        external_find_args+=(--exclude "builtin.${recipe_dir##*/}")
+    done
     "${spack_root}/bin/spack" -D "${environment_dir}" external find \
         "${external_find_args[@]}"
     # Root recipes may change without a version bump; reconsider them while
