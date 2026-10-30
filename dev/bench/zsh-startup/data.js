@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792924252564,
+  "lastUpdate": 1793372244861,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2915,6 +2915,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 62.238724,
             "range": "± 0.607669",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f0ebf5c4b3fad5d920514fd281d58b4907afa9d2",
+          "message": "Merge pull request #126 from Neko-nos/fix/spack-external-detection\n\nFix/spack external detection",
+          "timestamp": "2026-10-30T23:54:53+09:00",
+          "tree_id": "a2abd5fa27de80d6ee7d2a8c9ce1024a7a8f71d7",
+          "url": "https://github.com/Neko-nos/configs/commit/f0ebf5c4b3fad5d920514fd281d58b4907afa9d2"
+        },
+        "date": 1793372244282,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 148.514645,
+            "range": "± 306.344174",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 80.22577,
+            "range": "± 1.009237",
             "unit": "ms"
           }
         ]
