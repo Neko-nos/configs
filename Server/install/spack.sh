@@ -53,8 +53,6 @@ function main() {
     external_find_args=(
         # Keep this root managed instead of detecting its view.
         --exclude fzf
-        # Its detector does not check development files.
-        --exclude openssl
         # Search host paths, not another architecture's view.
         --path /usr
         --path /usr/local
