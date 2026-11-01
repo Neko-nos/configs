@@ -117,7 +117,7 @@ fi
 unset -v _zcompdump
 
 # Match both lowercase and uppercase letters during completion
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*:default' menu select=1
 # Prevent zsh's fallback from restoring ignored paths when nothing else matches.
 zstyle ':completion:*' completer _complete
