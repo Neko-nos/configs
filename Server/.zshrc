@@ -224,6 +224,10 @@ function __load_zsh_files() {
 }
 __load_zsh_files
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# Unlike p10k-instant-prompt-${(%):-%n}.zsh", this is ok/safe to compile
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 # cleanup helper variables and functions
 # Keep __warn available because interactive functions loaded above may warn
 # after .zshrc finishes loading.
@@ -231,7 +235,4 @@ unset -f __info
 unset -f __update_cache
 unset -f __load_zsh_files
 unset -f __ensure_zcompiled
-unfunction source
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+unset -f source
