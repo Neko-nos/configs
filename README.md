@@ -1,338 +1,31 @@
 # Neko-nos's dotfiles & configs
 
-Personal configuration files for a consistent development experience across **MacOS** and **Ubuntu (including WSL)**. Includes settings for keyboard layouts (JIS), fonts, command-line tools (Zsh, Git, Codex, Python), and VSCode.
-
-## Feature Highlights
-
-### 1. Mac-like Keyboard Configurations for Windows and Ubuntu
->
-> [!NOTE]
-> My configuration is tested only for JIS layout, a keyboard layout for Japanese. It may not work as expected on other layouts.
-
-There are differences in keyboard configuration between Mac and Windows/Ubuntu, which may confuse you when switching between systems with a default key configuration.\
-By using my configuration, you can make keyboard shortcuts and behaviors on Windows and Ubuntu feel more like MacOS.
-
-### 2. Preferred Fonts
-
-Replaces default system fonts, particularly on Windows, with [Moralerspace](https://github.com/yuru7/moralerspace), a visually appealing font, especially for Japanese characters. Also includes setup for [MesloLGS NF](https://github.com/romkatv/powerlevel10k/blob/master/font.md) for terminal/IDEs.
-
-### 3. Command-Line Environment & Tools
-
-#### Rootless Server Setup
-
-For Linux servers where root privileges are unavailable, [`Server`](./Server)
-provides a Bash-based setup that recreates the minimum useful parts of this
-repository's Zsh environment. It installs user-local tools such as `uv`,
-`gdown`, and `shellcheck`, links Bash configuration, and sets up server-side
-nano settings without `sudo`. See [Server/README.md](./Server/README.md) for details.
-
-#### Enhanced Command-Line Environment (Zsh)
-
-- **Plugin Management with [sheldon](https://github.com/rossmacarthur/sheldon)**\
-  Sheldon allows you to install useful plugins for zsh and it is fast. The `.zshrc` includes plugins for auto-completion, syntax highlighting, and prompt customization.\
-
-- **Efficient Navigation with filter tools (e.g., [fzf](https://github.com/junegunn/fzf))**\
-  There are useful functions using filter tools such as `search-history` and `search-cdr`.\
-  - `search-history` allows you to search and select commands from multiple histories interactively.
-  - `search-cdr` allows you to select the directory that you want to move into by using a relative path, instead of an absolute path like `search-history`.
-
-- **Smart History Management**\
-  Prevents failed commands from being saved to `.zsh_history` while enabling `inc_append_history` and `extended_history`. Failed commands remain in memory, so you can still recall and correct them via arrow keys in the session.\
-  Furthermore, the implementation uses only the Python standard libraries, so it works with the system Python without requiring additional environment setup.
-
-- **Safe History Editing with Normal Editors**\
-  zsh assigns special roles to certain bytes and manages `.zsh_history` using ([`metafy`](https://github.com/zsh-users/zsh/blob/zsh-5.9/Src/utils.c#L4764) and [`unmetafy`](https://github.com/zsh-users/zsh/blob/zsh-5.9/Src/utils.c#L4862)). If you edit it directly with a normal editor, these processes are not taken into account, producing invalid bytes.\
-  `zsh-history-edit` lets you edit `.zsh_history` with a normal editor without corrupting Japanese text or other multibyte characters.
-
-- **Useful settings, aliases and functions**\
-  Please refer to `.zshrc` file for details.
-
-For more details, please refer to the files in `common/zsh`.
-
-#### Git
-
-- **Useful settings in `.gitconfig`**\
-  Please refer to `.gitconfig` file for details.
-
-- **A template for `.gitignore` (for Python users)**\
-  A `.gitignore` tailored for Python projects, ignoring common files/directories like `.venv`, `__pycache__`, etc.
-
-#### nano
-
-- **GNU nano settings from a custom repository**\
-  The installer links system nano syntax files into `~/.config/nano/syntax` and links `~/.nanorc` to `~/nanorc/.nanorc`.
-  It also links custom syntax files from `~/nanorc/syntax`.
-  If `~/nanorc` does not exist, the installer asks whether to clone [Neko-nos/nanorc](https://github.com/Neko-nos/nanorc.git), our custom nanorc files inspired by VSCode Dark Modern Theme, there first.
-
-#### Coding Agents
-
-- **Codex and Claude Code setup**\
-  Installs the CLI tools and shared settings for how the agents work.
-  See [common/codex/README.md](./common/codex/README.md) for setup, configuration,
-  the terminal turn-diff viewer, and container/VM usage.
-
-#### Python Environment Management
-
-Provides a setup script for modern Python environment management: **[uv](https://github.com/astral-sh/uv):**
-
-### 4. VSCode Settings & Customizations
-
-Shared editor settings, keyboard shortcuts, and macOS extensions for browser link routing, Codex clipboard images, and Zsh support.\
-See [VSCode/README.md](./VSCode/README.md) for extension usage and installation.
-
-### 5. Disposable Environments for Codex
-
-#### WSL Configuration
-
-[`WSL/wsl.conf`](./WSL/wsl.conf) enables systemd and GPU support while
-disabling Windows drive automounting and interoperability. This keeps the
-Docker host focused on Linux resources and reduces access to the Windows
-environment.
-
-#### Available Templates
-
-- **Ubuntu:** [`common/codex/containers/ubuntu`](./common/codex/containers/ubuntu)
-  provides the default CPU-only environment.
-- **Ubuntu GPU:**
-  [`common/codex/containers/ubuntu-gpu`](./common/codex/containers/ubuntu-gpu)
-  provides an NVIDIA CUDA environment for Linux and WSL hosts.
-- **macOS:** [`common/codex/vms/macos`](./common/codex/vms/macos) provides a
-  Packer template for Tart on an Apple silicon Mac.
+Personal settings for a consistent development environment on macOS, Ubuntu,
+and WSL, with keyboard settings for Windows and a Linux server setup.
 
 ## Installation
 
 > [!IMPORTANT]
-> If you want to use these dotfiles, review and customize the code. **Do not blindly use my settings unless you understand what they do.**\
+> If you want to use these dotfiles, review and customize the code.
+> **Do not blindly use my settings unless you understand what they do.**
 > In fact, some settings are system-level (e.g., key configurations).
 
-First, clone this repository from GitHub:
+Clone into `~/configs`:
 
 ```console
-git clone https://github.com/Neko-nos/configs.git
+git clone https://github.com/Neko-nos/configs.git ~/configs
 ```
 
-### Configurations for Keyboard
+Follow the setup for your platform and choose optional tools when prompted:
 
-#### Windows
+| Platform | Setup |
+| --- | --- |
+| macOS | `zsh Mac/install/install.sh` |
+| Ubuntu | `zsh Ubuntu/install/install.sh` |
+| Ubuntu on WSL | `zsh WSL/install/install.sh` (inside WSL) |
+| Linux server | `bash Server/install/install.sh` — see the [server guide](./Server/README.md) for more details. |
 
-Most of the settings have to be configured via GUI, so there are no install scripts.\
-Please refer to the `README.md` file in the Windows directory for the installation instructions.\
-(Since my configuration is for JIS layout (a keyboard layout for Japanese), the `README.md` file is written in Japanese).
-
-#### Ubuntu
-
-Some settings require GUI, so there are no install scripts.\
-Please refer to the `README.md` file in the Ubuntu directory for the installation instructions and what the scripts in `Ubuntu/keyboard` do.
-
-#### Mac
-
-##### Karabiner-Elements
-
-Since `.zshrc` doesn't support command key configuration, I use [Karabiner-elements](https://karabiner-elements.pqrs.org/), a system-level key configuration tool.\
-Run `Mac/install/karabiner_elements.sh` to install Karabiner-Elements with Homebrew, enable its background services at login, and link the selected keyboard configuration to `~/.config/karabiner/karabiner.json`.\
-Choose `jis` for a JIS keyboard or `us` for a US keyboard that should behave like the JIS configuration.\
-The installer opens Karabiner-Elements so you can grant Accessibility and Driver Extension approval in its setup window. macOS requires you to approve these protected permissions yourself.
-
-##### Hammerspoon
-
-I use [Hammerspoon](https://www.hammerspoon.org/) to enable text selection by Option-dragging in Terminal when applications such as nano capture mouse input. When tmux owns an ordinary mouse selection, Cmd+C is forwarded to tmux so the text is copied only after the shortcut is pressed.\
-Run `Mac/install/hammerspoon.sh` to install Hammerspoon, enable it at login, and link the configuration to `~/.hammerspoon/init.lua`. It also installs Luacheck and StyLua with Homebrew.\
-The installer opens Hammerspoon so you can grant Accessibility access when macOS asks. macOS requires you to approve this protected permission yourself.
-
-##### Screenshots
-
-Run `Mac/install/hammerspoon.sh` to send screenshots to the clipboard by default and enable **Command+V** image pasting in Finder.
-
-With an image on the clipboard, open a folder in Finder and press **Command+V**. The image is saved as `image.png`; subsequent pastes use `image1.png`, `image2.png`, and so on, keeping existing files.
-
-### Command-Line Environment & Tools
-
-There are install scripts for Mac, Ubuntu and WSL in the `install` directory of each system.\
-`install/install.sh` runs all the install scripts including those in the `common/install` directory. Git, GitHub CLI, GitHub SSH, VSCode, nano, Codex, Claude Code, Python, and markdownlint setups are optional and prompted interactively.
-
-```console
-chmod +x install.sh
-./install.sh
-```
-
-On Mac, the installers open some apps (e.g., Clipy) after configuring them for you to approve their permissions. macOS does not allow an unmanaged installation script to approve these protected permissions on your behalf.
-
-If you want to run a particular script, instead of executing `install.sh`, simply execute the desired script.
-
-1. apt/brew.sh\
-   Update apt/brew and the packages specified in `apt_packages.txt` or `brew_formulae.txt`.
-
-   ```console
-   cd <Mac/Ubuntu/WSL>/install
-   source apt/brew.sh
-   ```
-
-2. karabiner_elements.sh\
-   Install Karabiner-Elements with Homebrew on Mac, enable its background services at login, ask whether the keyboard is JIS or US, and link the corresponding Karabiner configuration file.
-
-   ```console
-   cd Mac/install
-   source karabiner_elements.sh
-   ```
-
-3. clipy.sh\
-   Install Clipy with Homebrew, restore its preferences, and print a reminder to import the prepared snippets file.
-
-   ```console
-   cd Mac/install
-   source clipy.sh
-   ```
-
-4. zsh.sh\
-   Install [sheldon](https://github.com/rossmacarthur/sheldon) and set up `.zshrc`.
-
-   ```console
-   cd common/install
-   source zsh.sh <Mac/Ubuntu/WSL>
-   ```
-
-5. mux.sh\
-   Set up the shared Screen and tmux configurations.
-
-   ```console
-   cd common/install
-   source mux.sh
-   ```
-
-6. git.sh\
-   Set up `.gitconfig`.
-
-   ```console
-   cd common/install
-   source git.sh
-   ```
-
-7. gh.sh\
-   Install [GitHub CLI](https://cli.github.com/) on Ubuntu or WSL from the official GitHub CLI apt repository. On Mac, `gh` is installed by `brew.sh` from `brew_formulae.txt`.
-
-   ```console
-   cd <Ubuntu/WSL>/install
-   source gh.sh
-   ```
-
-8. github_ssh.sh\
-   Set up SSH authentication for GitHub. The script generates or reuses an Ed25519 SSH key, adds it to the ssh-agent, uploads the public key with `gh` when available, and tests `ssh -T git@github.com`.
-
-   ```console
-   cd common/install
-   source github_ssh.sh
-   ```
-
-9. vscode.sh\
-   Install VSCode and set up user `settings.json` and `keybindings.json` for the current OS.
-
-   ```console
-   cd <Mac/Ubuntu/WSL>/install
-   source vscode.sh
-   ```
-
-10. nano.sh\
-    Set up nano with system syntax definitions and optional custom settings from `~/nanorc`.
-    On Mac, install the Homebrew `nano` formula first so the `nano` command resolves to the Homebrew version instead of the system Pico-compatible editor.
-
-    ```console
-    cd common/install
-    source nano.sh
-    ```
-
-11. docker.sh\
-    On Ubuntu or WSL, install Docker Engine and optionally install NVIDIA
-    Container Toolkit for GPU containers.
-
-    ```console
-    cd common/install
-    source docker.sh
-    ```
-
-    On macOS, install Docker Desktop and optionally install Rosetta 2 on Apple silicon.
-
-    ```console
-    cd Mac/install
-    source docker.sh
-    ```
-
-12. wsl.sh\
-    On WSL, set up `/etc/wsl.conf` for systemd, GPU support, and reduced Windows interop.
-
-    ```console
-    cd WSL/install
-    source wsl.sh
-    ```
-
-13. codex.sh\
-    Install Codex CLI and set up Codex configuration links in `$CODEX_HOME` (default: `~/.codex`).
-
-    ```console
-    cd <Mac/Ubuntu/WSL>/install
-    source codex.sh
-    ```
-
-14. claude.sh\
-    Install Claude Code when needed and set up configuration links in `$CLAUDE_CONFIG_DIR` (default: `~/.claude`).
-
-    ```console
-    cd common/install
-    source claude.sh
-    ```
-
-15. python.sh\
-    Install or update [uv](https://github.com/astral-sh/uv).
-
-    ```console
-    cd common/install
-    source python.sh
-    ```
-
-16. markdownlint.sh\
-    Install [markdownlint-cli2](https://github.com/DavidAnson/markdownlint-cli2) with Homebrew on Mac or npm on Ubuntu and WSL.
-
-    ```console
-    cd <Mac/Ubuntu/WSL>/install
-    source markdownlint.sh
-    ```
-
-17. actionlint.sh\
-    Install [actionlint](https://github.com/rhysd/actionlint) with Homebrew on Mac or the official prebuilt binary installer on Ubuntu and WSL.
-
-    ```console
-    cd <Mac/Ubuntu/WSL>/install
-    source actionlint.sh
-    ```
-
-18. commands.sh\
-    Install commands with other package manager, like go and uv.
-
-    ```console
-    cd common/install
-    bash commands.sh
-    ```
-
-### Zsh prompt
-
-#### Prompt with Icons
-
-1. Font Settings\
-   Install the [`MesloLGS NF` font files](https://github.com/romkatv/powerlevel10k/blob/master/font.md#manual-font-installation):
-
-   - **macOS:** Run [`Mac/install/fonts.sh`](./Mac/install/fonts.sh). For Apple Terminal, run [`Mac/install/terminal.sh`](./Mac/install/terminal.sh) to import and select the prepared profile.
-   - **Ubuntu:** Run [`Ubuntu/install/fonts.sh`](./Ubuntu/install/fonts.sh), then configure the terminal to use `MesloLGS NF Regular` manually.
-   - **Other systems and terminals:** Follow the Powerlevel10k manual font installation and terminal configuration instructions linked above.
-   - **VSCode:** The repository configuration already sets `terminal.integrated.fontFamily` to `MesloLGS NF`.
-
-2. Configure Powerlevel10k\
-   Once the font is set, run `p10k configure` to generate a new configuration file.
-
-#### Instant Prompt
-
-Powerlevel10k offers an [instant prompt](https://github.com/romkatv/powerlevel10k/blob/master/README.md#instant-prompt), allowing you to type commands while plugins are still loading.\
-The instructions in `p10k configure` recommend setting `POWERLEVEL9K_INSTANT_PROMPT` to `verbose`, but if you encounter warnings about the instant prompt, set it to `quiet`.
-
-### Development Setup
+## Development Setup
 
 If you are going to contribute to this repository, install the development dependencies before you start working:
 
@@ -343,16 +36,7 @@ uv run prek install
 
 Without these steps, the hooks may not run at commit or push time, or they may fail because `prek` is not available.
 
-The pre-commit hook uses [pii-server](https://github.com/Neko-nos/pii-server) to check added staged lines for PII and credentials.\
-Install it with the backend for your system:
-
-```console
-# macOS (Apple silicon)
-uv tool install 'pii-server[mlx] @ git+https://github.com/Neko-nos/pii-server@main'
-
-# Ubuntu / WSL
-uv tool install 'pii-server[vllm] @ git+https://github.com/Neko-nos/pii-server@main'
-```
+The pre-commit hook uses [pii-server](https://github.com/Neko-nos/pii-server) to check added staged lines for PII and credentials.
 
 Start the detector before committing:
 
@@ -360,17 +44,16 @@ Start the detector before committing:
 pii_server init
 ```
 
-The actionlint hook also requires the `actionlint` command. Install it with `<Mac/Ubuntu/WSL>/install/actionlint.sh` if it is missing.\
-The `pre-push` hook benchmarks Zsh startup time with [hyperfine](https://github.com/sharkdp/hyperfine) before pushing.\
+The `pre-push` hook benchmarks Zsh startup time with [hyperfine](https://github.com/sharkdp/hyperfine) before pushing.
+
 GitHub Actions also benchmarks Zsh startup time on pull requests by comparing the base and head revisions on the same runner, and it publishes benchmark history for pushes to `main`.
 
-## Benchmark Results
+## Documents
 
-The published benchmark history is available here:\
-[Zsh startup benchmark history](https://neko-nos.github.io/configs/dev/bench/zsh-startup/)
-
-> [!NOTE]
-> The published benchmark history and benchmark results shown on pull requests are measured on GitHub Actions runners, so they might be slower than the results on your local machine.\
-> As a local reference, on a Mac with Apple M2 and 16 GB memory, `zsh -l -i -c "zshexit_functions=(); exit"` takes about 113.8 ms in this repository.
-
-![Local benchmark result on Apple M2 with 16 GB memory](images/benchmark_local.png)
+- [macOS](./Mac/README.md)
+- [Ubuntu](./Ubuntu/README.md)
+- [Windows](./Windows/README.md)
+- [Linux servers](./Server/README.md)
+- [VSCode](./VSCode/README.md)
+- [Zsh](./common/zsh/README.md)
+- [Codex](./common/codex/README.md)

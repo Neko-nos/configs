@@ -47,6 +47,9 @@ def prune_history_file(histfile: Path, command: str) -> bool:
     Returns:
         bool: True if a matching entry was removed, False otherwise.
     """
+    # Zsh adds a backslash before each newline when writing history.
+    command = command.replace("\n", "\\\n")
+
     with locked_history_file(histfile) as history_file:
         text = read_locked_history_text(history_file)
         entries = parse_entries(text)

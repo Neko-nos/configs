@@ -81,7 +81,7 @@ fi
 unset -v _zcompdump
 
 # Match both lowercase and uppercase letters during completion
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*:default' menu select=1
 # Prevent zsh's fallback from restoring ignored paths when nothing else matches.
 zstyle ':completion:*' completer _complete
@@ -155,16 +155,11 @@ unset -f __load_completion_cache
 
 # uv
 # ref: https://github.com/astral-sh/uv/issues/8432#issuecomment-2965692994
-function _uv_run_mod() {
-    # Filter out options
-    if [[ "$words[2]" == "run" && "$words[CURRENT]" != -* ]]; then
-        # Limit to .py files
-        _arguments '*:filename:_files -g "*.py"'
-    else
-        _uv "$@"
-    fi
-}
-compdef _uv_run_mod uv
+compdef _uv uv
+
+zstyle ':completion:*:*:uv-command-run:argument-rest:*' use-compctl false
+zstyle ':completion:*:*:uv-command-run:argument-rest:*' file-patterns \
+    '*.py:globbed-files *(-/):directories'
 
 function __load_zsh_files() {
     emulate -L zsh
@@ -193,6 +188,10 @@ function __load_zsh_files() {
 }
 __load_zsh_files
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# Unlike p10k-instant-prompt-${(%):-%n}.zsh", this is ok/safe to compile
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
 # cleanup helper variables and functions
 # Keep __warn available because interactive functions loaded above may warn
 # after .zshrc finishes loading.
@@ -200,7 +199,4 @@ unset -f __info
 unset -f __update_cache
 unset -f __load_zsh_files
 unset -f __ensure_zcompiled
-unfunction source
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+unset -f source
