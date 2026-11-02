@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793372244861,
+  "lastUpdate": 1793628603064,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -2951,6 +2951,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 80.22577,
             "range": "± 1.009237",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5c6fe04f379709af616e365909c527764782b311",
+          "message": "Merge pull request #128 from Neko-nos/refactor/zsh_and_docs\n\nRefactor/zsh and docs",
+          "timestamp": "2026-11-02T23:07:20+09:00",
+          "tree_id": "e9ae3c629b7890d8351e14460fbd588eefb4d556",
+          "url": "https://github.com/Neko-nos/configs/commit/5c6fe04f379709af616e365909c527764782b311"
+        },
+        "date": 1793628602459,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 150.16184,
+            "range": "± 347.825699",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 73.058291,
+            "range": "± 4.97176",
             "unit": "ms"
           }
         ]
