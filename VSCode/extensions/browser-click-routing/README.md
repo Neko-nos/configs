@@ -1,8 +1,10 @@
 # Browser Click Routing
 
-A macOS VS Code extension for HTTP and HTTPS links, including wrapped terminal URLs.
+Routes web links on macOS:
 
 - **Cmd+click** opens VS Code's integrated browser.
 - **Ctrl+click** opens your default browser.
 
-Follow the [VSCode setup guide](https://github.com/Neko-nos/configs/blob/main/VSCode/README.md#installation) to install. Keep Hammerspoon running while using the extension.
+Install locally using the [setup guide](../../README.md#installation) and keep Hammerspoon running.
+
+For wrapped terminal URLs, also install [Wrapped Terminal Links](../wrapped-terminal-links/README.md).

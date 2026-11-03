@@ -8,6 +8,7 @@ const { indexWrappedLinks } = require("./terminal-links");
 
 function activate(context) {
     const run = promisify(execFile);
+    // Restored remote terminals can lack initial dimensions in the workspace host.
     const buffers = new Map();
     function terminalBuffer(terminal) {
         if (!buffers.has(terminal)) {
@@ -60,22 +61,27 @@ function activate(context) {
                 }
             },
         },
-        vscode.window.registerTerminalLinkProvider({
-            async provideTerminalLinks({ terminal, line }) {
-                const state = buffers.get(terminal);
-                if (!state) {
-                    return [];
+        vscode.commands.registerCommand(
+            "browserClickRouting.provideTerminalLinks",
+            async (processId, line) => {
+                for (const [terminal, state] of buffers) {
+                    if ((await terminal.processId) !== processId) {
+                        continue;
+                    }
+                    await state.pending;
+                    state.links ??= indexWrappedLinks(state.buffer);
+                    return state.links.get(line) ?? [];
                 }
-                await state.pending;
-                state.links ??= indexWrappedLinks(state.buffer);
-                return state.links.get(line) ?? [];
+                return [];
             },
-            async handleTerminalLink(link) {
-                await vscode.env.openExternal(vscode.Uri.parse(link.uri), {
+        ),
+        vscode.commands.registerCommand(
+            "browserClickRouting.openTerminalLink",
+            (uri) =>
+                vscode.env.openExternal(vscode.Uri.parse(uri), {
                     allowContributedOpeners: "browserClickRouting.open",
-                });
-            },
-        }),
+                }),
+        ),
         vscode.window.registerExternalUriOpener(
             "browserClickRouting.open",
             {
