@@ -1,0 +1,41 @@
+{
+    "name": "wrapped-terminal-links",
+    "displayName": "Wrapped Terminal Links",
+    "description": "Opens complete URLs wrapped across terminal and tmux lines.",
+    "version": "0.1.0",
+    "private": true,
+    "publisher": "Neko-nos",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Neko-nos/configs.git",
+        "directory": "VSCode/extensions/wrapped-terminal-links"
+    },
+    "engines": {
+        "vscode": "^1.131.0"
+    },
+    "extensionKind": [
+        "workspace"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./extension.js",
+    "scripts": {
+        "check": "biome check --error-on-warnings .",
+        "format": "biome check --write .",
+        "package": "vsce package"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "2.5.15",
+        "@vscode/vsce": "4.0.0"
+    },
+    "capabilities": {
+        "untrustedWorkspaces": {
+            "supported": true
+        }
+    },
+    "extensionDependencies": [
+        "Neko-nos.browser-click-routing"
+    ]
+}

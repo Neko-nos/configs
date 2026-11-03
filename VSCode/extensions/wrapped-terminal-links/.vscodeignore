@@ -1,0 +1,7 @@
+.git/**
+.gitignore
+biome.json
+package-lock.json
+node_modules/**/*.map
+node_modules/**/typings/**
+*.vsix

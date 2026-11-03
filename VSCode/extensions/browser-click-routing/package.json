@@ -20,7 +20,9 @@
     "activationEvents": [
         "onStartupFinished",
         "onOpenExternalUri:http",
-        "onOpenExternalUri:https"
+        "onOpenExternalUri:https",
+        "onCommand:browserClickRouting.openTerminalLink",
+        "onCommand:browserClickRouting.provideTerminalLinks"
     ],
     "enabledApiProposals": [
         "externalUriOpener",
@@ -28,6 +30,7 @@
         "terminalDimensions"
     ],
     "main": "./extension.js",
+    "api": "none",
     "scripts": {
         "check": "biome check --error-on-warnings .",
         "format": "biome check --write .",
