@@ -66,12 +66,14 @@ __install_repo_path "${repo_vscodedir}/argv.json" "${vscode_argv_path}" 'VSCode 
 __install_vscode_extension zsh-language-server https://github.com/Neko-nos/zsh-language-server.git
 __install_vscode_extension smart-terminal-paste https://github.com/Neko-nos/smart-terminal-paste.git
 if __confirm 'Install browser-click-routing extension? [y/N]: '; then
-    (
-        cd "${repo_vscodedir}/extensions/browser-click-routing"
-        npm ci
-        npm run package -- --out browser-click-routing.vsix
-        code --extensions-dir "${vscode_extensions_dir}" --install-extension browser-click-routing.vsix
-    )
+    for extension_name in browser-click-routing wrapped-terminal-links; do
+        (
+            cd "${repo_vscodedir}/extensions/${extension_name}"
+            npm ci
+            npm run package -- --out "${extension_name}.vsix"
+            code --extensions-dir "${vscode_extensions_dir}" --install-extension "${extension_name}.vsix"
+        )
+    done
 fi
 
 echo 'Finished VSCode configuration!'
