@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793628877740,
+  "lastUpdate": 1793724628572,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -3023,6 +3023,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 69.581032,
             "range": "± 0.157471",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1fbe0d8c9cb96ce315848926a4cb5ba41d28680b",
+          "message": "Merge pull request #129 from Neko-nos/fix/vscode-remote-wrapped-links\n\nFix/vscode remote wrapped links",
+          "timestamp": "2026-11-04T01:48:58+09:00",
+          "tree_id": "a15a5d20c41e5018f2d35632f4a8715915c208cd",
+          "url": "https://github.com/Neko-nos/configs/commit/1fbe0d8c9cb96ce315848926a4cb5ba41d28680b"
+        },
+        "date": 1793724627729,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 148.345761,
+            "range": "± 314.078358",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 78.042866,
+            "range": "± 0.576252",
             "unit": "ms"
           }
         ]
