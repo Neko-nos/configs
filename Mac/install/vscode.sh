@@ -74,6 +74,9 @@ if __confirm 'Install browser-click-routing extension? [y/N]: '; then
             code --extensions-dir "${vscode_extensions_dir}" --install-extension "${extension_name}.vsix"
         )
     done
+    __install_repo_path "${script_dir}/../../scripts/update-vscode-extensions.sh" \
+        "$(git -C "${repo_vscodedir}" rev-parse --path-format=absolute --git-path hooks/post-merge)" \
+        'VSCode extension update hook' copy
 fi
 
 echo 'Finished VSCode configuration!'
