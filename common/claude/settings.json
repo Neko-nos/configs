@@ -25,14 +25,6 @@
       "Read(~/.aws/credentials)",
       "Read(~/**/huggingface/token)"
     ],
-    "ask": [
-      "Bash(git add:*)",
-      "Bash(git mv:*)",
-      "Bash(git restore --staged:*)",
-      "Bash(git rm --cached:*)",
-      "Bash(git apply --cached:*)",
-      "Bash(git update-index:*)"
-    ],
     "defaultMode": "auto",
     "disableBypassPermissionsMode": "disable"
   },
