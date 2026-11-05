@@ -2,11 +2,11 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
-      "Bash(uv lock:*)",
-      "Bash(uv sync:*)",
-      "Bash(uv add:*)",
-      "Bash(nvidia-smi:*)",
-      "Bash(stylua --config-path:*)"
+      "Bash(uv lock *)",
+      "Bash(uv sync *)",
+      "Bash(uv add *)",
+      "Bash(nvidia-smi *)",
+      "Bash(stylua --config-path *)"
     ],
     "deny": [
       "Read(./.env)",
@@ -25,22 +25,12 @@
       "Read(~/.aws/credentials)",
       "Read(~/**/huggingface/token)"
     ],
-    "ask": [
-      "Bash(git add:*)",
-      "Bash(git mv:*)",
-      "Bash(git restore --staged:*)",
-      "Bash(git rm --cached:*)",
-      "Bash(git apply --cached:*)",
-      "Bash(git update-index:*)"
-    ],
     "defaultMode": "auto",
     "disableBypassPermissionsMode": "disable"
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "sandbox": {
     "enabled": true,
-    "autoAllowBashIfSandboxed": true,
-    "allowUnsandboxedCommands": true,
     "network": {
       "allowedDomains": [
         "*"
@@ -72,7 +62,6 @@
       ]
     }
   },
-  "effortLevel": "xhigh",
   "autoMemoryEnabled": false,
   "skipAutoPermissionPrompt": true,
   "modelSettings": {
