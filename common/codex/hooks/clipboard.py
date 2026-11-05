@@ -1,8 +1,6 @@
-import base64
 import os
 import subprocess
 from contextlib import suppress
-from pathlib import Path
 
 import pyperclip
 
@@ -29,33 +27,19 @@ def copy_view_command(view_command: str) -> bool:
         return False
 
     try:
-        if "TMUX_PANE" in os.environ:
-            # Pane output can lose clipboard sequences during a tmux redraw.
-            client = subprocess.check_output(
-                [
-                    "tmux",
-                    "display-message",
-                    "-p",
-                    "-t",
-                    os.environ["TMUX_PANE"],
-                    "#{client_name}",
-                ],
-                text=True,
-            ).strip()
-            subprocess.run(
-                ["tmux", "set-buffer", "-w", "-t", client, "--", view_command],
-                check=True,
-            )
-            # set-buffer succeeds without delivering to a clipboard if no client exists.
-            if not client:
-                return False
-        else:
-            # Base64 prevents the copied text from injecting another control sequence.
-            sequence = b"\x1b]52;c;" + base64.b64encode(raw_command) + b"\x07"
-            # Hooks have no controlling terminal, and stdout is reserved for JSON.
-            terminal_path = os.environ.get("SSH_TTY", "/dev/tty")
-            with Path(terminal_path).open("wb", buffering=0) as terminal:
-                terminal.write(sequence)
+        # Daemons can start before tmux, so inherited terminal variables are unreliable.
+        client = subprocess.check_output(
+            ["tmux", "display-message", "-p", "#{client_name}"],
+            text=True,
+        ).strip()
+        # set-buffer succeeds without delivering to a clipboard if no client exists.
+        if not client:
+            return False
+        # Pane output can lose clipboard sequences during a tmux redraw.
+        subprocess.run(
+            ["tmux", "set-buffer", "-w", "-t", client, "--", view_command],
+            check=True,
+        )
     except (OSError, subprocess.CalledProcessError):
         return False
     return True
