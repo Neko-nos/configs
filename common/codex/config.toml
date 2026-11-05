@@ -10,38 +10,6 @@ approvals_reviewer = "auto_review"
 default_permissions = "vm_automation"
 service_tier = "priority"
 
-[permissions.workspace_with_secret_denies]
-# ref: https://developers.openai.com/codex/permissions#extend-a-profile
-extends = ":workspace"
-
-[permissions.workspace_with_secret_denies.workspace_roots]
-# Codex always struggles with uv cache.
-"~/.cache/uv" = true
-"~/.cargo" = true
-"~/.cache/huggingface" = true
-
-[permissions.workspace_with_secret_denies.filesystem]
-glob_scan_max_depth = 4
-"~/.netrc" = "deny"
-"~/.aws/credentials" = "deny"
-"~/**/huggingface/token" = "deny"
-
-[permissions.workspace_with_secret_denies.filesystem.":workspace_roots"]
-"." = "write"
-".env" = "deny"
-".env*" = "deny"
-"**/.env" = "deny"
-"**/.env*" = "deny"
-".direnv" = "deny"
-".direnv/**" = "deny"
-"**/.direnv/**" = "deny"
-"secrets" = "deny"
-"secrets/**" = "deny"
-"**/secrets/**" = "deny"
-
-[permissions.workspace_with_secret_denies.network]
-enabled = true
-
 # Tart needs unsandboxed virtualization, but deny-read rules prevent approved escalation.
 # ref: https://github.com/openai/codex/blob/rust-v0.144.4/codex-rs/core/src/tools/sandboxing.rs#L281-L303
 [permissions.vm_automation]
