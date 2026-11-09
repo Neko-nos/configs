@@ -19,13 +19,12 @@ def run_git(
     Returns:
         subprocess.CompletedProcess[str]: The completed Git process.
     """
-    return subprocess.run(
+    return subprocess.run(  # noqa: PLW1510 -- Callers inspect Git's exit status.
         ["git", *args],
         cwd=cwd,
         env=env,
         text=True,
         capture_output=True,
-        check=False,
     )
 
 
@@ -40,7 +39,7 @@ def git_cache_dir(root: Path) -> Path:
         Path: Git metadata cache directory.
     """
     git_path = run_git(["rev-parse", "--git-path", "codex-turn-diff"], root)
-    return root / Path(git_path.stdout.strip())
+    return root / git_path.stdout.strip()
 
 
 def git_worktree_root(cwd: Path) -> Path | None:
