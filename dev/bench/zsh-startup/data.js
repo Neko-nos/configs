@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793872242594,
+  "lastUpdate": 1794230824169,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -3095,6 +3095,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 75.485135,
             "range": "± 0.438991",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "23116a30f05bf93c81a223b3013d6788475910a7",
+          "message": "Merge pull request #131 from Neko-nos/fix/codex_diff_hook\n\nFix/codex diff hook",
+          "timestamp": "2026-11-09T22:25:43+09:00",
+          "tree_id": "6e696faf3f58a1e760b4afebbc9ec89819b1c61c",
+          "url": "https://github.com/Neko-nos/configs/commit/23116a30f05bf93c81a223b3013d6788475910a7"
+        },
+        "date": 1794230823784,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 114.725444,
+            "range": "± 217.164647",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 65.550527,
+            "range": "± 0.824878",
             "unit": "ms"
           }
         ]
