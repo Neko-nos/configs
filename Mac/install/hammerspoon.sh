@@ -19,7 +19,7 @@ else
 fi
 
 mkdir -p "${hammerspoon_config_dir}"
-for config_file in "${repo_hammerspoon_dir}"/*.lua; do
+for config_file in "${repo_hammerspoon_dir}"/*.{lua,mjs}; do
     __install_repo_path \
         "${config_file}" \
         "${hammerspoon_config_dir}/${config_file:t}" \
