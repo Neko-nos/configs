@@ -52,6 +52,7 @@ the supplied JIS-style mappings.
 | File | Purpose |
 | --- | --- |
 | [init.lua](hammerspoon/init.lua) | Starts Hammerspoon at login and loads the other scripts. |
+| [chatgpt_selection.lua](hammerspoon/chatgpt_selection.lua) | Applies a bright text-selection highlight when ChatGPT opens. |
 | [terminal_selection.lua](hammerspoon/terminal_selection.lua) | Lets you select text in Terminal with **Option-drag**, even when an app handles mouse input. |
 | [terminal_copy.lua](hammerspoon/terminal_copy.lua) | Lets you copy selected text in Terminal or [tmux](https://github.com/tmux/tmux) with **Command+C**. |
 | [terminal_undo.lua](hammerspoon/terminal_undo.lua) | Makes **Command+Z** undo edits in nano when using Terminal. |
