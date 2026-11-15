@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794230824169,
+  "lastUpdate": 1794753846029,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -3131,6 +3131,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 65.550527,
             "range": "± 0.824878",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e633e50e65cf4a45410b9c30b9c6a6f92bc04431",
+          "message": "Merge pull request #132 from Neko-nos/fix/chatgpt-selection-color\n\nfix(hammerspoon): match ChatGPT selection color to Terminal",
+          "timestamp": "2026-11-15T23:42:36+09:00",
+          "tree_id": "97cfaa730deef59ca4ca7149447ce9f8189f5ab3",
+          "url": "https://github.com/Neko-nos/configs/commit/e633e50e65cf4a45410b9c30b9c6a6f92bc04431"
+        },
+        "date": 1794753845813,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 207.438452,
+            "range": "± 667.051697",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 58.078541,
+            "range": "± 0.34052",
             "unit": "ms"
           }
         ]
