@@ -1,5 +1,5 @@
 {
-    "name": "Codex Ubuntu Full Access",
+    "name": "Agent Ubuntu GPU Full Access",
     "build": {
         "dockerfile": "Dockerfile"
     },
@@ -7,6 +7,17 @@
     "updateRemoteUserUID": true,
     "workspaceFolder": "/workspace/${localWorkspaceFolderBasename}",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace/${localWorkspaceFolderBasename},type=bind",
+    "privileged": true,
+    "runArgs": [
+        "--gpus=all",
+        "--network=host",
+        "--ipc=host",
+        "--pid=host"
+    ],
+    "containerEnv": {
+        "NVIDIA_VISIBLE_DEVICES": "all",
+        "NVIDIA_DRIVER_CAPABILITIES": "all"
+    },
     "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
     "customizations": {
         "vscode": {

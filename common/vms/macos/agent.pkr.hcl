@@ -15,7 +15,7 @@ variable "configs_repository" {
 
 variable "vm_name" {
   type    = string
-  default = "codex-macos"
+  default = "agent-macos"
 }
 
 variable "timezone" {
@@ -23,7 +23,7 @@ variable "timezone" {
   default = "Asia/Tokyo"
 }
 
-source "tart-cli" "codex" {
+source "tart-cli" "agent" {
   vm_base_name = "ghcr.io/cirruslabs/macos-tahoe-vanilla:latest"
   vm_name      = var.vm_name
   cpu_count    = 2
@@ -35,7 +35,7 @@ source "tart-cli" "codex" {
 }
 
 build {
-  sources = ["source.tart-cli.codex"]
+  sources = ["source.tart-cli.agent"]
 
   provisioner "shell-local" {
     command = "${path.root}/configure_host.zsh ${var.vm_name}"
@@ -83,9 +83,9 @@ build {
     content = <<-EOT
       export LANG=C.UTF-8
 
-      if [[ -o interactive && ! -e "$HOME/.codex-vm-first-run-prompt-shown" ]]; then
+      if [[ -o interactive && ! -e "$HOME/.vm-first-run-prompt-shown" ]]; then
           print -r -- 'To finish setup, run: cd ~/configs/Mac/install && zsh ./install.sh'
-          touch "$HOME/.codex-vm-first-run-prompt-shown"
+          touch "$HOME/.vm-first-run-prompt-shown"
       fi
     EOT
 
