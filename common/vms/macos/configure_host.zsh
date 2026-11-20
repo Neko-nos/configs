@@ -24,7 +24,7 @@ Host ${vm_name}
     User admin
     IdentityFile ${identity_path}
     IdentitiesOnly yes
-    StrictHostKeyChecking yes
+    StrictHostKeyChecking accept-new
     ProxyCommand /bin/sh -c 'exec /usr/bin/nc "\$(${commands[tart]} ip ${vm_name} --wait 120)" %p'
 
 .
@@ -42,3 +42,28 @@ prefix_rule(
     justification="Allow unrestricted commands inside the isolated ${vm_name} VM",
 )
 EOF
+
+antigravity_settings_path="${HOME}/.gemini/antigravity-cli/settings.json"
+if [[ -f "${antigravity_settings_path}" ]]; then
+    python3 - "${antigravity_settings_path}" "command(ssh ${vm_name})" "command(ssh -tt ${vm_name})" <<'PY'
+import json
+import sys
+
+settings_path = sys.argv[1]
+rules = sys.argv[2:]
+with open(settings_path, encoding="utf-8") as f:
+    settings = json.load(f)
+
+allow = settings.setdefault("permissions", {}).setdefault("allow", [])
+changed = False
+for rule in rules:
+    if rule not in allow:
+        allow.append(rule)
+        changed = True
+
+if changed:
+    with open(settings_path, "w", encoding="utf-8") as f:
+        json.dump(settings, f, indent=2)
+        f.write("\n")
+PY
+fi

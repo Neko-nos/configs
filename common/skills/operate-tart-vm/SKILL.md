@@ -16,11 +16,11 @@ Do not reset, replace, or recreate it unless the user requested that operation.
 
 ## Start and verify the VM
 
-After confirmation, substitute the target name and start the VM in a retained PTY session:
+After confirmation, start the VM in a retained PTY session using the literal VM name directly
+(avoid shell variable expansion so command-prefix allow rules match cleanly):
 
 ```console
-vm_name='<confirmed-vm-name>'
-command tart run --vnc-experimental --no-graphics "$vm_name"
+command tart run --vnc-experimental --no-graphics <confirmed-vm-name>
 ```
 
 Keep the Tart session open and read the current VNC endpoint from its output. Do not add `--dir`,
@@ -29,23 +29,26 @@ including read-only host mounts. Stop if the VM exposes host files, applications
 Use the confirmed VM name as its `~/.ssh/config` alias:
 
 ```console
-ssh '<confirmed-vm-name>' 'sw_vers; id; mount; sudo -n true && echo guest-sudo-ready'
+ssh <confirmed-vm-name> 'sw_vers; id; mount; sudo -n true && echo guest-sudo-ready'
 ```
 
-Verify the expected macOS guest, guest `sudo`, and absence of host `virtiofs` shares.
+Verify the expected macOS guest, guest `sudo`, and absence of host `virtiofs` shares. If SSH or
+Packer fails immediately with `No route to host`, macOS Local Network privacy is likely blocking
+the terminal or a stale `tmux` server's responsible app; verify Local Network permission and
+restart any `tmux` server started under an earlier app instance.
 
 ## Run guest commands
 
 Run guest commands through the confirmed SSH alias:
 
 ```console
-ssh '<confirmed-vm-name>' '<guest command>'
+ssh <confirmed-vm-name> '<guest command>'
 ```
 
 For interactive terminal programs:
 
 ```console
-ssh -tt '<confirmed-vm-name>' 'cd "<guest-workdir>" && exec <command>'
+ssh -tt <confirmed-vm-name> 'cd "<guest-workdir>" && exec <command>'
 ```
 
 Answer one prompt at a time and inspect the result. Use a PTY for zsh `read -q`; do not pipe
@@ -64,24 +67,23 @@ When the guest needs host files:
 
 ## Control guest applications when needed
 
-Use the VNC endpoint printed by the retained Tart session. Keep VNC captures and tool state in
-`/private/tmp` on the host:
+Use the VNC endpoint printed by the retained Tart session with the globally installed `vncdo`
+(`uv tool install vncdotool`), and keep VNC captures in `/private/tmp` on the host:
 
 ```console
-UV_TOOL_DIR=/private/tmp/tart-vnc-tools \
-    uvx --from vncdotool vncdo \
-    -s 127.0.0.1::<port> \
-    -p '<password>' \
-    capture /private/tmp/tart-vm-screen.png
+vncdo -s 127.0.0.1::<port> -p '<password>' capture /private/tmp/tart-vm-screen.png
 ```
 
-Capture before each interaction, derive coordinates from the current screen, and capture again
-after each click or keystroke.
+Capture before each interaction, derive coordinates from the current screen using 1:1 framebuffer
+pixel coordinates (for example `2048x1536` on Retina virtual displays, not 1x logical points),
+and capture again after each click or keystroke. `vncdo` Command-key combinations (`super-*`,
+`meta-*`) are unreliable against Virtualization.framework's VNC server; prefer clicking UI controls
+or running guest commands over `ssh`.
 
-Open target applications inside the guest:
+Open target applications inside the guest (built-in macOS apps live under `/System/Applications`):
 
 ```console
-ssh '<confirmed-vm-name>' 'open "/Applications/<Application>.app"'
+ssh <confirmed-vm-name> 'open "/Applications/<Application>.app"'
 ```
 
 Do not use an unqualified host `open` command.
@@ -101,4 +103,4 @@ Full Disk Access, or other host permissions for a guest task.
 ## Finish
 
 Send Ctrl-C to the retained Tart session, wait for `Stopping VM...`, and confirm `stopped` with
-`tart list`. Do not force-terminate a normal shutdown.
+`command tart list`. Do not force-terminate a normal shutdown.

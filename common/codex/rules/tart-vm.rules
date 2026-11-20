@@ -1,3 +1,4 @@
 prefix_rule(pattern=["command", "tart", "run"], decision="allow")
 prefix_rule(pattern=["tart", "run"], decision="allow")
+prefix_rule(pattern=["vncdo"], decision="allow")
 prefix_rule(pattern=["zsh", "common/vms/macos/configure_host.zsh"], decision="allow")
