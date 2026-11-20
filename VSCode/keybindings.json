@@ -2,8 +2,8 @@
     {
         "key": "shift+enter",
         "command": "workbench.action.terminal.sendSequence",
-        // Bracketed paste keeps the newline literal across local and SSH tmux sessions.
-        "args": { "text": "\u001b[200~\n\u001b[201~" },
+        // ESC+CR (Alt+Enter) survives local and SSH tmux sessions and inserts a newline across agy, Codex, Claude Code, and Zsh.
+        "args": { "text": "\u001b\r" },
         "when": "terminalFocus"
     },
     {
