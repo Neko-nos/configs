@@ -1,0 +1,32 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/settings.json",
+  "allowNonWorkspaceAccess": true,
+  "enableTerminalSandbox": true,
+  "model": "Gemini 4 Neon (XHigh)",
+  "permissions": {
+    "allow": [
+      "read_file({{HOME}}/.gemini)",
+      "write_file({{HOME}}/.cache/uv)",
+      "write_file({{HOME}}/.cargo)",
+      "write_file({{HOME}}/.cache/huggingface)",
+      "write_file({{HOME}}/.tart)",
+      "read_url(*)",
+      "command(uv lock)",
+      "command(uv sync)",
+      "command(uv add)",
+      "command(nvidia-smi)",
+      "command(stylua --config-path)",
+      "command(command tart list)",
+      "command(tart list)",
+      "command(command tart run)",
+      "command(tart run)",
+      "command(vncdo)",
+      "command(zsh common/vms/macos/configure_host.zsh)"
+    ],
+    "deny": [
+      "read_file({{HOME}}/.netrc)",
+      "read_file({{HOME}}/.aws/credentials)",
+      "read_file({{HOME}}/.cache/huggingface/token)"
+    ]
+  }
+}

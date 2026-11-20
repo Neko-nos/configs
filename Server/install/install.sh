@@ -33,4 +33,8 @@ if __confirm "Do you also want to set up Codex CLI and configurations? [y/N]: ";
     bash "${script_dir}/codex.sh"
 fi
 
+if __confirm "Do you also want to set up Antigravity CLI and configurations? [y/N]: "; then
+    zsh "${common_install_dir}/antigravity.sh"
+fi
+
 echo "Finished server configuration!"
