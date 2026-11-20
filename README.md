@@ -55,5 +55,6 @@ GitHub Actions also benchmarks Zsh startup time on pull requests by comparing th
 - [Windows](./Windows/README.md)
 - [Linux servers](./Server/README.md)
 - [VSCode](./VSCode/README.md)
+- [Common](./common/README.md)
 - [Zsh](./common/zsh/README.md)
 - [Codex](./common/codex/README.md)

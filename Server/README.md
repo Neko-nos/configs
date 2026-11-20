@@ -11,8 +11,8 @@ built against another server's CPU instruction set.
 ## Installation
 
 Run [install.sh](./install/install.sh) to detect the server type, install and
-configure the selected shell, and optionally set up Git, GitHub SSH, nano, and
-Codex CLI:
+configure the selected shell, and optionally set up Git, GitHub SSH, nano,
+Codex CLI, and Antigravity CLI:
 
 ```bash
 bash Server/install/install.sh

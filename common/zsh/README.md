@@ -90,3 +90,4 @@ Use `zsh-history-edit` only when no other Zsh sessions are using the same histor
 | `docker rebuild <image> <context>` | Delete and rebuild a [Docker](https://docs.docker.com/) image with the same tag. |
 | `packer rebuild <vm> <template>` | Delete and rebuild VM with [Packer](https://developer.hashicorp.com/packer). |
 | `tart run <vm>` | Share the current directory and run the [Tart](https://tart.run/) VM. |
+| `agy` | Launch Antigravity CLI after unsetting environment variables excluded in [common/codex/config.toml](../codex/config.toml). |

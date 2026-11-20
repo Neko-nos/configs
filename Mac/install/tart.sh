@@ -17,6 +17,14 @@ elif command -v brew >/dev/null 2>&1; then
     # Homebrew does not automatically trust dependencies from non-official taps.
     brew trust --formula openai/tools/tart openai/tools/softnet
     __install_formula openai/tools/tart
+    if command -v uv >/dev/null 2>&1; then
+        uv tool install vncdotool
+    elif [[ -x "${HOME}/.local/bin/uv" ]]; then
+        "${HOME}/.local/bin/uv" tool install vncdotool
+    else
+        echo 'uv is required to install vncdotool (vncdo). Run common/install/python.sh, then run: uv tool install vncdotool'
+        echo
+    fi
 else
     echo 'Homebrew is required to install Tart on Mac.'
     echo 'Skipping Tart installation.'

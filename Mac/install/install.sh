@@ -81,6 +81,11 @@ if __confirm 'Do you also want to set up Claude Code configurations? [y/N]: '; t
     source "${common_install_dir}/claude.sh"
 fi
 
+# Antigravity
+if __confirm 'Do you also want to set up Antigravity CLI and configurations? [y/N]: '; then
+    source "${common_install_dir}/antigravity.sh"
+fi
+
 # Python
 if __confirm 'Do you also want to set up Python configurations? [y/N]: '; then
     source "${common_install_dir}/python.sh"

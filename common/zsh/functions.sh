@@ -319,3 +319,106 @@ if ((${+commands[tart]})); then
         command tart run --dir="${PWD##*/}:${PWD}" "$@"
     }
 fi
+
+# Unlike Codex (`[shell_environment_policy.filters]`), Antigravity does not
+# natively support environment variable masking, so wrap `agy` to unset
+# excluded variables before launching it.
+if ((${+commands[agy]})); then
+    #######################################
+    # Launch Antigravity CLI after unsetting env vars excluded in codex/config.toml.
+    # Globals:
+    #   CONFIGS_COMMON_ZSH
+    #   HOME
+    # Arguments:
+    #   Antigravity CLI arguments.
+    # Outputs:
+    #   Writes Antigravity CLI output to stdout and stderr, or errors to stderr.
+    # Returns:
+    #   Antigravity CLI's exit status, or 1 if the env filter config cannot be read.
+    #######################################
+    function agy() {
+        emulate -L zsh
+        setopt err_return
+        zmodload zsh/parameter
+
+        local zsh_dir="${CONFIGS_COMMON_ZSH:-${HOME}/configs/common/zsh}"
+        local config_path="${zsh_dir:A:h}/codex/config.toml"
+        if [[ ! -r "${config_path}" ]]; then
+            printf "agy: cannot read env filter config: %s\n" "${config_path}" >&2
+            return 1
+        fi
+
+        local found_filters=0
+        local in_filters=0
+        local line
+        local header
+        local key
+        local value
+        local -a excluded_patterns=()
+        while IFS= read -r line || [[ -n "${line}" ]]; do
+            line="${line%$'\r'}"
+            line="${line#"${line%%[![:space:]]*}"}"
+            line="${line%"${line##*[![:space:]]}"}"
+            if [[ -z "${line}" || "${line}" == '#'* ]]; then
+                continue
+            fi
+
+            if [[ "${line}" == '['* ]]; then
+                header="${line%%#*}"
+                header="${header%"${header##*[![:space:]]}"}"
+                if [[ "${header}" == '[shell_environment_policy.filters]' ]]; then
+                    found_filters=1
+                    in_filters=1
+                else
+                    in_filters=0
+                fi
+                continue
+            fi
+
+            if ((in_filters == 0)); then
+                continue
+            fi
+
+            if [[ "${line}" == *=* ]]; then
+                key="${line%%=*}"
+                value="${line#*=}"
+                value="${value%%#*}"
+                key="${key%"${key##*[![:space:]]}"}"
+                value="${value#"${value%%[![:space:]]*}"}"
+                value="${value%"${value##*[![:space:]]}"}"
+                if [[ "${key}" == \"?*\" || "${key}" == \'?*\' ]]; then
+                    key="${key:1:-1}"
+                fi
+                if [[ "${value}" == \"?*\" || "${value}" == \'?*\' ]]; then
+                    value="${value:1:-1}"
+                fi
+                if [[ "${value}" == "exclude" && -n "${key}" ]]; then
+                    excluded_patterns+=("${key}")
+                fi
+            fi
+        done <"${config_path}"
+
+        if ((found_filters == 0)); then
+            printf "agy: [shell_environment_policy.filters] not found in %s\n" "${config_path}" >&2
+            return 1
+        fi
+
+        local -a env_args=()
+        local var
+        local pattern
+        for var in "${(@k)parameters[(R)*export*]}"; do
+            for pattern in "${excluded_patterns[@]}"; do
+                if [[ "${var:u}" == ${~pattern:u} ]]; then
+                    env_args+=(-u "${var}")
+                    break
+                fi
+            done
+        done
+
+        if ((${#env_args[@]})); then
+            command env "${env_args[@]}" -- agy "$@"
+        else
+            command agy "$@"
+        fi
+    }
+fi
