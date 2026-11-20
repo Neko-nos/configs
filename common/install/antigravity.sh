@@ -58,6 +58,7 @@ function __install_or_update_antigravity() {
 }
 
 __install_or_update_antigravity
+source "${script_dir}/hooks.sh"
 
 mkdir -p "${gemini_home}" "${gemini_home}/config" "${gemini_home}/antigravity-cli"
 

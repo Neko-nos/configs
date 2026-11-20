@@ -46,15 +46,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
 
 [[package]]
-name = "codex-syntect-highlight"
-version = "0.1.0"
-dependencies = [
- "serde_json",
- "syntect",
- "two-face",
-]
-
-[[package]]
 name = "crc32fast"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -332,6 +323,15 @@ dependencies = [
  "thiserror",
  "walkdir",
  "yaml-rust",
+]
+
+[[package]]
+name = "syntect-highlight"
+version = "0.1.0"
+dependencies = [
+ "serde_json",
+ "syntect",
+ "two-face",
 ]
 
 [[package]]

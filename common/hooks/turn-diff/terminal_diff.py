@@ -86,16 +86,10 @@ def highlighted_diff_sections(sections: list[list[str]]) -> list[list[str]]:
         )
         for section, hunks in zip(sections, section_hunks, strict=True)
     ]
-    runtime_dir = (
-        Path(
-            os.environ.get("CODEX_SQLITE_HOME")
-            or os.environ.get("CODEX_HOME", Path.home() / ".codex")
-        )
-        / "turn-diff"
-    )
+    data_home = Path(os.environ.get("XDG_DATA_HOME") or (Path.home() / ".local/share"))
     try:
         result = subprocess.run(
-            [str(runtime_dir / "bin/codex-syntect-highlight")],
+            [str(data_home / "turn-diff/bin/syntect-highlight")],
             input=json.dumps(requests),
             text=True,
             capture_output=True,
@@ -250,7 +244,7 @@ def render_terminal_diff_row(
     line_number_width: int,
 ) -> str:
     """
-    Render one Codex-like terminal diff row.
+    Render one terminal diff row.
 
     Args:
         line_number (int): Line number to display.
@@ -287,7 +281,7 @@ def render_terminal_diff_section(
     section: list[str], highlighted_lines: list[str]
 ) -> tuple[str | None, str, int, int]:
     """
-    Render one file section of a unified diff as Codex-like ANSI rows.
+    Render one file section of a unified diff as ANSI rows.
 
     Args:
         section (list[str]): Per-file unified diff lines.

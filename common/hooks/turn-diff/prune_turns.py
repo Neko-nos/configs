@@ -8,17 +8,18 @@ from pathlib import Path
 from hook_context import read_hook_context
 
 
-def prune_diff_sessions(turn_dir: Path, retention_days: int) -> None:
-    """Remove inactive saved sessions while preserving the current session.
+def prune_diff_sessions(session_dir: Path, retention_days: int) -> None:
+    """
+    Remove inactive saved sessions while preserving the current session.
 
     Args:
-        turn_dir (Path): Current turn's directory within its session directory.
+        session_dir (Path): Current session directory within the cache root.
         retention_days (int): Number of inactive days to retain saved sessions.
     """
-    cache_dir = turn_dir.parent.parent
-    current_session_id = turn_dir.parent.name
+    cache_dir = session_dir.parent
+    current_session_id = session_dir.name
     cutoff = time.time() - timedelta(days=retention_days).total_seconds()
-    # Same-event hooks run concurrently, so baseline capture may not have run yet.
+    # Same-event hooks may run concurrently, so baseline capture may not have run yet.
     cache_dir.mkdir(parents=True, exist_ok=True)
     for session in cache_dir.iterdir():
         if session.name == current_session_id:
@@ -40,7 +41,7 @@ def main() -> int:
     Returns:
         int: Process exit status.
     """
-    parser = argparse.ArgumentParser(description="Prune saved Codex turn reviews.")
+    parser = argparse.ArgumentParser(description="Prune saved turn reviews.")
     parser.add_argument(
         "-r",
         "--retention-days",
@@ -49,12 +50,11 @@ def main() -> int:
         help="prune other sessions after this many inactive days (default: 30)",
     )
     args = parser.parse_args()
-    context = read_hook_context()
-    if context is None:
-        return 0
-
-    _, turn_dir = context
-    prune_diff_sessions(turn_dir, args.retention_days)
+    agent, context = read_hook_context()
+    if context is not None:
+        prune_diff_sessions(context.session_dir, args.retention_days)
+    if agent == "antigravity":
+        print("{}")
     return 0
 
 

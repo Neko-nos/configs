@@ -418,7 +418,7 @@ def main() -> int:
     Returns:
         int: Process exit status.
     """
-    parser = argparse.ArgumentParser(description="View a Codex turn diff.")
+    parser = argparse.ArgumentParser(description="View a turn diff.")
     parser.add_argument("-m", "--manifest", type=Path, required=True)
     args = parser.parse_args()
     view_turn(args.manifest)

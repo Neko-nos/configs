@@ -5,13 +5,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/codex/hooks\" \"$HOME/configs/common/codex/hooks/capture_turn.py\"",
+            "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/hooks/turn-diff\" \"$HOME/configs/common/hooks/turn-diff/capture_turn.py\"",
             "timeout": 30,
             "statusMessage": "Capturing turn diff baseline"
           },
           {
             "type": "command",
-            "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/codex/hooks\" \"$HOME/configs/common/codex/hooks/prune_turns.py\" --retention-days 30",
+            "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/hooks/turn-diff\" \"$HOME/configs/common/hooks/turn-diff/prune_turns.py\" --retention-days 30",
             "timeout": 30,
             "statusMessage": "Pruning old turn reviews"
           }
@@ -23,7 +23,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/codex/hooks\" \"$HOME/configs/common/codex/hooks/save_turn.py\"",
+            "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/hooks/turn-diff\" \"$HOME/configs/common/hooks/turn-diff/save_turn.py\"",
             "timeout": 30,
             "statusMessage": "Saving turn diff"
           }

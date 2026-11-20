@@ -12,5 +12,35 @@
         ]
       }
     ]
+  },
+  "turn-diff": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/hooks/turn-diff\" \"$HOME/configs/common/hooks/turn-diff/prune_turns.py\" --retention-days 30",
+        "timeout": 30
+      }
+    ],
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/hooks/turn-diff\" \"$HOME/configs/common/hooks/turn-diff/capture_turn.py\"",
+        "timeout": 30
+      }
+    ],
+    "PostInvocation": [
+      {
+        "type": "command",
+        "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/hooks/turn-diff\" \"$HOME/configs/common/hooks/turn-diff/save_turn.py\"",
+        "timeout": 30
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/hooks/turn-diff\" \"$HOME/configs/common/hooks/turn-diff/save_turn.py\"",
+        "timeout": 30
+      }
+    ]
   }
 }

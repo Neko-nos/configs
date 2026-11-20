@@ -38,7 +38,7 @@ def git_cache_dir(root: Path) -> Path:
     Returns:
         Path: Git metadata cache directory.
     """
-    git_path = run_git(["rev-parse", "--git-path", "codex-turn-diff"], root)
+    git_path = run_git(["rev-parse", "--git-path", "turn-diff"], root)
     return root / git_path.stdout.strip()
 
 

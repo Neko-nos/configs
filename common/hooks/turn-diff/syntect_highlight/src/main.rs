@@ -13,7 +13,7 @@ fn convert_style(style: Style) -> String {
         ""
     };
     let color = style.foreground;
-    // Like Codex TUI, skip backgrounds, italic, and underline so syntax styles do
+    // Skip backgrounds, italic, and underline so syntax styles do
     // not fight the diff row background or terminal rendering quirks.
     format!("\x1b[{bold}38;2;{};{};{}m", color.r, color.g, color.b)
 }

@@ -5,6 +5,7 @@
 ### Conversation
 
 - Include line numbers when citing code, and use `#L<int>` in GitHub links.
+- Answer should be reasonably concise
 
 ### Coding
 
