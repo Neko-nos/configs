@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794753846029,
+  "lastUpdate": 1795169286267,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -3167,6 +3167,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 58.078541,
             "range": "± 0.34052",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fb3fcc4a0ce097b2e06f3caf20ffcc221a25abb8",
+          "message": "Merge pull request #133 from Neko-nos/feat/antigravity\n\nFeat/antigravity",
+          "timestamp": "2026-11-20T19:06:11+09:00",
+          "tree_id": "6bdd243cc30d3d903c153616418a1697921e43e1",
+          "url": "https://github.com/Neko-nos/configs/commit/fb3fcc4a0ce097b2e06f3caf20ffcc221a25abb8"
+        },
+        "date": 1795169285765,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 147.219398,
+            "range": "± 408.02181",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 55.830637,
+            "range": "± 0.273962",
             "unit": "ms"
           }
         ]
