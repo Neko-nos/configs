@@ -1,4 +1,5 @@
 from hook_context import (
+    clear_session_status,
     read_hook_context,
     resolve_capture_turn_dir,
     write_active_turn,
@@ -20,6 +21,7 @@ def main() -> int:
             capture_baseline(context.root, turn_dir)
             if context.agent == "antigravity":
                 write_active_turn(context.session_dir, turn_dir.name)
+                clear_session_status(context.session_dir)
     if agent == "antigravity":
         print("{}")
     return 0

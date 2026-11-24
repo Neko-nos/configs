@@ -1,63 +1,15 @@
 import json
 import shlex
-import sys
 from pathlib import Path
-from typing import Any
 
 from clipboard import copy_view_command
-from hook_context import HookContext, parse_hook_context, resolve_stop_turn_dir
+from hook_context import (
+    HookContext,
+    read_hook_context,
+    resolve_stop_turn_dir,
+    write_session_status,
+)
 from turn_store import save_turn_diff
-
-
-def is_final_antigravity_invocation(transcript_path: str | None) -> bool:
-    """
-    Return whether the latest transcript entry ended the turn without tool calls.
-
-    Args:
-        transcript_path (str | None): Path to the Antigravity `transcript.jsonl`.
-
-    Returns:
-        bool: True when the last non-empty entry is a `PLANNER_RESPONSE` with no
-            `tool_calls`.
-    """
-    if not transcript_path:
-        return False
-    path = Path(transcript_path).expanduser()
-    if not path.is_file():
-        return False
-
-    last_line = ""
-    with path.open(encoding="utf-8") as transcript:
-        for line in transcript:
-            stripped = line.strip()
-            if stripped:
-                last_line = stripped
-    if not last_line:
-        return False
-
-    try:
-        step = json.loads(last_line)
-    except json.JSONDecodeError:
-        return False
-    return step.get("type") == "PLANNER_RESPONSE" and not step.get("tool_calls")
-
-
-def is_antigravity_post_invocation(payload: dict[str, Any]) -> bool:
-    """
-    Return whether an Antigravity payload came from a `PostInvocation` hook.
-
-    Args:
-        payload (dict[str, Any]): Parsed hook JSON payload from stdin.
-
-    Returns:
-        bool: True for `PostInvocation`, False for `Stop`.
-    """
-    event_name = payload.get("hookEventName")
-    if event_name == "PostInvocation":
-        return True
-    if event_name == "Stop":
-        return False
-    return "terminationReason" not in payload and "fullyIdle" not in payload
 
 
 def save_turn(context: HookContext | None) -> str | None:
@@ -112,42 +64,14 @@ def main() -> int:
     Returns:
         int: Process exit status.
     """
-    payload = json.load(sys.stdin)
-    agent, context = parse_hook_context(payload)
+    agent, context = read_hook_context()
+    message = save_turn(context)
     if agent == "antigravity":
-        if is_antigravity_post_invocation(payload):
-            if context is None or not is_final_antigravity_invocation(
-                context.transcript_path
-            ):
-                print("{}")
-                return 0
-
-            message = save_turn(context)
-            if message is None:
-                print("{}")
-                return 0
-
-            print(
-                json.dumps(
-                    {
-                        "injectSteps": [
-                            {
-                                "systemMessage": {
-                                    "systemMessage": "",
-                                    "metadata": {"user_markdown": message},
-                                }
-                            }
-                        ]
-                    }
-                )
-            )
-            return 0
-
-        save_turn(context)
+        if context is not None and message is not None:
+            write_session_status(context.session_dir, message)
         print(json.dumps({"decision": "allow"}))
         return 0
 
-    message = save_turn(context)
     response: dict[str, object] = {"continue": True}
     if message is not None:
         response["systemMessage"] = message

@@ -10,6 +10,7 @@ function activate(context) {
     const run = promisify(execFile);
     // Restored remote terminals can lack initial dimensions in the workspace host.
     const buffers = new Map();
+    const terminalsByProcessId = new Map();
     function terminalBuffer(terminal) {
         if (!buffers.has(terminal)) {
             const dimensions = terminal.dimensions;
@@ -23,7 +24,17 @@ function activate(context) {
                     .getConfiguration("terminal.integrated")
                     .get("scrollback"),
             });
-            buffers.set(terminal, { buffer, pending: Promise.resolve() });
+            const state = { buffer, pending: Promise.resolve() };
+            buffers.set(terminal, state);
+            void terminal.processId.then((processId) => {
+                if (
+                    processId !== undefined &&
+                    buffers.get(terminal) === state
+                ) {
+                    state.processId = processId;
+                    terminalsByProcessId.set(processId, state);
+                }
+            });
         }
         return buffers.get(terminal);
     }
@@ -51,6 +62,12 @@ function activate(context) {
         ),
         vscode.window.onDidCloseTerminal((terminal) => {
             const state = buffers.get(terminal);
+            if (
+                state?.processId !== undefined &&
+                terminalsByProcessId.get(state.processId) === state
+            ) {
+                terminalsByProcessId.delete(state.processId);
+            }
             void state?.pending.then(() => state.buffer.dispose());
             buffers.delete(terminal);
         }),
@@ -59,20 +76,41 @@ function activate(context) {
                 for (const state of buffers.values()) {
                     void state.pending.then(() => state.buffer.dispose());
                 }
+                terminalsByProcessId.clear();
             },
         },
         vscode.commands.registerCommand(
             "browserClickRouting.provideTerminalLinks",
             async (processId, line) => {
-                for (const [terminal, state] of buffers) {
-                    if ((await terminal.processId) !== processId) {
-                        continue;
-                    }
-                    await state.pending;
-                    state.links ??= indexWrappedLinks(state.buffer);
-                    return state.links.get(line) ?? [];
+                if (!line.trim()) {
+                    return [];
                 }
-                return [];
+                let state = terminalsByProcessId.get(processId);
+                if (!state) {
+                    for (const [terminal, candidate] of buffers) {
+                        if (candidate.processId !== undefined) {
+                            continue;
+                        }
+                        const id = await terminal.processId;
+                        if (
+                            id !== undefined &&
+                            buffers.get(terminal) === candidate
+                        ) {
+                            candidate.processId = id;
+                            terminalsByProcessId.set(id, candidate);
+                        }
+                        if (id === processId) {
+                            state = candidate;
+                            break;
+                        }
+                    }
+                }
+                if (!state) {
+                    return [];
+                }
+                await state.pending;
+                state.links ??= indexWrappedLinks(state.buffer);
+                return state.links.get(line) ?? [];
             },
         ),
         vscode.commands.registerCommand(

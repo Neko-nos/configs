@@ -9,6 +9,7 @@ from git_snapshot import git_cache_dir, git_worktree_root
 
 AgentKind = Literal["codex", "antigravity"]
 ACTIVE_TURN_FILE = "active-turn"
+STATUS_FILE = "status.txt"
 
 
 @dataclass(frozen=True)
@@ -23,7 +24,6 @@ class HookContext:
         turn_id (str | None): Explicit turn ID when provided by the agent.
         invocation_num (int | None): Zero-based invocation index for Antigravity
             `PreInvocation` hooks, or None otherwise.
-        transcript_path (str | None): Path to the session transcript when provided.
     """
 
     agent: AgentKind
@@ -31,7 +31,6 @@ class HookContext:
     session_dir: Path
     turn_id: str | None = None
     invocation_num: int | None = None
-    transcript_path: str | None = None
 
 
 def detect_agent(payload: dict[str, Any]) -> AgentKind:
@@ -144,7 +143,6 @@ def parse_hook_context(payload: dict[str, Any]) -> tuple[AgentKind, HookContext 
             root=root,
             session_dir=git_cache_dir(root) / str(session_id),
             invocation_num=invocation_num,
-            transcript_path=payload.get("transcriptPath"),
         )
 
     # ref: https://developers.openai.com/codex/hooks#common-input-fields
@@ -212,6 +210,45 @@ def write_active_turn(session_dir: Path, turn_id: str) -> None:
     """
     session_dir.mkdir(parents=True, exist_ok=True)
     (session_dir / ACTIVE_TURN_FILE).write_text(turn_id, encoding="utf-8")
+
+
+def write_session_status(session_dir: Path, message: str) -> None:
+    """
+    Persist the latest turn-diff status message for a session.
+
+    Args:
+        session_dir (Path): Cache directory for the current session.
+        message (str): Status line message to display after the turn finishes.
+    """
+    session_dir.mkdir(parents=True, exist_ok=True)
+    (session_dir / STATUS_FILE).write_text(message, encoding="utf-8")
+
+
+def clear_session_status(session_dir: Path) -> None:
+    """
+    Remove any previously saved turn-diff status message for a session.
+
+    Args:
+        session_dir (Path): Cache directory for the current session.
+    """
+    (session_dir / STATUS_FILE).unlink(missing_ok=True)
+
+
+def read_session_status(session_dir: Path) -> str | None:
+    """
+    Read the latest turn-diff status message for a session, if present.
+
+    Args:
+        session_dir (Path): Cache directory for the current session.
+
+    Returns:
+        str | None: Saved status message, or None when absent or unreadable.
+    """
+    try:
+        message = (session_dir / STATUS_FILE).read_text(encoding="utf-8").strip()
+    except OSError:
+        return None
+    return message or None
 
 
 def resolve_stop_turn_dir(context: HookContext) -> Path | None:

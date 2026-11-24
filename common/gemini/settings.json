@@ -1,6 +1,7 @@
 {
   "$schema": "https://antigravity.google/schemas/v1/settings.json",
   "allowNonWorkspaceAccess": true,
+  "colorScheme": "dark",
   "enableTerminalSandbox": true,
   "model": "Gemini 4 Neon (XHigh)",
   "permissions": {
@@ -21,12 +22,21 @@
       "command(command tart run)",
       "command(tart run)",
       "command(vncdo)",
-      "command(zsh common/vms/macos/configure_host.zsh)"
+      "command(zsh common/vms/macos/configure_host.zsh)",
+      "command(packer)",
+      "command(ssh agent-macos)",
+      "command(ssh -tt agent-macos)",
+      "command(code)"
     ],
     "deny": [
       "read_file({{HOME}}/.netrc)",
       "read_file({{HOME}}/.aws/credentials)",
       "read_file({{HOME}}/.cache/huggingface/token)"
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "\"{{HOME}}/.local/bin/uv\" run --project \"{{HOME}}/configs/common/hooks/turn-diff\" \"{{HOME}}/configs/common/hooks/turn-diff/status_line.py\"",
+    "stack_with_default": true
   }
 }

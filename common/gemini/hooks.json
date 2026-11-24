@@ -28,13 +28,6 @@
         "timeout": 30
       }
     ],
-    "PostInvocation": [
-      {
-        "type": "command",
-        "command": "\"$HOME/.local/bin/uv\" run --project \"$HOME/configs/common/hooks/turn-diff\" \"$HOME/configs/common/hooks/turn-diff/save_turn.py\"",
-        "timeout": 30
-      }
-    ],
     "Stop": [
       {
         "type": "command",
