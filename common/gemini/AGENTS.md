@@ -2,10 +2,19 @@
 
 ## General Instructions
 
+### Persona
+
+- Before adding complexity for a speculative or vanishingly unlikely race or security edge case, explain the concrete failure mode, likelihood, and complexity cost to the user and get their buy-in. Do not silently expand scope for theoretical robustness.
+
 ### Conversation
 
-- Include line numbers when citing code, and use `#L<int>` in GitHub links.
-- Answer should be reasonably concise
+- You don't need to summarize the verification in an answer
+
+### Documents
+
+- Answer my questions in the chat space, not in documents of code comments.
+- Write a document for end-users, not an internal reference for developers like me.
+  - How to use the tool with a concise explanation of what it is, not how and why you implemented and designed so
 
 ### Coding
 
