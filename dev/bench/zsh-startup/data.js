@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1795169286267,
+  "lastUpdate": 1795511157871,
   "repoUrl": "https://github.com/Neko-nos/configs",
   "entries": {
     "zsh startup benchmark": [
@@ -3203,6 +3203,42 @@ window.BENCHMARK_DATA = {
             "name": "zsh average startup time",
             "value": 55.830637,
             "range": "± 0.273962",
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158806384+Neko-nos@users.noreply.github.com",
+            "name": "Neko-nos",
+            "username": "Neko-nos"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7c119d9c87ae264e7bd60f40af7aec4120b5d66a",
+          "message": "Merge pull request #134 from Neko-nos/feat/antigravity-and-terminal-links\n\nFeat/antigravity and terminal links",
+          "timestamp": "2026-11-24T18:04:19+09:00",
+          "tree_id": "7703ff70b1fd7d8e4dffe7c741da96e7c59640bd",
+          "url": "https://github.com/Neko-nos/configs/commit/7c119d9c87ae264e7bd60f40af7aec4120b5d66a"
+        },
+        "date": 1795511157649,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "zsh initial startup time",
+            "value": 214.911457,
+            "range": "± 698.928419",
+            "unit": "ms"
+          },
+          {
+            "name": "zsh average startup time",
+            "value": 59.361694,
+            "range": "± 0.470632",
             "unit": "ms"
           }
         ]
