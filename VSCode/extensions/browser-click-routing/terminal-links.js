@@ -95,29 +95,38 @@ function indexWrappedLinks(terminal) {
 function linkWrappedRows(lines, width) {
     const chunks = [];
     let length = 0;
+    let current = "";
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         const previous = lines[i - 1];
         const trimmed = line.text.trimStart();
         const indent = line.text.length - trimmed.length;
-        // TUI renderers can reserve an indented margin and the final terminal column.
+        // TUI renderers can reserve an indented margin and the final terminal column,
+        // or word-wrap long URLs at a hyphen/plus breakpoint before the right edge.
         const continues =
             previous &&
             line.row === previous.row + 1 &&
             (line.wrapped ||
-                (previous.right >= width - indent - 1 &&
-                    trimmed &&
-                    !/^https?:\/\//i.test(trimmed)));
+                (trimmed &&
+                    !/^https?:\/\//i.test(trimmed) &&
+                    (previous.right >= width - indent - 1 ||
+                        ((current.endsWith("-") || current.endsWith("+")) &&
+                            /^(?:[a-z0-9_~%]|[-/][a-z0-9_~%])/i.test(trimmed) &&
+                            /https?:\/\/[^\s<>"'`\u2500-\u257f]*[-+]$/i.test(
+                                current,
+                            )))));
         line.offset = continues && !line.wrapped ? indent : 0;
         if (!continues) {
             chunks.push("\n");
             length += 1;
+            current = "";
         }
         const slice = line.text.slice(line.offset);
         line.start = length;
         chunks.push(slice);
         length += slice.length;
         line.end = length;
+        current += slice;
     }
 
     const text = chunks.join("");
