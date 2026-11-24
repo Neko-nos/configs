@@ -28,5 +28,10 @@
       "read_file({{HOME}}/.aws/credentials)",
       "read_file({{HOME}}/.cache/huggingface/token)"
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "\"{{HOME}}/.local/bin/uv\" run --project \"{{HOME}}/configs/common/hooks/turn-diff\" \"{{HOME}}/configs/common/hooks/turn-diff/status_line.py\"",
+    "stack_with_default": true
   }
 }

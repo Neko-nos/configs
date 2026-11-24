@@ -68,7 +68,7 @@ def _install_fake_tmux(tmp_path: Path) -> tuple[dict[str, str], Path]:
 
 def _run_hook(
     script_name: str,
-    payload: dict[str, object],
+    payload: dict[str, object] | str,
     extra_args: list[str] | None = None,
     extra_env: dict[str, str] | None = None,
 ) -> subprocess.CompletedProcess[str]:
@@ -77,7 +77,7 @@ def _run_hook(
 
     Args:
         script_name (str): Hook Python filename under `common/hooks/turn-diff`.
-        payload (dict[str, object]): Hook input JSON payload.
+        payload (dict[str, object] | str): Hook input JSON payload or raw stdin text.
         extra_args (list[str] | None): Optional CLI arguments.
         extra_env (dict[str, str] | None): Optional extra environment variables.
 
@@ -87,6 +87,7 @@ def _run_hook(
     env = os.environ.copy()
     if extra_env:
         env.update(extra_env)
+    stdin_text = payload if isinstance(payload, str) else json.dumps(payload)
     return subprocess.run(
         [
             "uv",
@@ -97,7 +98,7 @@ def _run_hook(
             str(TURN_DIFF_DIR / script_name),
             *(extra_args or []),
         ],
-        input=json.dumps(payload),
+        input=stdin_text,
         text=True,
         capture_output=True,
         env=env,
@@ -106,7 +107,7 @@ def _run_hook(
 
 
 def test_antigravity_cli_turn_lifecycle(tmp_path: Path) -> None:
-    """Verify Antigravity PreInvocation, PostInvocation, and Stop hooks save and report a turn."""
+    """Verify Antigravity PreInvocation, Stop, and statusLine save and report a turn."""
     repo = tmp_path / "repo"
     _init_repo(repo)
     extra_env, capture_file = _install_fake_tmux(tmp_path)
@@ -134,64 +135,20 @@ def test_antigravity_cli_turn_lifecycle(tmp_path: Path) -> None:
 
     session_dir = repo / ".git" / "turn-diff" / "conv-1"
     active_turn_file = session_dir / hook_context.ACTIVE_TURN_FILE
+    status_file = session_dir / hook_context.STATUS_FILE
     turn_id = active_turn_file.read_text(encoding="utf-8").strip()
     assert (session_dir / turn_id / "state.json").is_file()
-
-    # Edit mid-turn: PostInvocation after a tool-calling step must not finalize the turn.
-    (repo / "sample.py").write_text("x = 2\n", encoding="utf-8")
-    transcript.write_text(
-        json.dumps(
-            {
-                "type": "PLANNER_RESPONSE",
-                "tool_calls": [{"name": "edit_file"}],
-            }
-        )
-        + "\n",
-        encoding="utf-8",
-    )
-    post_mid = {
-        "hookEventName": "PostInvocation",
-        "conversationId": "conv-1",
-        "cwd": str(repo),
-        "transcriptPath": str(transcript),
-        "invocationNum": 0,
-    }
-    assert (
-        json.loads(_run_hook("save_turn.py", post_mid, extra_env=extra_env).stdout)
-        == {}
-    )
-    assert active_turn_file.read_text(encoding="utf-8").strip() == turn_id
-    assert not capture_file.exists()
+    assert not status_file.exists()
 
     # Second model invocation in the same turn preserves the original baseline.
+    (repo / "sample.py").write_text("x = 2\n", encoding="utf-8")
     pre_step_1 = {**pre_step_0, "invocationNum": 1}
     res1 = _run_hook("capture_turn.py", pre_step_1)
     assert json.loads(res1.stdout) == {}
     assert active_turn_file.read_text(encoding="utf-8").strip() == turn_id
 
-    # Edit again before final response; PostInvocation saves and injects user_markdown.
+    # Edit again before Stop; Stop saves the turn diff and records the status line message.
     (repo / "sample.py").write_text("x = 3\n", encoding="utf-8")
-    with transcript.open("a", encoding="utf-8") as handle:
-        handle.write(
-            json.dumps({"type": "PLANNER_RESPONSE", "content": "Done."}) + "\n"
-        )
-    post_final = {**post_mid, "invocationNum": 1}
-    post_res = _run_hook("save_turn.py", post_final, extra_env=extra_env)
-    assert json.loads(post_res.stdout) == {
-        "injectSteps": [
-            {
-                "systemMessage": {
-                    "systemMessage": "",
-                    "metadata": {
-                        "user_markdown": "Turn diff: viewer command sent to clipboard."
-                    },
-                }
-            }
-        ]
-    }
-    assert not active_turn_file.exists()
-
-    # Follow-up Stop after PostInvocation already finalized is a clean no-op.
     stop_payload = {
         "hookEventName": "Stop",
         "conversationId": "conv-1",
@@ -201,6 +158,34 @@ def test_antigravity_cli_turn_lifecycle(tmp_path: Path) -> None:
     }
     stop_res = _run_hook("save_turn.py", stop_payload, extra_env=extra_env)
     assert json.loads(stop_res.stdout) == {"decision": "allow"}
+    assert not active_turn_file.exists()
+    assert (
+        status_file.read_text(encoding="utf-8")
+        == "Turn diff: viewer command sent to clipboard."
+    )
+
+    # Status line hides the message while working and shows it when idle.
+    status_payload = {
+        "conversation_id": "conv-1",
+        "cwd": str(repo),
+        "agent_state": "working",
+    }
+    assert _run_hook("status_line.py", status_payload).stdout == ""
+    idle_res = _run_hook("status_line.py", {**status_payload, "agent_state": "idle"})
+    assert idle_res.stdout.strip() == "Turn diff: viewer command sent to clipboard."
+
+    # Also supports workspace fallback when cwd is omitted.
+    workspace_res = _run_hook(
+        "status_line.py",
+        {
+            "session_id": "conv-1",
+            "workspace": {"current_dir": str(repo)},
+            "agent_state": "idle",
+        },
+    )
+    assert (
+        workspace_res.stdout.strip() == "Turn diff: viewer command sent to clipboard."
+    )
 
     copied = capture_file.read_text(encoding="utf-8")
     assert "common/hooks/turn-diff/terminal_diff_viewer.py" in copied
@@ -214,17 +199,51 @@ def test_antigravity_cli_turn_lifecycle(tmp_path: Path) -> None:
     )
     assert (repo / "sample.py").read_text(encoding="utf-8") == "x = 3\n"
 
-    # A second turn after Stop captures a fresh baseline and Stop fallback saves if canceled.
-    pre_turn_2 = {**pre_step_0, "invocationNum": 3}
-    res2 = _run_hook("capture_turn.py", pre_turn_2)
-    assert json.loads(res2.stdout) == {}
+    # A second turn clears the previous status message and reports no-change turns cleanly.
+    pre_turn_2 = {**pre_step_0, "invocationNum": 2}
+    assert json.loads(_run_hook("capture_turn.py", pre_turn_2).stdout) == {}
     turn_2_id = active_turn_file.read_text(encoding="utf-8").strip()
     assert turn_2_id != turn_id
-    (repo / "sample.py").write_text("x = 4\n", encoding="utf-8")
-    cancel_stop = _run_hook("save_turn.py", stop_payload, extra_env=extra_env)
-    assert json.loads(cancel_stop.stdout) == {"decision": "allow"}
-    assert not active_turn_file.exists()
-    assert (session_dir / turn_2_id / "last-turn.json").is_file()
+    assert not status_file.exists()
+    assert (
+        _run_hook("status_line.py", {**status_payload, "agent_state": "idle"}).stdout
+        == ""
+    )
+
+    stop_turn_2 = _run_hook("save_turn.py", stop_payload, extra_env=extra_env)
+    assert json.loads(stop_turn_2.stdout) == {"decision": "allow"}
+    assert (
+        _run_hook(
+            "status_line.py", {**status_payload, "agent_state": "idle"}
+        ).stdout.strip()
+        == "Turn diff: no file changes."
+    )
+
+
+def test_status_line_handles_missing_and_invalid_inputs_gracefully(
+    tmp_path: Path,
+) -> None:
+    """Verify status_line.py always exits 0 with empty output on unusable inputs."""
+    non_git_dir = tmp_path / "plain"
+    non_git_dir.mkdir()
+    for payload in (
+        "not-json",
+        {},
+        {"conversation_id": "", "cwd": str(non_git_dir), "agent_state": "idle"},
+        {
+            "conversation_id": "../escape",
+            "cwd": str(non_git_dir),
+            "agent_state": "idle",
+        },
+        {"conversation_id": "conv-1", "cwd": str(non_git_dir), "agent_state": "idle"},
+        {
+            "conversation_id": "conv-1",
+            "cwd": str(tmp_path / "missing"),
+            "agent_state": "idle",
+        },
+    ):
+        res = _run_hook("status_line.py", payload)
+        assert res.stdout == ""
 
 
 def test_antigravity_non_cli_returns_valid_json_without_side_effects(
@@ -261,14 +280,6 @@ def test_antigravity_non_cli_returns_valid_json_without_side_effects(
         json.loads(
             _run_hook(
                 "capture_turn.py", {**base_payload, "hookEventName": "PreInvocation"}
-            ).stdout
-        )
-        == {}
-    )
-    assert (
-        json.loads(
-            _run_hook(
-                "save_turn.py", {**base_payload, "hookEventName": "PostInvocation"}
             ).stdout
         )
         == {}
